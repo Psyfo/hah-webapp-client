@@ -6,7 +6,6 @@ import Document, {
 	DocumentContext,
 } from 'next/document';
 import Script from 'next/script';
-import { NEXT_PUBLIC_GOOGLE_ANALYTICS } from '../app/constants/constants';
 
 class MyDocument extends Document {
 	static async getInitialProps(ctx: DocumentContext) {
@@ -36,15 +35,12 @@ class MyDocument extends Document {
 						href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap'
 						rel='stylesheet'
 					/>
-					<link rel='shortcut icon' href={'./images/logo3.png'} />
-					<title>FoodiesBooth</title>
-					<meta
-						name='keywords'
-						content={'Food,Restaturent,Catering,Baking,Cake,Burger'}
-					/>
+					<link rel='shortcut icon' href={'./images/logo.svg'} />
+					<title>Health At Home</title>
+					<meta name='keywords' content={'Health'} />
 					<meta
 						name='description'
-						content={'A marketplace for Food Businesses, making memories'}
+						content={'Get a doctor from the comfort of your home'}
 					/>
 				</Head>
 				<body className='bg-white text-black'>
