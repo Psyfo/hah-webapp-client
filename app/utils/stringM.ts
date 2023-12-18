@@ -22,6 +22,12 @@ export function createId(): string {
 	return Random.randomString(26, 'abcdefghijklmnopqrstuvwxyz');
 }
 
+export function validateEmail(email: string) {
+	const regex =
+		/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\. [a-z]{2})?)$/;
+	return regex.test(email);
+}
+
 export function searchStringInMembers(
 	forms: any[],
 	searchString: string
