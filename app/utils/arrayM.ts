@@ -2,7 +2,6 @@ import { getCookie } from 'react-use-cookie';
 import { print } from './console';
 import { decrypt } from './crypto';
 import { numberWithCommas } from './stringM';
-import { ADMIN_ID } from '../constants/constants';
 import { useAuthIds } from '../components/authHook';
 
 const { adminId, userId, access } = useAuthIds();

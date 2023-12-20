@@ -5,6 +5,10 @@ export function hasUpperCase(str: string) {
 	return /[A-Z]/.test(str);
 }
 
+export function hasNumber(str: string) {
+	return /\d/.test(str); // Checks for any digit (0-9) within the string
+}
+
 export function isBase64(str: string) {
 	if (str === '' || str.trim() === '') {
 		return false;

@@ -6,13 +6,19 @@ import {
 	SECONDARY_COLOR,
 	THIRD_COLOR,
 } from '../app/constants/themeConstants';
+import 'react-toastify/dist/ReactToastify.css';
 import {
+	hasNumber,
 	hasSpecialChars,
 	hasUpperCase,
 	validateEmail,
 } from '../app/utils/stringM';
 import Link from 'next/link';
 import { print } from '../app/utils/console';
+import { postEmailConfirmation } from '../app/api/signupApi';
+import { ToastContainer, toast } from 'react-toastify';
+import { encrypt } from '../app/utils/crypto';
+import { CRYPTO } from '../app/constants/constants';
 
 const SignUp = () => {
 	const router = useRouter();
@@ -74,6 +80,9 @@ const SignUp = () => {
 		} else if (!hasSpecialChars(e.target.value)) {
 			setPassWarn(true);
 			setPassWordMessage('Password must include special characters ');
+		} else if (!hasNumber(e.target.value)) {
+			setPassWarn(true);
+			setPassWordMessage('Password must include atleast one number/digit ');
 		} else {
 			setPassWarn(false);
 			setPassWordMessage('');
@@ -84,23 +93,44 @@ const SignUp = () => {
 	const signUp = () => {
 		if (checked) {
 			setTermsChecked('');
-			if (!validateEmail(email)) {
+
+			if (email == '') {
 				setEmailWarn(true);
-				setEmailMessage('Please enter valid email address');
+				setEmailMessage('This field is required');
 			} else {
-				if (initialPassword.length < 10) {
-					setPassWarn(true);
-					setPassWordMessage('Password must contain at least 10 characters.');
-				} else if (!hasUpperCase(initialPassword)) {
-					setPassWarn(true);
-					setPassWordMessage(
-						'Password must include lowercases, UPPERCASEs, numbers and special characters '
-					);
-				} else if (!hasSpecialChars(initialPassword)) {
-					setPassWarn(true);
-					setPassWordMessage('Password must include special characters ');
+				if (!validateEmail(email)) {
+					setEmailWarn(true);
+					setEmailMessage('Please enter valid email address');
 				} else {
-					// Sign up
+					if (initialPassword.length < 10) {
+						setPassWarn(true);
+						setPassWordMessage('Password must contain at least 10 characters.');
+					} else if (!hasUpperCase(initialPassword)) {
+						setPassWarn(true);
+						setPassWordMessage(
+							'Password must include lowercases, UPPERCASEs, numbers and special characters '
+						);
+					} else if (!hasSpecialChars(initialPassword)) {
+						setPassWarn(true);
+						setPassWordMessage('Password must include special characters ');
+					} else if (!hasNumber(initialPassword)) {
+						setPassWarn(true);
+						setPassWordMessage(
+							'Password must include atleast one number/digit '
+						);
+					} else {
+						let encryptPassword = encrypt(initialPassword, CRYPTO);
+						// Sign up
+						postEmailConfirmation(email, encryptPassword)
+							.then((r) => {
+								toast.info('Something happened');
+								console.log(r);
+							})
+							.catch((e) => {
+								console.error(e);
+								toast.error('There was an error, please try again');
+							});
+					}
 				}
 			}
 		} else {
@@ -195,7 +225,12 @@ const SignUp = () => {
 						</p>
 					</Link>
 				</div>
-				<div className='mt-12'>
+				<div className='mt-12 flex flex-col space-y-4'>
+					<Link href={'/terms'}>
+						<p className='text-center text-xs text-gray-500 mb-4 font-bold underline'>
+							Apply for Practioner Account
+						</p>
+					</Link>
 					<button
 						onClick={() => {
 							router.push('/login');
@@ -210,6 +245,7 @@ const SignUp = () => {
 					</button>
 				</div>
 			</form>
+			<ToastContainer position='top-right' autoClose={5000} />
 		</div>
 	);
 };
