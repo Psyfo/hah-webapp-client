@@ -4,18 +4,42 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import Loader from '../../app/components/loader';
 import { PRIMARY_COLOR, THIRD_COLOR } from '../../app/constants/themeConstants';
+import { postEmailVerification } from '../../app/api/authApi';
 
 const b = () => {
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const router = useRouter();
 	const [stepOneDone, setStepOneDone] = useState('step-info');
 	const [stepTwoDone, setStepTwoDone] = useState('');
 	const [activeStep, setActiveStep] = useState(0);
 	const [verified, setVerified] = useState(false);
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 
 	useEffect(() => {
 		document.body.style.backgroundColor = THIRD_COLOR;
-	}, []);
+		const { id } = router.query;
+		if (typeof id !== 'undefined' && typeof id === 'string') {
+			postEmailVerification(id)
+				.then((r: any) => {
+					setLoading(false);
+					if (r.data.verified) {
+						toast.success('Successfully verified');
+						console.log(r.data.data);
+						setEmail(r.data.data.email);
+						setPassword(r.data.data.password);
+						setVerified(true);
+					} else {
+						setVerified(false);
+					}
+				})
+				.catch((e) => {
+					setLoading(false);
+					console.error(e);
+					toast.error('There was an error, please try again');
+				});
+		}
+	}, [router.query]);
 
 	const getView = () => {
 		switch (activeStep) {
@@ -74,8 +98,7 @@ const b = () => {
 									<p>Please check and try again later</p>
 									<button
 										onClick={() => {
-											setActiveStep(1);
-											setStepTwoDone('step-info');
+											router.push('/');
 										}}
 										style={{
 											backgroundColor: PRIMARY_COLOR,
@@ -83,12 +106,24 @@ const b = () => {
 										}}
 										className='rounded-md bg-white w-full h-10 text-black text-sm border-2 text-white'
 									>
-										Open Email App
+										Retry
 									</button>
 								</div>
 								<div className='flex flex-row justify-between w-full'>
-									<p>Resend verification</p>
-									<p>Change Email</p>
+									<p
+										onClick={() => {
+											router.push('/');
+										}}
+									>
+										Resend verification
+									</p>
+									<p
+										onClick={() => {
+											router.push('/');
+										}}
+									>
+										Change Email
+									</p>
 								</div>
 							</div>
 						)}
@@ -108,7 +143,7 @@ const b = () => {
 				<h1 className='text-3xl'>Verify Email</h1>
 			</div>
 			{loading ? (
-				<div className='flex flex-col items-center '>
+				<div className='flex flex-col items-center m-12'>
 					<Loader />
 				</div>
 			) : (
