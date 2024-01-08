@@ -14,7 +14,7 @@ const b = () => {
 		<div>
 			{loading ? (
 				<div className='flex flex-col items-center content-center'>
-					<Loader color={''} />
+					<Loader />
 				</div>
 			) : (
 				<div className='bg-white rounded-[30px] p-4 '></div>

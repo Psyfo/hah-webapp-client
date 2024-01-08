@@ -1,7 +1,5 @@
 import React from 'react';
 import { FC } from 'react';
-import { PRIMARY_COLOR } from '../constants/constants';
-
 interface MyProps {
 	text: string;
 }
@@ -10,7 +8,7 @@ const Nothing: FC<MyProps> = ({ text }) => {
 	return (
 		<div
 			className=' w-full h-screen p-4 md:p-8 2xl:p-16'
-			style={{ backgroundColor: PRIMARY_COLOR }}
+			style={{ backgroundColor: '#fff' }}
 		>
 			<div className='bg-white h-full rounded-[25px] flex flex-col items-center justify-center'>
 				<a href={'https://foodiesbooth.com'}>
