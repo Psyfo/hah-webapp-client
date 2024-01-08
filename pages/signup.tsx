@@ -240,7 +240,11 @@ const SignUp = () => {
 									<p className='text-red-500'>{termsChecked}</p>
 									<input
 										onChange={() => {
-											setChecked(!checked);
+											if (checked) {
+												setChecked(false);
+											} else {
+												setChecked(true);
+											}
 											setTermsChecked('');
 										}}
 										type='checkbox'
