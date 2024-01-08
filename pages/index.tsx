@@ -1,17 +1,14 @@
 import type { NextPage } from 'next';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import SignUp from './signup';
 
 const Home: NextPage = () => {
 	const router = useRouter();
 
 	useEffect(() => {}, []);
 
-	return (
-		<div>
-			<h1>Hi Health at home</h1>
-		</div>
-	);
+	return <SignUp />;
 };
 
 export default Home;

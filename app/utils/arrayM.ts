@@ -1,12 +1,3 @@
-import { getCookie } from 'react-use-cookie';
-import { print } from './console';
-import { decrypt } from './crypto';
-import { numberWithCommas } from './stringM';
-import { ADMIN_ID } from '../constants/constants';
-import { useAuthIds } from '../components/authHook';
-
-const { adminId, userId, access } = useAuthIds();
-
 export function findOccurrences(array: any[], value: any): number {
 	let count = 0;
 	for (let i = 0; i < array.length; i++) {
@@ -187,48 +178,6 @@ export function getProductsRepMapFromArray(arr: any[]) {
 	}
 
 	return arrRes;
-}
-
-export function searchStringInArrayOfObjects(
-	members: any[],
-	searchString: string
-): any[] {
-	// Iterate over the array of members.
-	const matches = [];
-	for (const member of members) {
-		// Check if the search string is present in any of the member properties.
-		for (const key in member) {
-			let k: string = member[key];
-			if (k.length > 70) {
-				if (adminId === searchString) {
-					if (!containsObject(member, matches)) {
-						matches.push(member);
-					}
-				} else if (typeof k == 'string') {
-					if (contains(k, searchString)) {
-						if (!containsObject(member, matches)) {
-							matches.push(member);
-						}
-					}
-				}
-			} else {
-				if (k === searchString) {
-					if (!containsObject(member, matches)) {
-						matches.push(member);
-					}
-				} else if (typeof k == 'string') {
-					if (contains(k, searchString)) {
-						if (!containsObject(member, matches)) {
-							matches.push(member);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// Return the array of matches.
-	return matches;
 }
 
 function contains(haystack: string, needle: string): boolean {
