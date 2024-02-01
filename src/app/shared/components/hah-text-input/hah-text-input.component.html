@@ -1,6 +1,11 @@
 <div class="form-group">
-  <label class="form-label">{{ label }}</label>
-  <input type="{{ type }}" [(ngModel)]="value" placeholder="{{ placeholder }}" [min]="min" [max]="max"
-    [required]="isRequired" class="form-control" />
-  <div *ngIf="error" class="error-message">{{ error }}</div>
+  <label class="form-label" for="labelFor">{{ labelText }}</label>
+
+  <input type="{{ type }}" [(ngModel)]="value" (ngModelChange)="onValueChange($event)" placeholder="{{ placeholder }}"
+    [min]="min" [max]="max" [required]="isRequired" (blur)="onInputBlur()"
+    [ngClass]="{'form-control-error': hasError()}" [disabled]="isDisabled" [class]="inputClass" />
+
+  <div *ngIf="hasError()" class="error-message">{{ errorMessage }}</div>
+
+  <div *ngIf="caption" class="input-caption">{{ caption }}</div>
 </div>

@@ -1,0 +1,64 @@
+<div class="step2">
+
+  <div class="form-row mt-4">
+    <app-hah-text-input [isRequired]="true" [id]="'firstName'" [name]="'firstName'" [inputClass]="'form-control'"
+      [labelFor]="'firstName'" [labelText]="'firstName'" [type]="'firstName'"></app-hah-text-input>
+  </div>
+
+  <div class="form-row mt-4">
+    <app-hah-text-input [isRequired]="true" [id]="'lastName'" [name]="'lastName'" [inputClass]="'form-control'"
+      [labelFor]="'lastName'" [labelText]="'lastName'" [type]="'lastName'"></app-hah-text-input>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col">
+
+    </div>
+    <div class="col">
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Gender</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem>Male</button>
+          <button ngbDropdownItem>Female</button>
+          <button ngbDropdownItem>Other</button>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Dropdown button
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </div>
+
+
+      <p-dropdown [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" [showClear]="true"
+        placeholder="Select a City"></p-dropdown>
+
+
+      <select name="" id="">
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+    </div>
+  </div>
+
+
+  <div class="row mt-4">
+    <div class="col">
+      <app-hah-button [buttonClass]="'btn btn-primary'" [buttonText]="'Next'" [type]="'button'"
+        (onClicked)="nextStep()"></app-hah-button>
+    </div>
+  </div>
+
+</div>
+
+<a (click)="previous()" class="back-button">
+  <img width="24" height="24" src="assets/images/hah-icon-caret-left.svg" alt="">
+</a>

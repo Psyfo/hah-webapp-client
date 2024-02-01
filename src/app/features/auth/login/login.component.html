@@ -2,22 +2,33 @@
 
   <div class="login-logo-wrapper"><img src="assets/images/hah-logo.svg" alt="" class="login-logo"></div>
 
-  <form class="login-form">
+  <form (submit)="login()" class="login-form">
     <h5 class="login-form-heading">Patient Login</h5>
 
+    <!-- Email -->
     <div class="form-row">
-      <app-hah-text-input [type]="'email'" [label]="'Email Address'"
-        [placeholder]="'johndoe@gmail.com'"></app-hah-text-input>
+      <app-hah-text-input [type]="'email'" [id]="'email'" [name]="'email'" [labelText]="'Email Address'"
+        [placeholder]="'johndoe@gmail.com'" [(value)]="email" [isRequired]="true"></app-hah-text-input>
     </div>
 
+    <!-- Password -->
     <div class="form-row">
-      <app-hah-text-input [type]="'password'" [label]="'Password'"
-        [placeholder]="'Type your password'"></app-hah-text-input>
+      <app-hah-text-input [type]="'password'" [id]="'password'" [name]="'password'" [labelFor]="'password'"
+        [labelText]="'Password'" [placeholder]="'Type your password'" [inputClass]="'form-control'" [(value)]="password"
+        [isRequired]="true"></app-hah-text-input>
     </div>
 
-    <div class="form-row">
-      <app-hah-button [buttonClass]="'btn btn-tertiary'" [disabled]="true"></app-hah-button>
+    <!-- Login Button -->
+    <div class="login-button-wrapper">
+      <app-hah-button [buttonClass]="'btn btn-primary'" [buttonText]="'Login'" [type]="'submit'"
+        (onClicked)="loginClick()"></app-hah-button>
     </div>
 
   </form>
+
+  <!-- Sign Up -->
+  <div class="sign-up-button-wrapper">
+    <app-hah-button [buttonClass]="'btn btn-secondary btn-small'" [buttonText]="'Sign Up'"
+      (onClicked)="navigateToSignup()"></app-hah-button>
+  </div>
 </div>

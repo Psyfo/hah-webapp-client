@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { Step1Component } from './features/auth/register/step-1/step-1.component';
+import { Step2Component } from './features/auth/register/step-2/step-2.component';
+import { Step3Component } from './features/auth/register/step-3/step-3.component';
 
 export const routes: Routes = [
   {
@@ -15,4 +18,18 @@ export const routes: Routes = [
         (m) => m.LoginComponent
       ),
   },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/register/register.component').then(
+        (m) => m.RegisterComponent
+      ),
+    children: [
+      { path: 'step1', component: Step1Component },
+      { path: 'step2', component: Step2Component },
+      { path: 'step3', component: Step3Component },
+      { path: '', redirectTo: 'step1', pathMatch: 'full' },
+    ],
+  },
+  { path: '**', redirectTo: '/login', pathMatch: 'full' },
 ];

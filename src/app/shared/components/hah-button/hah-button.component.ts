@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-hah-button',
@@ -15,8 +15,11 @@ export class HahButtonComponent {
   @Input() type: string = 'button';
   @Input() disabled: boolean = false;
 
+  @Output()
+  public onClicked: EventEmitter<void> = new EventEmitter<void>();
+
   onClick() {
     // You can customize the behavior of the button click here
-    alert('Button clicked!');
+    this.onClicked.emit();
   }
 }

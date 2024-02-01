@@ -68,5 +68,22 @@
   letter-spacing: -0.38px;
   color: #1E293B;
   margin-bottom: 16px;
-  ;
+}
+
+.login-button-wrapper {
+  margin-top: 32px;
+}
+
+.sign-up-button-wrapper {
+  margin-top: auto;
+  width: 100%;
+  width: 600px;
+}
+
+@media(max-width: 479px) {
+  .sign-up-button-wrapper {
+    width: 100%;
+    position: static;
+    margin-top: auto;
+  }
 }

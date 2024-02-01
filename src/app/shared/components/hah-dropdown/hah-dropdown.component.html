@@ -1,0 +1,6 @@
+<div class="form-group">
+  <label [for]="id" class="form-label">{{ labelText }}</label>
+  <select class="form-control" [id]="id" [name]="name" [required]="isRequired">
+    <option *ngFor="let option of options" [value]="option.value">{{ option.label }}</option>
+  </select>
+</div>
