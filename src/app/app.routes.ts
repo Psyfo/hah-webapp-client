@@ -22,5 +22,12 @@ export const routes: Routes = [
         (m) => m.RegisterComponent
       ),
   },
+  {
+    path: 'get-started',
+    loadComponent: () =>
+      import('./features/auth/register/get-started/get-started.component').then(
+        (m) => m.GetStartedComponent
+      ),
+  },
   { path: '**', redirectTo: '/login', pathMatch: 'full' },
 ];
