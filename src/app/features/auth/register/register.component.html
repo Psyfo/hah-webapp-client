@@ -1,13 +1,78 @@
 <div class="register">
+  <p-toast position="top-right" [baseZIndex]="9000"></p-toast>
   <div class="container">
     <div class="row">
-      <div class="col-6 mx-auto">
-        <img src="assets/images/hah-logo.svg" alt="" class="logo center">
+      <div class="d-flex justify-content-center">
+        <img src="assets/images/hah-logo.svg" alt="" class="logo mx-auto">
       </div>
     </div>
-    <div class="row">
-      <div class="col-6">
+    <div class="d-flex flex-column">
+      <div class="col-6 mx-auto flex-grow-1">
         <div class="form-heading">Patient Register</div>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter email">
+                <div *ngIf="f['email'].hasError('required') && f['email'].touched" class="text-danger">
+                  This field is required
+                </div>
+                <div *ngIf="f['email'].hasError('email') && f['email'].touched " class="text-danger">
+                  Please enter valid email address
+                </div>
+                <div *ngIf="patientEmailExists" class="text-danger">
+                  <div>Email address already in use.</div>
+
+                  <div>Please try to Log in</div>
+
+                  <!-- <div>[Log In] [Cancel] buttons</div> -->
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" formControlName="password" class="form-control" id="password"
+                  placeholder="Password">
+                <div *ngIf="f['password'].hasError('required') && f['password'].touched" class="text-danger">
+                  This field is required
+                </div>
+                <div *ngIf="f['password'].hasError('policy') && f['password'].touched" class="text-danger">
+                  <div>Password must contain at least 10 characters.</div>
+                  <div>Including lowercases, UPPERCASEs, numbers and special characters</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col">
+              <div class="form-group form-check">
+                <input type="checkbox" formControlName="terms" class="form-check-input" id="terms">
+                <label class="form-check-label" for="terms">I agree to the <a href="" class="btn-link">terms and
+                    conditions</a></label>
+              </div>
+              <div *ngIf="f['terms'].hasError('required') && isFormSubmitted" class="text-danger">
+                You must agree to the terms and conditions
+              </div>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col">
+              <button type="submit" class="btn btn-primary">Sign me Up</button>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col">
+              <div class="text-center">
+                <a (click)="goToLogin()" class="btn-link">Already have an account? Login</a>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
 

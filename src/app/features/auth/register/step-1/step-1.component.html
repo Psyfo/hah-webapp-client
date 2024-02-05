@@ -2,15 +2,31 @@
 
   <div class="row mt-3">
     <div class="col">
-      <app-hah-text-input [isEmail]="true" [isRequired]="true" [id]="'email'" [name]="'email'"
-        [inputClass]="'form-control'" [labelFor]="'email'" [labelText]="'email'" [type]="'email'"></app-hah-text-input>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-group">
+          <input type="email" class="form-control" id="email" placeholder="Enter email" [(ngModel)]="email"
+            (change)="onEmailChanged($event)" (blur)="onEmailTouched()">
+        </div>
+        <div class="text-danger">{{emailError}}</div>
+      </div>
+
     </div>
   </div>
 
   <div class="row mt-3">
     <div class="col">
-      <app-hah-text-input [isRequired]="true" [id]="'password'" [name]="'password'" [inputClass]="'form-control'"
-        [labelFor]="'password'" [labelText]="'password'" [type]="'password'"></app-hah-text-input>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="password" placeholder="Enter password" [(ngModel)]="password"
+            (change)="onPasswordChanged($event)" (blur)="onPasswordTouched()">
+        </div>
+        <div class="text-danger">{{passwordError}}</div>
+      </div>
+
     </div>
 
   </div>
@@ -31,6 +47,6 @@
 
 </div>
 
-<a (click)="backToLogin()" class="back-button">
+<a (click)="goToLogin()" class="back-button">
   <img width="24" height="24" src="assets/images/hah-icon-caret-left.svg" alt="">
 </a>

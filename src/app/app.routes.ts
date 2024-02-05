@@ -28,7 +28,6 @@ export const routes: Routes = [
       { path: 'step1', component: Step1Component },
       { path: 'step2', component: Step2Component },
       { path: 'step3', component: Step3Component },
-      { path: '', redirectTo: 'step1', pathMatch: 'full' },
     ],
   },
   { path: '**', redirectTo: '/login', pathMatch: 'full' },

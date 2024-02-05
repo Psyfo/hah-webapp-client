@@ -1,25 +1,27 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { environment } from 'environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
+  http = inject(HttpClient);
+
   constructor() {}
+  // http = inject(HttpClient);
 
   private isAuthenticatedFlag = false;
   private authSecretKey = 'Bearer';
+  private apiUrl = environment.apiUrl;
 
-  // Simulate a login process that sets the authentication state
   login(username: string, password: string) {
-    if (username === 'omotola' && password === 'pass123!') {
-      const authToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpheWRlZXAgUGF0aWwiLCJpYXQiOjE1MTYyMzkwMjJ9.yt3EOXf60R62Mef2oFpbFh2ihkP5qZ4fM8bjVnF8YhA'; // Generate or receive the token from your server
-      localStorage.setItem(this.authSecretKey, authToken);
-      this.isAuthenticatedFlag = true;
-      return true;
-    } else {
-      return false;
-    }
+    console.log('ApiUrl: ' + this.apiUrl);
+
+    return this.http.post(`${this.apiUrl}/login`, {
+      username: username,
+      password: password,
+    });
   }
 
   // Simulate a logout process that clears the authentication state
