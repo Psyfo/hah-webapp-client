@@ -6,6 +6,7 @@ export interface IPatient {
   email: string;
   phoneNumber: string;
   password: string;
+  verified: boolean;
 }
 
 export interface IPatientEmailExists {
