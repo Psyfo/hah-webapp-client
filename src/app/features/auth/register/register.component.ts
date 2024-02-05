@@ -110,7 +110,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
                     closable: false,
                   });
 
-                  this.router.navigate(['/login']);
+                  setTimeout(() => {
+                    this.router.navigate(['/dashboard']);
+                  }, 3000);
                 },
                 (error) => {
                   console.log('error', error);
