@@ -111,7 +111,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
                   });
 
                   setTimeout(() => {
-                    this.router.navigate(['/']);
+                    this.router.navigate(['/dashboard']);
                   }, 3000);
                 },
                 (error) => {
