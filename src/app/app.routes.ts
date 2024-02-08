@@ -29,5 +29,10 @@ export const routes: Routes = [
         (m) => m.GetStartedComponent
       ),
   },
+  {
+    path: 'terms',
+    loadComponent: () =>
+      import('./features/terms/terms.component').then((m) => m.TermsComponent),
+  },
   { path: '**', redirectTo: '/login', pathMatch: 'full' },
 ];
