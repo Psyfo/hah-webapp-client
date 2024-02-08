@@ -7,28 +7,34 @@
       </div>
     </div>
     <div class="d-flex flex-column">
-      <div class="col-6 mx-auto flex-grow-1">
+      <div class="col-lg-6 col-12 mx-auto flex-grow-1">
         <div class="form-heading">Patient Register</div>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
           <div class="row">
             <div class="col">
               <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter email">
-                <div *ngIf="f['email'].hasError('required') && f['email'].touched" class="text-danger">
+                <input type="email" formControlName="email" class="form-control" id="email" placeholder="johndoe@gmail.com">
+                @if(f['email'].hasError('required') && (f['email'].touched || isFormSubmitted)){
+                <div class="text-danger">
                   This field is required
                 </div>
-                <div *ngIf="f['email'].hasError('email') && f['email'].touched " class="text-danger">
+                } @else if (f['email'].hasError('email') && (f['email'].touched || isFormSubmitted)){
+                <div class="text-danger">
                   Please enter valid email address
                 </div>
-                <div *ngIf="patientEmailExists" class="text-danger">
-                  <div>Email address already in use.</div>
-
-                  <div>Please try to Log in</div>
-
-                  <!-- <div>[Log In] [Cancel] buttons</div> -->
+                } @else if (patientEmailExists){
+                <div class="text-danger">
+                  Email address already in use.
                 </div>
-
+                <div class="text-danger">
+                  Please try to Log in
+                </div>
+                <div class="row">
+                  <div class="col-3"><button type="button" class="btn btn-primary" (click)="goToLogin()">Login</button></div>
+                  <div class="col-3"><button type="button" class="btn btn-danger" (click)="goToLogin()">Cancel</button></div>
+                </div>
+                }
               </div>
             </div>
           </div>
@@ -38,13 +44,18 @@
                 <label for="password">Password</label>
                 <input type="password" formControlName="password" class="form-control" id="password"
                   placeholder="Password">
-                <div *ngIf="f['password'].hasError('required') && f['password'].touched" class="text-danger">
+                @if (f['password'].hasError('required') && (f['password'].touched || isFormSubmitted)){
+                <div class="text-danger">
                   This field is required
                 </div>
-                <div *ngIf="f['password'].hasError('policy') && f['password'].touched" class="text-danger">
-                  <div>Password must contain at least 10 characters.</div>
-                  <div>Including lowercases, UPPERCASEs, numbers and special characters</div>
+                } @else if (f['password'].hasError('policy') && (f['password'].touched || isFormSubmitted)){
+                <div class="text-danger">
+                  Password must contain at least 10 characters.
                 </div>
+                <div class="text-danger">
+                  Including lowercases, UPPERCASEs, numbers and special characters.
+                </div>
+                }
               </div>
             </div>
           </div>
@@ -52,13 +63,15 @@
             <div class="col">
               <div class="form-group form-check">
                 <input type="checkbox" formControlName="terms" class="form-check-input" id="terms">
-                <label class="form-check-label" for="terms">I agree to the <a
-                    href="https://healthathome.co.zw/privacy_policy" class="btn-link">terms and
+                <label class="form-check-label" for="terms">I agree to the <a routerLink="/terms" class="btn-link" target="_blank">terms
+                    and
                     conditions</a></label>
               </div>
-              <div *ngIf="f['terms'].hasError('required') && isFormSubmitted" class="text-danger">
-                You must agree to the terms and conditions
+            @if (f['terms'].hasError('required') && (f['terms'].touched || isFormSubmitted)){
+            <div class="text-danger">
+              Please agree on Terms & Conditions to continue
               </div>
+            }
             </div>
           </div>
           <div class="row mt-5">
