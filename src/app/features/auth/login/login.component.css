@@ -4,7 +4,6 @@
   left: 0;
   bottom: 0;
   right: 0;
-  width: 600px;
   height: auto;
   background-color: #EBF2F4;
   display: flex;
@@ -47,7 +46,6 @@
 }
 
 .form {
-  width: 600px;
   margin-top: 38px;
 }
 

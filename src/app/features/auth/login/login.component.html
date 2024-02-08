@@ -2,58 +2,66 @@
 
   <div class="login-logo-wrapper"><img src="assets/images/hah-logo.svg" alt="" class="login-logo"></div>
 
-  <form [formGroup]="loginForm" (submit)="login()" class="form">
-    <h5 class="login-form-heading">Patient Login</h5>
-
-    <!-- Email -->
+  <div class="container">
     <div class="row">
-      <div class="col">
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter email">
-          <div *ngIf="f['email'].hasError('required') && f['email'].touched" class="text-danger">
-            This field is required
-          </div>
-          <div *ngIf="f['email'].hasError('email') && f['email'].touched " class="text-danger">
-            Please enter valid email address
-          </div>
-        </div>
-      </div>
-    </div>
+      <div class="col-lg col-12 mx-auto">
 
-    <!-- Password -->
-    <div class="row">
-      <div class="col">
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" formControlName="password" class="form-control" id="password" placeholder="Password">
-          <div *ngIf="f['password'].hasError('required') && f['password'].touched" class="text-danger">
-            This field is required
+        <form [formGroup]="loginForm" (submit)="login()" class="form">
+          <h5 class="login-form-heading">Patient Login</h5>
+
+          <!-- Email -->
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter email">
+                <div *ngIf="f['email'].hasError('required') && f['email'].touched" class="text-danger">
+                  This field is required
+                </div>
+                <div *ngIf="f['email'].hasError('email') && f['email'].touched " class="text-danger">
+                  Please enter valid email address
+                </div>
+              </div>
+            </div>
           </div>
-          <div *ngIf="f['password'].hasError('policy') && f['password'].touched" class="text-danger">
-            <div>Password must contain at least 10 characters.</div>
-            <div>Including lowercases, UPPERCASEs, numbers and special characters</div>
+
+          <!-- Password -->
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" formControlName="password" class="form-control" id="password" placeholder="Password">
+                <div *ngIf="f['password'].hasError('required') && f['password'].touched" class="text-danger">
+                  This field is required
+                </div>
+                <div *ngIf="f['password'].hasError('policy') && f['password'].touched" class="text-danger">
+                  <div>Password must contain at least 10 characters.</div>
+                  <div>Including lowercases, UPPERCASEs, numbers and special characters</div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
 
 
-    <!-- Login Button -->
-    <div class="row mt-4">
-      <div class="col">
-        <button class="btn btn-primary" type="submit">Login</button>
-      </div>
-    </div>
+          <!-- Login Button -->
+          <div class="row mt-4">
+            <div class="col">
+              <button class="btn btn-primary" type="submit">Login</button>
+            </div>
+          </div>
 
-    <div class="row mt-3">
-      <div class="col">
-        <div class="text-center">
-          <a (click)="goToSignUp()" class="btn-link">Don't have an account? Sign Up</a>
-        </div>
+          <div class="row mt-3">
+            <div class="col">
+              <div class="text-center">
+                <a (click)="goToSignUp()" class="btn-link">Don't have an account? Sign Up</a>
+              </div>
+            </div>
+          </div>
+          </form>
       </div>
-    </div>
-  </form>
+      </div>
+      </div>
+
 
 
 </div>
