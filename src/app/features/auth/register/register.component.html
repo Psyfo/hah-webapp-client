@@ -19,7 +19,7 @@
                 <div class="text-danger">
                   This field is required
                 </div>
-                } @else if (f['email'].hasError('email') && (f['email'].touched || isFormSubmitted)){
+                } @else if ((f['email'].hasError('email') || f['email'].hasError('policy'))  && (f['email'].touched || isFormSubmitted)){
                 <div class="text-danger">
                   Please enter valid email address
                 </div>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="row">
                   <div class="col-3"><button type="button" class="btn btn-primary" (click)="goToLogin()">Login</button></div>
-                  <div class="col-3"><button type="button" class="btn btn-danger" (click)="goToLogin()">Cancel</button></div>
+                  <div class="col-3"><button type="button" class="btn btn-danger" (click)="resetEmail()">Cancel</button></div>
                 </div>
                 }
               </div>
@@ -53,7 +53,7 @@
                   Password must contain at least 10 characters.
                 </div>
                 <div class="text-danger">
-                  Including lowercases, UPPERCASEs, numbers and special characters.
+                  Including lowercases, UPPERCASEs, numbers and special characters. {{passwordSymbols}}
                 </div>
                 }
               </div>

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { customPasswordValidator } from 'app/core/validators/password.validator';
+import { customEmailValidator } from 'app/core/validators/email.validator';
 import { IPatient, IPatientEmailExists } from 'app/models/patient.interface';
 import { HahButtonComponent } from 'app/shared/components/hah-button/hah-button.component';
 import { HahTextInputComponent } from 'app/shared/components/hah-text-input/hah-text-input.component';
@@ -313,6 +314,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     { name: 'Zimbabwe', code: 'ZW' },
   ];
 
+  passwordSymbols = '(!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)';
+
   //getters for form controls
   get f() {
     return this.registerForm.controls;
@@ -320,7 +323,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email, customEmailValidator()]],
       password: ['', [Validators.required, customPasswordValidator()]],
       terms: [false, [Validators.requiredTrue]],
     });
@@ -394,6 +397,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   goToLogin(): void {
     this.router.navigate(['/login']);
+  }
+
+  resetEmail(){
+    this.f['email'].reset();
+    this.patientEmailExists = false;
   }
 
   ngAfterViewInit(): void {
