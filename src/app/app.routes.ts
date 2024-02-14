@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
+import { authenticationGuard } from './core/authentication/authentication.guard';
 
 export const routes: Routes = [
   {
     path: 'dashboard',
+    canActivate: [authenticationGuard],
     loadComponent: () =>
       import('./dashboard/dashboard.component').then(
         (m) => m.DashboardComponent
@@ -34,5 +36,16 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/terms/terms.component').then((m) => m.TermsComponent),
   },
-  { path: '**', redirectTo: '/login', pathMatch: 'full' },
+  {
+    path: 'verify/:token',
+    loadComponent: () =>
+      import('./features/auth/verification/verification.component').then(
+        (m) => m.VerificationComponent
+      ),
+  },
+  {
+    path: '**',
+    redirectTo: '/dashboard',
+    pathMatch: 'full',
+  },
 ];
