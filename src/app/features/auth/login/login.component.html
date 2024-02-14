@@ -1,11 +1,12 @@
 <div class="login">
-
-  <div class="login-logo-wrapper"><img src="assets/images/hah-logo.svg" alt="" class="login-logo"></div>
+  <p-toast position="top-right" [baseZIndex]="9000"></p-toast>
+  <div class="login-logo-wrapper">
+    <img src="assets/images/hah-logo.svg" alt="" class="login-logo" />
+  </div>
 
   <div class="container">
     <div class="row">
-      <div class="col-lg col-12 mx-auto">
-
+      <div class="col-lg-6 col-12 mx-auto">
         <form [formGroup]="loginForm" (submit)="login()" class="form">
           <h5 class="login-form-heading">Patient Login</h5>
 
@@ -14,13 +15,21 @@
             <div class="col">
               <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter email">
-                <div *ngIf="f['email'].hasError('required') && f['email'].touched" class="text-danger">
-                  This field is required
-                </div>
-                <div *ngIf="f['email'].hasError('email') && f['email'].touched " class="text-danger">
-                  Please enter valid email address
-                </div>
+                <input
+                  type="email"
+                  formControlName="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Enter email"
+                />
+                @if(f['email'].hasError('required') && (f['email'].touched ||
+                isFormSubmitted)){
+                <div class="text-danger">This field is required</div>
+                } @else if ((f['email'].hasError('email') ||
+                f['email'].hasError('policy')) && (f['email'].touched ||
+                isFormSubmitted)){
+                <div class="text-danger">Please enter valid email address</div>
+                }
               </div>
             </div>
           </div>
@@ -30,18 +39,28 @@
             <div class="col">
               <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" formControlName="password" class="form-control" id="password" placeholder="Password">
-                <div *ngIf="f['password'].hasError('required') && f['password'].touched" class="text-danger">
-                  This field is required
+                <input
+                  type="password"
+                  formControlName="password"
+                  class="form-control"
+                  id="password"
+                  placeholder="Password"
+                />
+                @if (f['password'].hasError('required') &&
+                (f['password'].touched || isFormSubmitted)){
+                <div class="text-danger">This field is required</div>
+                }
+                <!-- } @else if (f['password'].hasError('policy') && (f['password'].touched || isFormSubmitted)){
+                <div class="text-danger">
+                  Password must contain at least 10 characters.
                 </div>
-                <div *ngIf="f['password'].hasError('policy') && f['password'].touched" class="text-danger">
-                  <div>Password must contain at least 10 characters.</div>
-                  <div>Including lowercases, UPPERCASEs, numbers and special characters</div>
+                <div class="text-danger">
+                  Including lowercases, UPPERCASEs, numbers and special characters. {{passwordSymbols}}
                 </div>
+                } -->
               </div>
             </div>
           </div>
-
 
           <!-- Login Button -->
           <div class="row mt-4">
@@ -53,15 +72,16 @@
           <div class="row mt-3">
             <div class="col">
               <div class="text-center">
-                <a (click)="goToSignUp()" class="btn-link">Don't have an account? Sign Up</a>
+                <a (click)="goToSignUp()" class="btn-link"
+                  >Don't have an account? Sign Up</a
+                >
               </div>
             </div>
           </div>
-          </form>
+        </form>
       </div>
-      </div>
-      </div>
-
-
-
+    </div>
+  </div>
 </div>
+
+```

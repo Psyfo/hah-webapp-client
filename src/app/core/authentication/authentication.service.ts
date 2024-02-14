@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { environment } from 'environments/environment.prod';
+import { Router } from '@angular/router';
+import { environment } from 'environments/environment';
+import { map } from 'jquery';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   http = inject(HttpClient);
+  router = inject(Router);
 
   constructor() {}
   // http = inject(HttpClient);
@@ -15,19 +19,32 @@ export class AuthenticationService {
   private authSecretKey = 'Bearer';
   private apiUrl = environment.apiUrl;
 
-  login(username: string, password: string) {
+  login(email: string, password: string) {
     console.log('ApiUrl: ' + this.apiUrl);
 
-    return this.http.post(`${this.apiUrl}/login`, {
-      username: username,
-      password: password,
-    });
+    return this.http
+      .post<any>(`${this.apiUrl}/auth/login`, { email, password })
+      .pipe(
+        tap((response) => {
+          // Check if the response contains an authentication token
+          if (response && response.token) {
+            // Save the token in local storage
+            localStorage.setItem(this.authSecretKey, response.token);
+            localStorage.setItem('email', email);
+
+            // Update authentication flag
+            this.isAuthenticatedFlag = true;
+          }
+          return response;
+        })
+      );
   }
 
-  // Simulate a logout process that clears the authentication state
   logout() {
     localStorage.removeItem(this.authSecretKey);
+    localStorage.removeItem('email');
     this.isAuthenticatedFlag = false;
+    this.router.navigate(['/login']);
   }
 
   // Check if the user is authenticated
