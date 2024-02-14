@@ -2,7 +2,11 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  provideAnimations,
+  provideNoopAnimations,
+} from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -14,6 +18,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
+    provideAnimations(),
+    provideNoopAnimations(),
     MessageService,
     importProvidersFrom([CommonModule, ToastModule, BrowserAnimationsModule]),
   ],

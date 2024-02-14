@@ -2,17 +2,24 @@
   <div class="container">
     <div class="row">
       <div class="d-flex justify-content-center">
-        <img src="assets/images/hah-logo.svg" alt="" class="logo mx-auto">
+        <img src="assets/images/hah-logo.svg" alt="" class="logo mx-auto" />
       </div>
     </div>
 
     <!-- Get Started Button -->
     <div class="row mt-5">
-      <div class="d-flex flex-column justify-content-center align-items-center get-started-message mx-auto">
+      <div
+        class="d-flex flex-column justify-content-center align-items-center get-started-message mx-auto"
+      >
         <h5>Congratulations! Your account has been created successfully.</h5>
-        <button type="button" class="btn btn-primary mt-4">Get Started</button>
+        <button
+          type="button"
+          class="btn btn-primary mt-4"
+          (click)="goToDashboard()"
+        >
+          Get Started
+        </button>
       </div>
     </div>
-
   </div>
 </div>
