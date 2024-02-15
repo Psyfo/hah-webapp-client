@@ -9,6 +9,29 @@ export const routes: Routes = [
       import('./dashboard/dashboard.component').then(
         (m) => m.DashboardComponent
       ),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./dashboard/home/home.component').then(
+            (m) => m.HomeComponent
+          ),
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./dashboard/profile/profile.component').then(
+            (m) => m.ProfileComponent
+          ),
+      },
+      {
+        path: 'appointments',
+        loadComponent: () =>
+          import('./dashboard/appointments/appointments.component').then(
+            (m) => m.AppointmentsComponent
+          ),
+      },
+    ],
   },
   {
     path: 'login',
@@ -42,6 +65,11 @@ export const routes: Routes = [
       import('./features/auth/verification/verification.component').then(
         (m) => m.VerificationComponent
       ),
+  },
+  {
+    path: 'faq',
+    loadComponent: () =>
+      import('./features/faq/faq.component').then((m) => m.FaqComponent),
   },
   {
     path: '**',

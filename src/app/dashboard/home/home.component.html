@@ -1,0 +1,52 @@
+<div class="flex flex-column gap-2 py-5 px-3">
+  <p class="font-semibold mb-8">
+    Welcome to Your Dashboard {{ patient?.email }}
+  </p>
+
+  <!-- Steps -->
+  <div class="border-1 border-round border-gray-300 p-5">
+    <p-toast></p-toast>
+    <p-steps [model]="items" [(activeIndex)]="activeIndex"> </p-steps>
+  </div>
+
+  <div class="border-1 border-round border-gray-300 p-5">
+    <!-- Verification Status -->
+    <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">Email Verification Status</h4>
+      <p>
+        Your email address is <strong>{{ verificationStatus }}</strong
+        >.
+      </p>
+      @if(verificationStatus === 'Not Verified'){
+      <p>
+        An email has been sent to your email address. Please verify your email
+        address to continue.
+      </p>
+      <p>
+        If you did not receive the email, click the button below to resend the
+        email.
+      </p>
+      <p-button
+        label="Resend Email"
+        (click)="resendVerificationEmail()"
+      ></p-button>
+      } @if(verificationStatus === 'Not Verified' && emailSent){
+      <p>
+        An email has been sent to your email address. Please verify your email
+        address to continue.
+      </p>
+
+      }
+    </div>
+  </div>
+
+  <!-- Other dashboard content -->
+
+  <div class="border-1 border-round border-gray-300 p-5 w-6">
+    <h5 class="card-title">Appointments</h5>
+    <p class="card-text">
+      View your upcoming appointments and schedule new appointments.
+    </p>
+    <p-button label="View Appointments" (click)="goToAppointments()"></p-button>
+  </div>
+</div>
