@@ -1,95 +1,140 @@
-<div class="register">
+<div class="bg-primary-50 flex flex-column min-h-screen w-full">
   <p-toast position="top-right" [baseZIndex]="9000"></p-toast>
-  <div class="container">
-    <div class="row">
-      <div class="d-flex justify-content-center">
-        <img src="assets/images/hah-logo.svg" alt="" class="logo mx-auto">
-      </div>
-    </div>
-    <div class="d-flex flex-column">
-      <div class="col-lg-6 col-12 mx-auto flex-grow-1">
-        <div class="form-heading">Patient Register</div>
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
-          <div class="row">
-            <div class="col">
-              <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" formControlName="email" class="form-control" id="email" placeholder="johndoe@gmail.com">
-                @if(f['email'].hasError('required') && (f['email'].touched || isFormSubmitted)){
-                <div class="text-danger">
-                  This field is required
-                </div>
-                } @else if ((f['email'].hasError('email') || f['email'].hasError('policy'))  && (f['email'].touched || isFormSubmitted)){
-                <div class="text-danger">
-                  Please enter valid email address
-                </div>
-                } @else if (patientEmailExists){
-                <div class="text-danger">
-                  Email address already in use.
-                </div>
-                <div class="text-danger">
-                  Please try to Log in
-                </div>
-                <div class="row">
-                  <div class="col-3"><button type="button" class="btn btn-primary" (click)="goToLogin()">Login</button></div>
-                  <div class="col-3"><button type="button" class="btn btn-danger" (click)="resetEmail()">Cancel</button></div>
-                </div>
-                }
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" formControlName="password" class="form-control" id="password"
-                  placeholder="Password">
-                @if (f['password'].hasError('required') && (f['password'].touched || isFormSubmitted)){
-                <div class="text-danger">
-                  This field is required
-                </div>
-                } @else if (f['password'].hasError('policy') && (f['password'].touched || isFormSubmitted)){
-                <div class="text-danger">
-                  Password must contain at least 10 characters.
-                </div>
-                <div class="text-danger">
-                  Including lowercases, UPPERCASEs, numbers and special characters. {{passwordSymbols}}
-                </div>
-                }
-              </div>
-            </div>
-          </div>
-          <div class="row mt-2">
-            <div class="col">
-              <div class="form-group form-check">
-                <input type="checkbox" formControlName="terms" class="form-check-input" id="terms">
-                <label class="form-check-label" for="terms">I agree to the <a routerLink="/terms" class="btn-link" target="_blank">terms
-                    and
-                    conditions</a></label>
-              </div>
-            @if (f['terms'].hasError('required') && (f['terms'].touched || isFormSubmitted)){
-            <div class="text-danger">
-              Please agree on Terms & Conditions to continue
-              </div>
-            }
-            </div>
-          </div>
-          <div class="row mt-5">
-            <div class="col">
-              <button type="submit" class="btn btn-primary">Sign me Up</button>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col">
-              <div class="text-center">
-                <a (click)="goToLogin()" class="btn-link">Already have an account? Login</a>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
 
-    <router-outlet></router-outlet>
+  <div class="flex justify-content-center align-items-center mt-8 w-full">
+    <img src="assets/images/hah-logo.svg" alt="" class="w-12rem" />
+  </div>
+
+  <div
+    class="flex align-items-center flex-column justify-content-center w-full mt-4"
+  >
+    <form
+      [formGroup]="registerForm"
+      (submit)="onSubmit()"
+      class="flex flex-column gap-3 lg:w-4 md:w-6 sm:w-12 p-3"
+    >
+      <h5 class="text-xl font-semibold mb-3">Patient Signup</h5>
+
+      <!-- Email -->
+      <div class="flex flex-column gap-2">
+        <label for="email">Email</label>
+        <input
+          pInputText
+          id="email"
+          formControlName="email"
+          placeholder="johndoe@gmail.com"
+        />
+        @if(f['email'].hasError('required') && (f['email'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        } @else if ((f['email'].hasError('email') ||
+        f['email'].hasError('policy')) && (f['email'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500">Please enter valid email address</small>
+        } @else if (patientEmailExists){
+        <small class="text-red-500">Email address already in use.</small>
+        <small class="text-red-500">Please try to Log in</small>
+        <div class="flex gap-2">
+          <p-button
+            label="Login"
+            type="button"
+            class="btn btn-primary"
+            (click)="goToLogin()"
+            severity="primary"
+          >
+          </p-button>
+          <p-button
+            label="Cancel"
+            type="button"
+            class="btn btn-danger"
+            (click)="resetEmail()"
+            severity="danger"
+          >
+          </p-button>
+        </div>
+
+        <!-- Confirm Dialog -->
+        <p-confirmDialog
+          header="Confirmation"
+          icon="pi pi-exclamation-triangle"
+        >
+        </p-confirmDialog>
+
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="flex flex-column gap-2">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          pInputText
+          id="password"
+          formControlName="password"
+          placeholder="Password"
+        />
+        @if (f['password'].hasError('required') && (f['password'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        }
+      </div>
+
+      <!-- Checkbox -->
+      <!-- <div class="flex flex-column gap-2">
+        <p-checkbox
+          type="checkbox"
+          formControlName="terms"
+          inputId="terms"
+          value="terms"
+        ></p-checkbox>
+        <label for="terms"
+          >I agree to the
+          <a routerLink="/terms" class="btn-link" target="_blank"
+            >terms and conditions</a
+          ></label
+        >
+        @if (f['terms'].hasError('required') && (f['terms'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500">
+          Please agree on Terms & Conditions to continue
+        </small>
+        }
+      </div> -->
+
+      <div class="flex gap-2">
+        <input
+          type="checkbox"
+          formControlName="terms"
+          class="form-check-input"
+          id="terms"
+        />
+        <label class="form-check-label" for="terms"
+          >I agree to the
+          <a routerLink="/terms" class="btn-link" target="_blank"
+            >terms and conditions</a
+          ></label
+        >
+      </div>
+      @if (f['terms'].hasError('required') && (f['terms'].touched ||
+      isFormSubmitted)){
+      <small class="text-red-500">
+        Please agree on Terms & Conditions to continue
+      </small>
+      }
+
+      <!-- Login Button -->
+      <p-button
+        type="submit"
+        label="Sign Up"
+        [styleClass]="'sm: w-full'"
+      ></p-button>
+
+      <p-button
+        label="Already have an account? Login"
+        [link]="true"
+        class="text-center"
+        (click)="goToLogin()"
+      ></p-button>
+    </form>
   </div>
 </div>

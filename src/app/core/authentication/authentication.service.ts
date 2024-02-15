@@ -31,6 +31,7 @@ export class AuthenticationService {
             // Save the token in local storage
             localStorage.setItem(this.authSecretKey, response.token);
             localStorage.setItem('email', email);
+            localStorage.setItem('isAuthenticated', 'true');
 
             // Update authentication flag
             this.isAuthenticatedFlag = true;
@@ -43,12 +44,17 @@ export class AuthenticationService {
   logout() {
     localStorage.removeItem(this.authSecretKey);
     localStorage.removeItem('email');
+    localStorage.removeItem('isAuthenticated');
     this.isAuthenticatedFlag = false;
     this.router.navigate(['/login']);
   }
 
   // Check if the user is authenticated
   isAuthenticated(): boolean {
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    if (isAuthenticated === 'true') {
+      this.isAuthenticatedFlag = true;
+    }
     return this.isAuthenticatedFlag;
   }
 }

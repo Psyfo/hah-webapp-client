@@ -9,6 +9,9 @@ import { HahButtonComponent } from 'app/shared/components/hah-button/hah-button.
 import { HahTextInputComponent } from 'app/shared/components/hah-text-input/hah-text-input.component';
 import { data } from 'jquery';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
 import { ToastModule } from 'primeng/toast';
 
@@ -32,6 +35,9 @@ import {
     CommonModule,
     MessagesModule,
     ToastModule,
+    CardModule,
+    InputTextModule,
+    ButtonModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',

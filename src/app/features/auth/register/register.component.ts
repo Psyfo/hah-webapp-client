@@ -1,15 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { customPasswordValidator } from 'app/core/validators/password.validator';
 import { customEmailValidator } from 'app/core/validators/email.validator';
+import { customPasswordValidator } from 'app/core/validators/password.validator';
 import { IPatient, IPatientEmailExists } from 'app/models/patient.interface';
 import { HahButtonComponent } from 'app/shared/components/hah-button/hah-button.component';
 import { HahTextInputComponent } from 'app/shared/components/hah-text-input/hah-text-input.component';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
 import { ToastModule } from 'primeng/toast';
 import { RegisterService } from './register.service';
+
+import {
+  DialogService,
+  DynamicDialogConfig,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 
 import {
   FormBuilder,
@@ -40,6 +50,10 @@ import {
     FormsModule,
     MessagesModule,
     ToastModule,
+    InputTextModule,
+    ButtonModule,
+    DialogModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
@@ -50,13 +64,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   cdr = inject(ChangeDetectorRef);
   registerService = inject(RegisterService);
   messageService = inject(MessageService);
+  dialogService = inject(DialogService);
+  confirmationService = inject(ConfirmationService);
 
   registerForm!: FormGroup;
 
   isFormSubmitted = false;
   patientEmailExists = false;
   messages: any[] = [];
-
+  ref: DynamicDialogRef | undefined;
   // All countries
   // length 252
   countries = [
@@ -314,8 +330,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     { name: 'Zimbabwe', code: 'ZW' },
   ];
 
-  passwordSymbols = '(!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)';
-
   //getters for form controls
   get f() {
     return this.registerForm.controls;
@@ -323,7 +337,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email, customEmailValidator()]],
+      email: [
+        '',
+        [Validators.required, Validators.email, customEmailValidator()],
+      ],
       password: ['', [Validators.required, customPasswordValidator()]],
       terms: [false, [Validators.requiredTrue]],
     });
@@ -353,6 +370,19 @@ export class RegisterComponent implements OnInit, AfterViewInit {
               life: 5000,
               closable: false,
             });
+
+            this.confirmationService.confirm({
+              message: 'Patient email exists. Do you want to login instead?',
+              header: 'Confirmation',
+              icon: 'pi pi-exclamation-triangle',
+              accept: () => {
+                this.router.navigate(['/login']);
+              },
+              reject: () => {
+                this.resetEmail();
+              },
+            });
+
             return;
           } else {
             this.registerService
@@ -399,10 +429,14 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/login']);
   }
 
-  resetEmail(){
+  resetEmail() {
     this.f['email'].reset();
     this.patientEmailExists = false;
   }
+
+  showDialog() {}
+
+  closeDialog() {}
 
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
