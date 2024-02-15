@@ -70,6 +70,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   registerForm!: FormGroup;
 
   isFormSubmitted = false;
+  passwordSymbols = '(!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)';
   patientEmailExists = false;
   messages: any[] = [];
   ref: DynamicDialogRef | undefined;
