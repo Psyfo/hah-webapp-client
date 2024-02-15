@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Login Failed',
-            detail: error.message,
+            detail: 'Incorrect email or password. Please try again or go to sign up.',
           });
         }
       );
@@ -102,7 +102,7 @@ export class LoginComponent implements OnInit {
         summary: 'Login Failed',
         detail: 'Form is invalid',
       });
-      console.log('Form is invalid', this.loginForm.errors);
+      console.log('Incorrect email or password. Please try again or go to sign up.', this.loginForm.errors);
     }
   }
 
