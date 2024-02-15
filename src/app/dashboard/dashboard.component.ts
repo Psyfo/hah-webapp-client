@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbNav, NgbNavItem } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'app/core/authentication/authentication.service';
 import { PatientService } from 'app/features/patient/patient.service';
 import { IPatient } from 'app/models/patient.interface';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { MessagesModule } from 'primeng/messages';
 import { StepsModule } from 'primeng/steps';
@@ -20,8 +21,8 @@ import { ToastModule } from 'primeng/toast';
     MessagesModule,
     ToastModule,
     MenubarModule,
-    NgbModule,
     StepsModule,
+    ButtonModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
@@ -29,6 +30,7 @@ import { ToastModule } from 'primeng/toast';
 export class DashboardComponent implements OnInit {
   authService = inject(AuthenticationService);
   patientService = inject(PatientService);
+  messageService = inject(MessageService);
 
   patient?: IPatient;
   verificationStatus: string = '';
@@ -36,6 +38,8 @@ export class DashboardComponent implements OnInit {
 
   items?: any[];
   activeIndex: number = 0;
+  activeTab: string = '1';
+  navItems?: MenuItem[];
 
   ngOnInit(): void {
     const email = localStorage.getItem('email');
@@ -48,20 +52,45 @@ export class DashboardComponent implements OnInit {
       });
     }
 
+    this.navItems = [
+      {
+        label: 'Home',
+        icon: 'pi pi-fw pi-home',
+        routerLink: ['/dashboard'], // Update with your route
+      },
+      {
+        label: 'Profile',
+        icon: 'pi pi-fw pi-user',
+        routerLink: ['/dashboard/profile'], // Update with your route
+      },
+      {
+        label: 'Appointments',
+        icon: 'pi pi-fw pi-calendar',
+        routerLink: ['/dashboard/appointments'], // Update with your route
+      },
+    ];
+
     this.items = [
-      { label: 'Verification' },
-      { label: 'Step 2' },
-      { label: 'Step 3' },
-      { label: 'Step 4' },
+      { label: 'Email Verification' },
+      { label: 'ID Verification' },
     ];
   }
 
   resendVerificationEmail() {
-    this.emailSent = true;
+    setTimeout(() => {
+      this.emailSent = true;
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Email Sent',
+        detail: 'Verification email has been sent to your email address',
+      });
+    }, 2000);
   }
 
   logout() {
     this.authService.logout();
     console.log('Logged out');
   }
+
+  goToAppointments() {}
 }
