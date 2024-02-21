@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
   isFormSubmitted = false;
-  passwordSymbols = 'policy position';
+  passwordSymbols = '(!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)';
 
   get f() {
     return this.loginForm.controls;
