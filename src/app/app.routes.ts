@@ -6,28 +6,28 @@ export const routes: Routes = [
     path: 'dashboard',
     canActivate: [authenticationGuard],
     loadComponent: () =>
-      import('./dashboard/dashboard.component').then(
+      import('./features/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent
       ),
     children: [
       {
         path: '',
         loadComponent: () =>
-          import('./dashboard/home/home.component').then(
+          import('./features/dashboard/home/home.component').then(
             (m) => m.HomeComponent
           ),
       },
       {
         path: 'profile',
         loadComponent: () =>
-          import('./dashboard/profile/profile.component').then(
+          import('./features/dashboard/profile/profile.component').then(
             (m) => m.ProfileComponent
           ),
       },
       {
         path: 'appointments',
         loadComponent: () =>
-          import('./dashboard/appointments/appointments.component').then(
+          import('./features/dashboard/appointments/appointments.component').then(
             (m) => m.AppointmentsComponent
           ),
       },
