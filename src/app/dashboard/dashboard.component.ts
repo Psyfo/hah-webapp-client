@@ -1,17 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbModule, NgbNav, NgbNavItem } from '@ng-bootstrap/ng-bootstrap';
-import { AuthenticationService } from 'app/core/authentication/authentication.service';
-import { PatientService } from 'app/features/patient/patient.service';
-import { IPatient } from 'app/models/patient.interface';
-import { MenuItem, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { MenubarModule } from 'primeng/menubar';
-import { MessagesModule } from 'primeng/messages';
-import { StepsModule } from 'primeng/steps';
-import { ToastModule } from 'primeng/toast';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit, inject } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NgbModule, NgbNav, NgbNavItem } from "@ng-bootstrap/ng-bootstrap";
+import { AuthenticationService } from "app/core/authentication/authentication.service";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { PatientService } from "app/features/patient/patient.service";
+import { IPatient } from "app/models/patient.interface";
+import { MenuItem, MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { MenubarModule } from "primeng/menubar";
+import { MessagesModule } from "primeng/messages";
+import { StepsModule } from "primeng/steps";
+import { ToastModule } from "primeng/toast";
 
 @Component({
   selector: 'app-dashboard',
@@ -26,6 +27,7 @@ import { ToastModule } from 'primeng/toast';
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
+  animations: [routerTransitionSlideUp],
 })
 export class DashboardComponent implements OnInit {
   authService = inject(AuthenticationService);

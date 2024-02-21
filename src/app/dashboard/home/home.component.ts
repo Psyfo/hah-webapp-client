@@ -1,15 +1,21 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthenticationService } from 'app/core/authentication/authentication.service';
-import { PatientService } from 'app/features/patient/patient.service';
-import { IPatient } from 'app/models/patient.interface';
-import { MenuItem, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { MenubarModule } from 'primeng/menubar';
-import { MessagesModule } from 'primeng/messages';
-import { StepsModule } from 'primeng/steps';
-import { ToastModule } from 'primeng/toast';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit, inject } from "@angular/core";
+import { Router } from "@angular/router";
+import { AuthenticationService } from "app/core/authentication/authentication.service";
+import { PatientService } from "app/features/patient/patient.service";
+import { IPatient } from "app/models/patient.interface";
+import { MenuItem, MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { MenubarModule } from "primeng/menubar";
+import { MessagesModule } from "primeng/messages";
+import { StepsModule } from "primeng/steps";
+import { ToastModule } from "primeng/toast";
+
+import {
+  routerTransitionSlideLeft,
+  routerTransitionSlideRight,
+  routerTransitionSlideUp,
+} from 'app/core/utilities/animations';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +30,11 @@ import { ToastModule } from 'primeng/toast';
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
+  animations: [
+    routerTransitionSlideUp,
+    routerTransitionSlideLeft,
+    routerTransitionSlideRight,
+  ],
 })
 export class HomeComponent implements OnInit {
   authService = inject(AuthenticationService);

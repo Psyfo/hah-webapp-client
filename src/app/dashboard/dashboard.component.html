@@ -1,21 +1,23 @@
-<p-menubar [model]="navItems">
-  <ng-template pTemplate="start">
-    <img
-      src="assets/images/hah-logo.svg"
-      height="40"
-      class="mr-2"
-      alt="HAH Logo"
-    />
-  </ng-template>
-  <ng-template pTemplate="end">
-    <p-button
-      icon="pi pi-power-off"
-      label="Logout"
-      (click)="logout()"
-      severity="secondary"
-      [outlined]="true"
-    ></p-button>
-  </ng-template>
-</p-menubar>
+<div [@routerTransitionSlideUp]>
+  <p-menubar [model]="navItems">
+    <ng-template pTemplate="start">
+      <img
+        src="assets/images/hah-logo.svg"
+        height="40"
+        class="mr-2"
+        alt="HAH Logo"
+      />
+    </ng-template>
+    <ng-template pTemplate="end">
+      <p-button
+        icon="pi pi-power-off"
+        label="Logout"
+        (click)="logout()"
+        severity="secondary"
+        [outlined]="true"
+      ></p-button>
+    </ng-template>
+  </p-menubar>
 
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
+</div>

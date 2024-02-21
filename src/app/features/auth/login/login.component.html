@@ -1,4 +1,7 @@
-<div class="bg-primary-50 flex flex-column min-h-screen w-full">
+<div
+  [@routerTransitionSlideUp]
+  class="bg-primary-50 flex flex-column min-h-screen w-full"
+>
   <p-toast position="top-right" [baseZIndex]="9000"></p-toast>
 
   <div class="flex justify-content-center align-items-center mt-8 w-full">
@@ -11,7 +14,7 @@
     <form
       [formGroup]="loginForm"
       (submit)="login()"
-      class="flex flex-column gap-3 lg:w-4 md:w-6 sm:w-full p-3"
+      class="flex flex-column gap-3 lg:w-6 md:w-6 sm:w-9 w-9"
     >
       <h5 class="text-xl font-semibold mb-3">Patient Login</h5>
 

@@ -1,19 +1,19 @@
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from 'app/core/authentication/authentication.service';
-import { customEmailValidator } from 'app/core/validators/email.validator';
-import { customPasswordValidator } from 'app/core/validators/password.validator';
-import { HahButtonComponent } from 'app/shared/components/hah-button/hah-button.component';
-import { HahTextInputComponent } from 'app/shared/components/hah-text-input/hah-text-input.component';
-import { data } from 'jquery';
-import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessagesModule } from 'primeng/messages';
-import { ToastModule } from 'primeng/toast';
+import { CommonModule } from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
+import { ChangeDetectorRef, Component, OnInit, inject } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthenticationService } from "app/core/authentication/authentication.service";
+import { customEmailValidator } from "app/core/validators/email.validator";
+import { customPasswordValidator } from "app/core/validators/password.validator";
+import { HahButtonComponent } from "app/shared/components/hah-button/hah-button.component";
+import { HahTextInputComponent } from "app/shared/components/hah-text-input/hah-text-input.component";
+import { data } from "jquery";
+import { MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { InputTextModule } from "primeng/inputtext";
+import { MessagesModule } from "primeng/messages";
+import { ToastModule } from "primeng/toast";
 
 import {
   FormBuilder,
@@ -22,6 +22,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import {
+  routerTransitionFade,
+  routerTransitionSlideLeft,
+  routerTransitionSlideUp,
+} from 'app/core/utilities/animations';
 
 @Component({
   selector: 'app-login',
@@ -41,6 +46,11 @@ import {
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
+  animations: [
+    routerTransitionFade,
+    routerTransitionSlideLeft,
+    routerTransitionSlideUp,
+  ],
 })
 export class LoginComponent implements OnInit {
   cdr = inject(ChangeDetectorRef);
@@ -53,7 +63,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
   isFormSubmitted = false;
-  passwordSymbols = '(!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)';
+  passwordSymbols = 'policy position';
 
   get f() {
     return this.loginForm.controls;
@@ -91,7 +101,8 @@ export class LoginComponent implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Login Failed',
-            detail: 'Incorrect email or password. Please try again or go to sign up.',
+            detail:
+              'Incorrect email or password. Please try again or go to sign up.',
           });
         }
       );
@@ -102,7 +113,10 @@ export class LoginComponent implements OnInit {
         summary: 'Login Failed',
         detail: 'Form is invalid',
       });
-      console.log('Incorrect email or password. Please try again or go to sign up.', this.loginForm.errors);
+      console.log(
+        'Incorrect email or password. Please try again or go to sign up.',
+        this.loginForm.errors
+      );
     }
   }
 

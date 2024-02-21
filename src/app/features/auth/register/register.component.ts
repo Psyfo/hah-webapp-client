@@ -1,19 +1,20 @@
-import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { customEmailValidator } from 'app/core/validators/email.validator';
-import { customPasswordValidator } from 'app/core/validators/password.validator';
-import { IPatient, IPatientEmailExists } from 'app/models/patient.interface';
-import { HahButtonComponent } from 'app/shared/components/hah-button/hah-button.component';
-import { HahTextInputComponent } from 'app/shared/components/hah-text-input/hah-text-input.component';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessagesModule } from 'primeng/messages';
-import { ToastModule } from 'primeng/toast';
-import { RegisterService } from './register.service';
+import { CommonModule } from "@angular/common";
+import { BrowserModule } from "@angular/platform-browser";
+import { Router, RouterLink, RouterOutlet } from "@angular/router";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { customEmailValidator } from "app/core/validators/email.validator";
+import { customPasswordValidator } from "app/core/validators/password.validator";
+import { IPatient, IPatientEmailExists } from "app/models/patient.interface";
+import { HahButtonComponent } from "app/shared/components/hah-button/hah-button.component";
+import { HahTextInputComponent } from "app/shared/components/hah-text-input/hah-text-input.component";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { DialogModule } from "primeng/dialog";
+import { InputTextModule } from "primeng/inputtext";
+import { MessagesModule } from "primeng/messages";
+import { ToastModule } from "primeng/toast";
+import { RegisterService } from "./register.service";
 
 import {
   DialogService,
@@ -57,6 +58,7 @@ import {
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
+  animations: [routerTransitionSlideUp],
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
   router = inject(Router);
@@ -70,7 +72,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   registerForm!: FormGroup;
 
   isFormSubmitted = false;
-  passwordSymbols = '(!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)';
+  passwordSymbols = 'poicy position';
   patientEmailExists = false;
   messages: any[] = [];
   ref: DynamicDialogRef | undefined;
