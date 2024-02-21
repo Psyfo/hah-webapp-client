@@ -5,8 +5,6 @@ import { routerTransitionSlideUp } from "app/core/utilities/animations";
 import { customEmailValidator } from "app/core/validators/email.validator";
 import { customPasswordValidator } from "app/core/validators/password.validator";
 import { IPatient, IPatientEmailExists } from "app/models/patient.interface";
-import { HahButtonComponent } from "app/shared/components/hah-button/hah-button.component";
-import { HahTextInputComponent } from "app/shared/components/hah-text-input/hah-text-input.component";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
@@ -44,8 +42,6 @@ import {
   imports: [
     RouterOutlet,
     RouterLink,
-    HahButtonComponent,
-    HahTextInputComponent,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,

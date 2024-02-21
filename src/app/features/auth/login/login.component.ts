@@ -5,8 +5,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AuthenticationService } from "app/core/authentication/authentication.service";
 import { customEmailValidator } from "app/core/validators/email.validator";
 import { customPasswordValidator } from "app/core/validators/password.validator";
-import { HahButtonComponent } from "app/shared/components/hah-button/hah-button.component";
-import { HahTextInputComponent } from "app/shared/components/hah-text-input/hah-text-input.component";
 import { data } from "jquery";
 import { MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -32,8 +30,6 @@ import {
   selector: 'app-login',
   standalone: true,
   imports: [
-    HahTextInputComponent,
-    HahButtonComponent,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
