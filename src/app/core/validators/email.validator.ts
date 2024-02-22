@@ -13,7 +13,7 @@ export function customEmailValidator(): ValidatorFn {
     const errors: ValidationErrors = {};
 
     // Check if email starts with a special character
-    if (/^[!@#$%^&*(),.?":{}|<>-_~]/.test(email)) {
+    if (/^[!@#$%^&*(),?":{}|<>-_~]/.test(email)) {
       errors['startsWithSpecialCharacter'] = true;
       errors['policy'] = true;
     }
@@ -26,7 +26,7 @@ export function customEmailValidator(): ValidatorFn {
     }
 
     // Check if email contains a special character before the '@' portion
-    if (/^[^!@#$%^&*(),.?":{}|<>-_~]*@/.test(email)) {
+    if (/^[^!@#$%^&*(),?":{}|<>-_~]*@/.test(email)) {
       // If the test fails, it means no special character is before '@'
       // Your code logic for handling this case goes here
     } else {
