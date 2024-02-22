@@ -19,11 +19,11 @@ export function customEmailValidator(): ValidatorFn {
     }
 
     //Check if email starts with a hyphen
-    if (/^-.+@/.test(email)) {
-      // If the test passes, it means a hyphen is found at the very beginning before '@'
-      errors['containsHyphenAtBeginning'] = true;
-      errors['policy'] = true;
-    }
+    // if (/^-.+@/.test(email)) {
+    //   // If the test passes, it means a hyphen is found at the very beginning before '@'
+    //   errors['containsHyphenAtBeginning'] = true;
+    //   errors['policy'] = true;
+    // }
 
     // Check if email contains a special character before the '@' portion
     if (/^[^!@#$%^&*(),?":{}|<>~]*@/.test(email)) {
