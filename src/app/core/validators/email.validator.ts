@@ -26,7 +26,7 @@ export function customEmailValidator(): ValidatorFn {
     }
 
     // Check if email contains a special character before the '@' portion
-    if (/^[^!@#$%^&*(),?":{}|<>-_~]*@/.test(email)) {
+    if (/^[^!@#$%^&*(),?":{}|<>~]*@/.test(email)) {
       // If the test fails, it means no special character is before '@'
       // Your code logic for handling this case goes here
     } else {
