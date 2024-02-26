@@ -134,7 +134,8 @@
       <span class="font-bold text-2xl block mb-2 mt-4">{{
         message.header
       }}</span>
-      <p class="mb-0">{{ message.message }}</p>
+      <p class="mb-0">Email already in use.</p>
+      <p class="mb-0">Please try to log in.</p>
       <div class="flex align-items-center gap-2 mt-4">
         <p-button label="Login" (click)="cd.accept()" severity=""> </p-button>
         <p-button label="Cancel" (click)="cd.reject()" severity="danger">
@@ -152,6 +153,8 @@
   <ng-template pTemplate>
     <div class="flex flex-column gap-2">
       <p>{{ countryDialogMessage }}</p>
+       
+
       <div class="flex align-items-center justify-content-center gap-2">
         <p-button
           type="button"
