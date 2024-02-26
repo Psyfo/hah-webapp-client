@@ -34,35 +34,6 @@
         f['email'].hasError('policy')) && (f['email'].touched ||
         isFormSubmitted)){
         <small class="text-red-500">Please enter valid email address</small>
-        } @else if (patientEmailExists){
-        <small class="text-red-500">Email address already in use.</small>
-        <small class="text-red-500">Please try to Log in</small>
-        <div class="flex gap-2">
-          <p-button
-            label="Login"
-            type="button"
-            class="btn btn-primary"
-            (click)="goToLogin()"
-            severity="primary"
-          >
-          </p-button>
-          <p-button
-            label="Cancel"
-            type="button"
-            class="btn btn-danger"
-            (click)="resetEmail()"
-            severity="danger"
-          >
-          </p-button>
-        </div>
-
-        <!-- Confirm Dialog -->
-        <p-confirmDialog
-          header="Confirmation"
-          icon="pi pi-exclamation-triangle"
-        >
-        </p-confirmDialog>
-
         }
       </div>
 
@@ -91,54 +62,50 @@
         }
       </div>
 
-      <!-- Checkbox -->
-      <!-- <div class="flex flex-column gap-2">
-        <p-checkbox
-          type="checkbox"
-          formControlName="terms"
-          inputId="terms"
-          value="terms"
-        ></p-checkbox>
-        <label for="terms"
-          >I agree to the
-          <a routerLink="/terms" class="btn-link" target="_blank"
-            >terms and conditions</a
-          ></label
-        >
+      <!-- Select Country -->
+      <div class="flex flex-column gap-2">
+        <label for="country">Country</label>
+        <p-dropdown
+          [options]="countries"
+          formControlName="selectedCountry"
+          optionLabel="name"
+          optionValue="code"
+          placeholder="Select a Country"
+        ></p-dropdown>
+        @if (f['selectedCountry'].hasError('required') &&
+        (f['selectedCountry'].touched || isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        }
+      </div>
+
+      <!-- Terms and Conditions -->
+      <div class="flex flex-column gap-2">
+        <div class="flex gap-2 align-items-center">
+          <p-checkbox
+            formControlName="terms"
+            inputId="terms"
+            [binary]="true"
+          ></p-checkbox>
+          <label for="terms"
+            >I agree to the
+            <a routerLink="/terms" class="btn-link" target="_blank"
+              >terms and conditions</a
+            ></label
+          >
+        </div>
         @if (f['terms'].hasError('required') && (f['terms'].touched ||
         isFormSubmitted)){
         <small class="text-red-500">
           Please agree on Terms & Conditions to continue
         </small>
         }
-      </div> -->
-
-      <div class="flex gap-2">
-        <input
-          type="checkbox"
-          formControlName="terms"
-          class="form-check-input"
-          id="terms"
-        />
-        <label class="form-check-label" for="terms"
-          >I agree to the
-          <a routerLink="/terms" class="btn-link" target="_blank"
-            >terms and conditions</a
-          ></label
-        >
       </div>
-      @if (f['terms'].hasError('required') && (f['terms'].touched ||
-      isFormSubmitted)){
-      <small class="text-red-500">
-        Please agree on Terms & Conditions to continue
-      </small>
-      }
 
       <!-- Login Button -->
       <p-button
         type="submit"
         label="Sign Up"
-        [styleClass]="'sm: w-full'"
+        [styleClass]="'sm: w-full mt-4'"
       ></p-button>
 
       <p-button
@@ -150,3 +117,48 @@
     </form>
   </div>
 </div>
+
+<!-- Confirm Dialog -->
+<!-- <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
+</p-confirmDialog> -->
+<p-confirmDialog #cd>
+  <ng-template pTemplate="headless" let-message>
+    <div
+      class="flex flex-column align-items-center p-5 surface-overlay border-round"
+    >
+      <div
+        class="border-circle bg-primary inline-flex justify-content-center align-items-center h-6rem w-6rem -mt-8"
+      >
+        <i class="pi pi-question text-5xl"></i>
+      </div>
+      <span class="font-bold text-2xl block mb-2 mt-4">{{
+        message.header
+      }}</span>
+      <p class="mb-0">{{ message.message }}</p>
+      <div class="flex align-items-center gap-2 mt-4">
+        <p-button label="Login" (click)="cd.accept()" severity=""> </p-button>
+        <p-button label="Cancel" (click)="cd.reject()" severity="danger">
+        </p-button>
+      </div>
+    </div>
+  </ng-template>
+</p-confirmDialog>
+
+<p-dialog
+  header="Country not available"
+  [(visible)]="countryDialogVisible"
+  [modal]="true"
+>
+  <ng-template pTemplate>
+    <div class="flex flex-column gap-2">
+      <p>{{ countryDialogMessage }}</p>
+      <div class="flex align-items-center justify-content-center gap-2">
+        <p-button
+          type="button"
+          label="Got it"
+          (click)="hideCountryDialog()"
+        ></p-button>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
