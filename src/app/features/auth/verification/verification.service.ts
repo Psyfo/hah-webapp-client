@@ -25,4 +25,19 @@ export class VerificationService {
       )
     );
   }
+
+  resendVerificationEmail(email: string) {
+    return this.http
+      .get<any>(`${this.apiUrl}/patients/resend-verification/${email}`)
+      .pipe(
+        tap(
+          (response: any) => {
+            console.log('Response: ', response);
+          },
+          (error: any) => {
+            console.log('Error: ', error);
+          }
+        )
+      );
+  }
 }

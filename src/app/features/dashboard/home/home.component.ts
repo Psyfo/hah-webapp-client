@@ -1,15 +1,16 @@
-import { CommonModule } from "@angular/common";
-import { Component, OnInit, inject } from "@angular/core";
-import { Router } from "@angular/router";
-import { AuthenticationService } from "app/core/authentication/authentication.service";
-import { PatientService } from "app/features/patient/patient.service";
-import { IPatient } from "app/models/patient.interface";
-import { MenuItem, MessageService } from "primeng/api";
-import { ButtonModule } from "primeng/button";
-import { MenubarModule } from "primeng/menubar";
-import { MessagesModule } from "primeng/messages";
-import { StepsModule } from "primeng/steps";
-import { ToastModule } from "primeng/toast";
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'app/core/authentication/authentication.service';
+import { VerificationService } from 'app/features/auth/verification/verification.service';
+import { PatientService } from 'app/features/patient/patient.service';
+import { IPatient } from 'app/models/patient.interface';
+import { MenuItem, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { MenubarModule } from 'primeng/menubar';
+import { MessagesModule } from 'primeng/messages';
+import { StepsModule } from 'primeng/steps';
+import { ToastModule } from 'primeng/toast';
 
 import {
   routerTransitionSlideLeft,
@@ -41,6 +42,7 @@ export class HomeComponent implements OnInit {
   patientService = inject(PatientService);
   messageService = inject(MessageService);
   router = inject(Router);
+  verificationService = inject(VerificationService);
 
   patient?: IPatient;
   verificationStatus: string = '';
@@ -83,12 +85,26 @@ export class HomeComponent implements OnInit {
 
   resendVerificationEmail() {
     setTimeout(() => {
-      this.emailSent = true;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Email Sent',
-        detail: 'Verification email has been sent to your email address',
-      });
+      this.verificationService
+        .resendVerificationEmail(this.patient?.email || '')
+        .subscribe(
+          (response: any) => {
+            console.log('Response: ', response);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Verification email sent.',
+            });
+          },
+          (error: any) => {
+            console.log('Error: ', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to send verification email.',
+            });
+          }
+        );
     }, 2000);
   }
 

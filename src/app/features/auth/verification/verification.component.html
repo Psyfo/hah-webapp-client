@@ -1,11 +1,17 @@
+<p-toast></p-toast>
 <div [@routerTransitionSlideUp] class="flex w-full p-5">
-  @if(!message) {
+  @if(waiting) {
   <div class="spinner-border text-primary" role="status">
     <span class="sr-only font-semibold">Verifying...</span>
   </div>
-  } @else {
+  } @else if(!waiting && message) {
   <div>
     {{ message }}
+  </div>
+  } @else {
+  <div>
+    Sorry! Your link is invalid or expired. Please request a new verification
+    email by logging into your account.
   </div>
   }
 </div>
