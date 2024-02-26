@@ -9,6 +9,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { MessagesModule } from 'primeng/messages';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 
@@ -28,6 +29,7 @@ import {
     MenubarModule,
     StepsModule,
     ButtonModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -52,6 +54,7 @@ export class HomeComponent implements OnInit {
   activeIndex: number = 0;
   activeTab: string = '1';
   navItems?: MenuItem[];
+  loading: boolean = false;
 
   ngOnInit(): void {
     const email = localStorage.getItem('email');
@@ -84,6 +87,7 @@ export class HomeComponent implements OnInit {
   }
 
   resendVerificationEmail() {
+    this.loading = true;
     setTimeout(() => {
       this.verificationService
         .resendVerificationEmail(this.patient?.email || '')
@@ -95,6 +99,7 @@ export class HomeComponent implements OnInit {
               summary: 'Success',
               detail: 'Verification email sent.',
             });
+            this.loading = false;
           },
           (error: any) => {
             console.log('Error: ', error);
@@ -103,6 +108,7 @@ export class HomeComponent implements OnInit {
               summary: 'Error',
               detail: 'Failed to send verification email.',
             });
+            this.loading = false;
           }
         );
     }, 2000);

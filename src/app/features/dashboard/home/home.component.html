@@ -11,33 +11,36 @@
 
   <div class="border-1 border-round border-gray-300 p-5">
     <!-- Verification Status -->
-    <div class="alert alert-info" role="alert">
-      <h4 class="alert-heading">Email Verification Status</h4>
-      <p>
-        Your email address is <strong>{{ verificationStatus }}</strong
-        >.
-      </p>
-      @if(verificationStatus === 'Not Verified'){
-      <p>
-        An email has been sent to your email address. Please verify your email
-        address to continue.
-      </p>
-      <p>
-        If you did not receive the email, click the button below to resend the
-        email.
-      </p>
-      <p-button
-        label="Resend Email"
-        (click)="resendVerificationEmail()"
-      ></p-button>
-      } @if(verificationStatus === 'Not Verified' && emailSent){
-      <p>
-        An email has been sent to your email address. Please verify your email
-        address to continue.
-      </p>
-
-      }
-    </div>
+    <h4 class="alert-heading">Email Verification Status</h4>
+    <p>
+      Your email address is <strong>{{ verificationStatus }}</strong
+      >.
+    </p>
+    @if(verificationStatus === 'Not Verified'){
+    <p>
+      An email has been sent to your email address. Please verify your email
+      address to continue.
+    </p>
+    <p>
+      If you did not receive the email, click the button below to resend the
+      email.
+    </p>
+    @if(!loading){
+    <p-button
+      label="Resend Email"
+      (click)="resendVerificationEmail()"
+    ></p-button>
+    } @if(verificationStatus === 'Not Verified' && emailSent){
+    <p>
+      An email has been sent to your email address. Please verify your email
+      address to continue.
+    </p>
+    } @if(loading){
+    <p-progressSpinner
+      styleClass="w-3rem h-3remm"
+      strokeWidth="8"
+    ></p-progressSpinner>
+    } }
   </div>
 
   <!-- Other dashboard content -->
