@@ -11,17 +11,17 @@
 
   <div class="border-1 border-round border-gray-300 p-5">
     <!-- Verification Status -->
-    <h4 class="alert-heading">Email Verification Status</h4>
-    <p>
+    <h4>Email Verification Status</h4>
+    <p class="text-sm">
       Your email address is <strong>{{ verificationStatus }}</strong
       >.
     </p>
     @if(verificationStatus === 'Not Verified'){
-    <p>
+    <p class="text-sm">
       An email has been sent to your email address. Please verify your email
       address to continue.
     </p>
-    <p>
+    <p class="text-sm">
       If you did not receive the email, click the button below to resend the
       email.
     </p>
@@ -44,8 +44,8 @@
   <!-- Other dashboard content -->
 
   <div class="border-1 border-round border-gray-300 p-5 lg:w-6 sm:w-full">
-    <h5 class="card-title">Appointments</h5>
-    <p class="card-text">
+    <h4>Appointments</h4>
+    <p class="text-sm">
       View your upcoming appointments and schedule new appointments.
     </p>
     <p-button label="View Appointments" (click)="goToAppointments()"></p-button>
