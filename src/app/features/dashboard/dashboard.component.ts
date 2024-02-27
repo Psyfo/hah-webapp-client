@@ -1,18 +1,20 @@
-import { CommonModule } from "@angular/common";
-import { Component, OnInit, inject } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgbModule, NgbNav, NgbNavItem } from "@ng-bootstrap/ng-bootstrap";
-import { AuthenticationService } from "app/core/authentication/authentication.service";
-import { routerTransitionSlideUp } from "app/core/utilities/animations";
-import { PatientService } from "app/features/patient/patient.service";
-import { IPatient } from "app/models/patient.interface";
-import { MenuItem, MessageService } from "primeng/api";
-import { ButtonModule } from "primeng/button";
-import { MenubarModule } from "primeng/menubar";
-import { MessagesModule } from "primeng/messages";
-import { StepsModule } from "primeng/steps";
-import { ToastModule } from "primeng/toast";
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule, NgbNav, NgbNavItem } from '@ng-bootstrap/ng-bootstrap';
+import { AuthenticationService } from 'app/core/authentication/authentication.service';
+import { routerTransitionSlideUp } from 'app/core/utilities/animations';
+import { PatientService } from 'app/features/patient/patient.service';
+import { IPatient } from 'app/models/patient.interface';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { MenubarModule } from 'primeng/menubar';
+import { MessagesModule } from 'primeng/messages';
+import { StepsModule } from 'primeng/steps';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +26,8 @@ import { ToastModule } from "primeng/toast";
     MenubarModule,
     StepsModule,
     ButtonModule,
+    DialogModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
@@ -33,6 +37,7 @@ export class DashboardComponent implements OnInit {
   authService = inject(AuthenticationService);
   patientService = inject(PatientService);
   messageService = inject(MessageService);
+  confirmationService = inject(ConfirmationService);
 
   patient?: IPatient;
   verificationStatus: string = '';
@@ -71,27 +76,25 @@ export class DashboardComponent implements OnInit {
         routerLink: ['/dashboard/appointments'], // Update with your route
       },
     ];
-
-    this.items = [
-      { label: 'Email Verification' },
-      { label: 'ID Verification' },
-    ];
-  }
-
-  resendVerificationEmail() {
-    setTimeout(() => {
-      this.emailSent = true;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Email Sent',
-        detail: 'Verification email has been sent to your email address',
-      });
-    }, 2000);
   }
 
   logout() {
-    this.authService.logout();
-    console.log('Logged out');
+    this.confirmationService.confirm({
+      header: 'Logout',
+      message: 'Are you sure you want to logout?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'Logged out',
+        });
+        setTimeout(() => {
+          this.authService.logout();
+          console.log('Logged out');
+        }, 2000);
+      },
+    });
   }
 
   goToAppointments() {}

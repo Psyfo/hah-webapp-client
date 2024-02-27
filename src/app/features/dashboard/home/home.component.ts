@@ -5,8 +5,10 @@ import { AuthenticationService } from 'app/core/authentication/authentication.se
 import { VerificationService } from 'app/features/auth/verification/verification.service';
 import { PatientService } from 'app/features/patient/patient.service';
 import { IPatient } from 'app/models/patient.interface';
-import { MenuItem, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { MenubarModule } from 'primeng/menubar';
 import { MessagesModule } from 'primeng/messages';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -30,6 +32,8 @@ import {
     StepsModule,
     ButtonModule,
     ProgressSpinnerModule,
+    DialogModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -45,6 +49,7 @@ export class HomeComponent implements OnInit {
   messageService = inject(MessageService);
   router = inject(Router);
   verificationService = inject(VerificationService);
+  confirmationService = inject(ConfirmationService);
 
   patient?: IPatient;
   verificationStatus: string = '';
@@ -112,11 +117,6 @@ export class HomeComponent implements OnInit {
           }
         );
     }, 2000);
-  }
-
-  logout() {
-    this.authService.logout();
-    console.log('Logged out');
   }
 
   goToAppointments() {
