@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
         this.messageService.add({
           severity: 'warn',
           summary: 'Confirmed',
-          detail: 'Logging out',
+          detail: 'Your session has expired. Please log in again.',
         });
         setTimeout(() => {
           this.authService.logout();
