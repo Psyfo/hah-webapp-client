@@ -91,7 +91,15 @@ export class HomeComponent implements OnInit {
     ];
   }
 
+  resendEmailDialogVisible: boolean = false;
+  openResendEmailDialog() {
+    this.resendEmailDialogVisible = true;
+  }
+  closeResendEmailDialog() {
+    this.resendEmailDialogVisible = false;
+  }
   resendVerificationEmail() {
+    this.resendEmailDialogVisible = false;
     this.loading = true;
     setTimeout(() => {
       this.verificationService

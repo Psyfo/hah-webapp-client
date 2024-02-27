@@ -25,21 +25,19 @@
       If you did not receive the email, click the button below to resend the
       email.
     </p>
+
     @if(!loading){
-    <p-button
-      label="Resend Email"
-      (click)="resendVerificationEmail()"
-    ></p-button>
-    } @if(verificationStatus === 'Not Verified' && emailSent){
-    <p>
-      An email has been sent to your email address. Please verify your email
-      address to continue.
-    </p>
+    <p-button label="Resend Email" (click)="openResendEmailDialog()"></p-button>
+
     } @if(loading){
-    <p-progressSpinner
-      styleClass="w-3rem h-3remm"
-      strokeWidth="8"
-    ></p-progressSpinner>
+    <div class="flex gap-2 align-items-center">
+      <div class="font-semibold">Sending email...</div>
+      <p-progressSpinner
+        styleClass="w-2rem h-2rem"
+        strokeWidth="6"
+      ></p-progressSpinner>
+    </div>
+
     } }
   </div>
 
@@ -53,3 +51,31 @@
     <p-button label="View Appointments" (click)="goToAppointments()"></p-button>
   </div>
 </div>
+
+<!-- Dialogs -->
+<p-dialog
+  [(visible)]="resendEmailDialogVisible"
+  [blockScroll]="true"
+  header="Resend Verification"
+  [modal]="true"
+>
+  <ng-template pTemplate="content">
+    <p>Didn't get an email?</p>
+    <p>Did you enter the correct email address?</p>
+    <p>Please check your spam folder</p>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-center">
+      <p-button
+        label="Dismiss"
+        (click)="closeResendEmailDialog()"
+        severity="danger"
+      ></p-button>
+      <p-button
+        label="Resend"
+        (click)="resendVerificationEmail()"
+        severity="success"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
