@@ -1,12 +1,21 @@
+export interface IPatientAccount {
+  firstVerificationEmailSent: boolean;
+  verificationToken?: string;
+  verified: boolean;
+  approvalStatus: string;
+  country: string;
+  deleted: boolean;
+}
+
 export interface IPatient {
+  email: string;
+  password: string;
   firstName: string;
   lastName: string;
-  gender: string;
   dob: Date;
-  email: string;
+  imgUrl: string;
   phoneNumber: string;
-  password: string;
-  verified: boolean;
+  account: IPatientAccount;
 }
 
 export interface IPatientEmailExists {

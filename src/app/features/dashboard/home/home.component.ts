@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/authentication/authentication.service';
 import { VerificationService } from 'app/features/auth/verification/verification.service';
@@ -50,6 +51,7 @@ export class HomeComponent implements OnInit {
   router = inject(Router);
   verificationService = inject(VerificationService);
   confirmationService = inject(ConfirmationService);
+  fb: FormBuilder = inject(FormBuilder);
 
   patient?: IPatient;
   verificationStatus: string = '';
@@ -66,7 +68,7 @@ export class HomeComponent implements OnInit {
     if (email) {
       this.patientService.getPatientByEmail(email).subscribe((patient) => {
         this.patient = patient;
-        this.verificationStatus = patient.verified
+        this.verificationStatus = patient.account.verified
           ? 'Verified'
           : 'Not Verified';
       });
@@ -86,9 +88,35 @@ export class HomeComponent implements OnInit {
     ];
 
     this.items = [
-      { label: 'Email Verification' },
-      { label: 'ID Verification' },
+      {
+        label: 'Email Verification',
+        command: (event: any) => {
+          this.activeIndex = 0;
+          this.activeTab = '1';
+        },
+      },
+      {
+        label: 'ID Verification',
+        command: (event: any) => {
+          this.activeIndex = 1;
+          this.activeTab = '2';
+        },
+      },
     ];
+
+    this.fb.group({
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      idNumber: ['', [Validators.required]],
+      dob: [new Date(), [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
+    });
+  }
+
+  next() {
+    if (this.activeIndex < this.items!.length - 1) {
+      this.activeIndex++;
+    }
   }
 
   resendEmailDialogVisible: boolean = false;
