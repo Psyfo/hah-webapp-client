@@ -85,9 +85,9 @@ export class DashboardComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.messageService.add({
-          severity: 'info',
+          severity: 'warn',
           summary: 'Confirmed',
-          detail: 'Logged out',
+          detail: 'Logging out',
         });
         setTimeout(() => {
           this.authService.logout();
