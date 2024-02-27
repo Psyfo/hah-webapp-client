@@ -76,7 +76,10 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    if (this.loginForm.valid) {
+	this.isFormSubmitted = true;
+    if (this.loginForm.invalid){
+		return;
+	} else {
       const email = this.f['email'].value;
       const password = this.f['password'].value;
 
@@ -102,18 +105,7 @@ export class LoginComponent implements OnInit {
           });
         }
       );
-    } else {
-      // Form is invalid, handle the case as per your requirements
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Login Failed',
-        detail: 'Form is invalid',
-      });
-      console.log(
-        'Incorrect email or password. Please try again or go to sign up.',
-        this.loginForm.errors
-      );
-    }
+    } 
   }
 
   goToSignUp(): void {
