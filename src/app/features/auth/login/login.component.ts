@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
           });
           setTimeout(() => {
             this.router.navigate(['/dashboard']);
-          }, 3000);
+          }, 1500);
         },
         (error) => {
           console.error('Login failed');
