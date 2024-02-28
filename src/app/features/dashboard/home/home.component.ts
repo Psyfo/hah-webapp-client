@@ -1,11 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/authentication/authentication.service';
 import { VerificationService } from 'app/features/auth/verification/verification.service';
@@ -20,6 +14,13 @@ import { MessagesModule } from 'primeng/messages';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
+
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import {
   routerTransitionSlideLeft,
@@ -164,6 +165,10 @@ export class HomeComponent implements OnInit {
 
   goToAppointments() {
     this.router.navigate(['/dashboard/appointments']);
+  }
+
+  openEmailApp() {
+    window.open('mailto:?view=inbox');
   }
 
   get f() {
