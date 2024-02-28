@@ -58,8 +58,8 @@ export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
 
-  isFormSubmitted = false;
-  passwordSymbols = '(!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)';
+  isFormSubmitted: boolean = false;
+  loginFailMessage: boolean = false;
 
   get f() {
     return this.loginForm.controls;
@@ -85,6 +85,7 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(email, password).subscribe(
         (data) => {
+			this.loginFailMessage = false;
           console.log('Login successful');
           this.messageService.add({
             severity: 'success',
@@ -96,12 +97,13 @@ export class LoginComponent implements OnInit {
           }, 1500);
         },
         (error) => {
+			this.loginFailMessage = true;
           console.error('Login failed');
           this.messageService.add({
             severity: 'error',
             summary: 'Login Failed',
             detail:
-              'Incorrect email or password. Please try again or go to sign up.',
+              'Email or password is incorrect. Please check and try again.',
           });
         }
       );

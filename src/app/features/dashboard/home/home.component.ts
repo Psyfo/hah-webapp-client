@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/authentication/authentication.service';
 import { VerificationService } from 'app/features/auth/verification/verification.service';
@@ -35,6 +40,7 @@ import {
     ProgressSpinnerModule,
     DialogModule,
     ConfirmDialogModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -56,6 +62,7 @@ export class HomeComponent implements OnInit {
   patient?: IPatient;
   verificationStatus: string = '';
   emailSent: boolean = false;
+  patientIdForm!: FormGroup;
 
   items?: any[];
   activeIndex: number = 0;
@@ -104,7 +111,7 @@ export class HomeComponent implements OnInit {
       },
     ];
 
-    this.fb.group({
+    this.patientIdForm = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       idNumber: ['', [Validators.required]],
@@ -157,5 +164,9 @@ export class HomeComponent implements OnInit {
 
   goToAppointments() {
     this.router.navigate(['/dashboard/appointments']);
+  }
+
+  get f() {
+    return this.patientIdForm.controls;
   }
 }

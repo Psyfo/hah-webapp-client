@@ -25,10 +25,6 @@
         @if(f['email'].hasError('required') && (f['email'].touched
         ||isFormSubmitted)){
         <small class="text-red-500">This field is required</small>
-        } @else if ((f['email'].hasError('email') ||
-        f['email'].hasError('policy')) && (f['email'].touched ||
-        isFormSubmitted)){
-        <small class="text-red-500">Please enter valid email address</small>
         }
       </div>
 
@@ -44,15 +40,6 @@
         @if (f['password'].hasError('required') && (f['password'].touched ||
         isFormSubmitted)){
         <small class="text-red-500">This field is required</small>
-        } @else if (f['password'].hasError('policy') && (f['password'].touched
-        || isFormSubmitted)){
-        <small class="text-red-500">
-          Password must contain at least 10 characters.
-        </small>
-        <small class="text-red-500">
-          Including lowercases, UPPERCASEs, numbers and special characters.
-          {{ passwordSymbols }}
-        </small>
         }
       </div>
 
@@ -62,6 +49,11 @@
         label="Login"
         [styleClass]="'sm: w-full'"
       ></p-button>
+      @if(loginFailMessage){
+      <small class="text-center text-red-500"
+        >Email or password is incorrect. Please check and try again.</small
+      >
+      }
 
       <p-button
         label="Don't have an account? Sign Up"
