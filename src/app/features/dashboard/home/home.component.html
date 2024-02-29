@@ -22,8 +22,11 @@
     <h4>Email Verification Status</h4>
 
     <p class="text-sm">
-      Your email address is <strong>{{ verificationStatus }}</strong
-      >.
+      Your email address is @if(patient?.account?.verified){<span
+        class="font-bold text-green-500"
+        >{{ verificationStatus }}</span
+      >.} @else {<span class="font-bold">{{ verificationStatus }}</span
+      >.}
     </p>
     @if(!patient?.account?.verified){
     <p class="text-sm">
@@ -77,20 +80,121 @@
   @if(activeIndex === 1) {
   <div class="border-1 border-round border-gray-300 p-5">
     <h4>ID Verification Status</h4>
-    <form [formGroup]="patientIdForm"></form>
+    <form [formGroup]="patientIdForm" class="flex flex-column gap-3">
+      <!-- First Name -->
+      <div class="flex flex-column gap-2 w-full md:w-4">
+        <label for="firstName">First Name</label>
+        <input
+          pInputText
+          id="firstName"
+          formControlName="firstName"
+          placeholder="First Name"
+        />
+        @if(f['firstName'].hasError('required') && (f['firstName'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        }
+      </div>
+
+      <!-- Last Name -->
+      <div class="flex flex-column gap-2 w-full md:w-4">
+        <label for="lastName">Last Name</label>
+        <input
+          pInputText
+          id="lastName"
+          formControlName="lastName"
+          placeholder="Last Name"
+        />
+        @if(f['lastName'].hasError('required') && (f['lastName'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        }
+      </div>
+
+      <!-- ID Number -->
+      <div class="flex flex-column gap-2 w-full md:w-4">
+        <label for="idNumber">ID Number</label>
+        <p-inputMask
+          mask="99-9999999-a-99"
+          placeholder="00-0000000-A-00"
+          id="idNumber"
+          formControlName="idNumber"
+          styleClass="w-full"
+        ></p-inputMask>
+        @if(f['idNumber'].hasError('required') && (f['idNumber'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        }
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="flex flex-column gap-2 w-full md:w-4">
+        <label for="dob">Date of Birth {{ maxDate | date }}</label>
+        <p-calendar
+          id="dob"
+          formControlName="dob"
+          [showIcon]="true"
+          [readonlyInput]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [maxDate]="maxDate"
+          styleClass="w-full"
+        ></p-calendar>
+      </div>
+
+      <!-- PHone Number -->
+      <div class="flex flex-column gap-2 w-full md:w-4">
+        <label for="phoneNumber">Phone Number</label>
+        <p-inputMask
+          mask="(999) 999-9999? 9"
+          placeholder="(079) 999-9999"
+          id="phoneNumber"
+          formControlName="phoneNumber"
+          styleClass="w-full"
+        ></p-inputMask>
+        @if(f['phoneNumber'].hasError('required') && (f['phoneNumber'].touched
+        || isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        }
+      </div>
+
+      <!-- Image -->
+      <div class="flex flex-column gap-2 w-full md:w-4">
+        <label for="idImage">ID Image</label>
+        <p-fileUpload
+          id="idImage"
+          name="idImage"
+          url="https://primefaces.org/primeng"
+          [auto]="false"
+          [maxFileSize]="3000000"
+          [invalidFileSizeMessageSummary]="'File Size Exceeded'"
+          [invalidFileSizeMessageDetail]="
+            'The size of the file is too large please upload files less than 3 MB.'
+          "
+          [invalidFileTypeMessageSummary]="'File Type Incorrect'"
+          [invalidFileTypeMessageDetail]="
+            'The file uploaded is the wrong format. Please upload a jpeg, pdf or hiec file formats only.'
+          "
+          [fileLimit]="1"
+          [customUpload]="true"
+          (uploadHandler)="onUpload($event)"
+          accept="image/jpeg, image/heic, image/pdf"
+        ></p-fileUpload>
+      </div>
+    </form>
   </div>
   }
 
   <!-- Other dashboard content -->
 
   @if(patient?.account?.verified){
-  <div class="border-1 border-round border-gray-300 p-5 lg:w-6 sm:w-full">
+  <!-- <div class="border-1 border-round border-gray-300 p-5 lg:w-6 sm:w-full">
     <h4>Appointments</h4>
     <p class="text-sm">
       View your upcoming appointments and schedule new appointments.
     </p>
     <p-button label="View Appointments" (click)="goToAppointments()"></p-button>
-  </div>
+  </div> -->
   }
 </div>
 

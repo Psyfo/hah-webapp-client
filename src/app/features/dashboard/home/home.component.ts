@@ -7,8 +7,12 @@ import { PatientService } from 'app/features/patient/patient.service';
 import { IPatient } from 'app/models/patient.interface';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
+import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
 import { MessagesModule } from 'primeng/messages';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -42,6 +46,10 @@ import {
     DialogModule,
     ConfirmDialogModule,
     ReactiveFormsModule,
+    InputTextModule,
+    InputMaskModule,
+    CalendarModule,
+    FileUploadModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -64,12 +72,14 @@ export class HomeComponent implements OnInit {
   verificationStatus: string = '';
   emailSent: boolean = false;
   patientIdForm!: FormGroup;
+  maxDate: Date = new Date(2006, 2, 1);
 
   items?: any[];
   activeIndex: number = 0;
   activeTab: string = '1';
   navItems?: MenuItem[];
   loading: boolean = false;
+  isFormSubmitted: boolean = false;
 
   ngOnInit(): void {
     const email = localStorage.getItem('email');
@@ -116,7 +126,7 @@ export class HomeComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       idNumber: ['', [Validators.required]],
-      dob: [new Date(), [Validators.required]],
+      dob: [new Date(2006, 0, 1), [Validators.required]],
       phoneNumber: ['', [Validators.required]],
     });
   }
@@ -170,6 +180,8 @@ export class HomeComponent implements OnInit {
   openEmailApp() {
     window.open('mailto:?view=inbox');
   }
+
+  onUpload(event: FileUploadHandlerEvent) {}
 
   get f() {
     return this.patientIdForm.controls;
