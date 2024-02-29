@@ -73,6 +73,8 @@ export class HomeComponent implements OnInit {
   emailSent: boolean = false;
   patientIdForm!: FormGroup;
   maxDate: Date = new Date(2006, 2, 1);
+  updatingPatient: boolean = false;
+  patientUpdated: boolean = false;
 
   items?: any[];
   activeIndex: number = 0;
@@ -179,6 +181,48 @@ export class HomeComponent implements OnInit {
 
   openEmailApp() {
     window.open('mailto:?view=inbox');
+  }
+
+  updatePatient() {
+    this.isFormSubmitted = true;
+    this.updatingPatient = true;
+    // let patient: IPatient = this.patientIdForm.value;
+    // patient.account = {};
+    this.patient!.firstName = this.patientIdForm.value.firstName;
+    this.patient!.lastName = this.patientIdForm.value.lastName;
+    this.patient!.idNumber = this.patientIdForm.value.idNumber;
+    this.patient!.dob = this.patientIdForm.value.dob;
+    this.patient!.phoneNumber = this.patientIdForm.value.phoneNumber;
+    this.patient!.account!.activationStep = 2;
+
+    console.log('Patient: ', this.patient);
+
+    if (this.patientIdForm.invalid) {
+      this.updatingPatient = false;
+      return;
+    }
+
+    this.patientService.updatePatient(this.patient).subscribe(
+      (response) => {
+        console.log('Response: ', response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Patient updated successfully.',
+        });
+        this.updatingPatient = false;
+        this.patientUpdated = true;
+      },
+      (error: any) => {
+        console.log('Error: ', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to update patient.',
+        });
+        this.updatingPatient = false;
+      }
+    );
   }
 
   onUpload(event: FileUploadHandlerEvent) {}

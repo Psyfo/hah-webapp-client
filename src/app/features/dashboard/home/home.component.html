@@ -79,6 +79,7 @@
   <!-- Step 2: ID Verification -->
   @if(activeIndex === 1) {
   <div class="border-1 border-round border-gray-300 p-5">
+    @if(!patientUpdated){
     <h4>ID Verification Status</h4>
     <form [formGroup]="patientIdForm" class="flex flex-column gap-3">
       <!-- First Name -->
@@ -146,8 +147,8 @@
       <div class="flex flex-column gap-2 w-full md:w-4">
         <label for="phoneNumber">Phone Number</label>
         <p-inputMask
-          mask="(999) 999-9999? 9"
-          placeholder="(079) 999-9999"
+          mask="999 999 9999"
+          placeholder="079 999 9999"
           id="phoneNumber"
           formControlName="phoneNumber"
           styleClass="w-full"
@@ -158,31 +159,48 @@
         }
       </div>
 
-      <!-- Image -->
-      <div class="flex flex-column gap-2 w-full md:w-4">
-        <label for="idImage">ID Image</label>
-        <p-fileUpload
-          id="idImage"
-          name="idImage"
-          url="https://primefaces.org/primeng"
-          [auto]="false"
-          [maxFileSize]="3000000"
-          [invalidFileSizeMessageSummary]="'File Size Exceeded'"
-          [invalidFileSizeMessageDetail]="
-            'The size of the file is too large please upload files less than 3 MB.'
-          "
-          [invalidFileTypeMessageSummary]="'File Type Incorrect'"
-          [invalidFileTypeMessageDetail]="
-            'The file uploaded is the wrong format. Please upload a jpeg, pdf or hiec file formats only.'
-          "
-          [fileLimit]="1"
-          [customUpload]="true"
-          (uploadHandler)="onUpload($event)"
-          accept="image/jpeg, image/heic, image/pdf"
-        ></p-fileUpload>
-      </div>
+      <p-button
+        submit
+        [loading]="updatingPatient"
+        label="submit"
+        (click)="updatePatient()"
+      ></p-button>
     </form>
+    }
+
+    <!-- Image -->
+    @if(patientUpdated){
+    <h4>Upload ID Document</h4>
+
+    <div class="flex flex-column gap-2 w-full md:w-4">
+      <label for="idImage">ID Image</label>
+      <p-fileUpload
+        id="idImage"
+        name="idImage"
+        url="https://primefaces.org/primeng"
+        [auto]="false"
+        [maxFileSize]="3000000"
+        [invalidFileSizeMessageSummary]="'File Size Exceeded'"
+        [invalidFileSizeMessageDetail]="
+          'The size of the file is too large please upload files less than 3 MB.'
+        "
+        [invalidFileTypeMessageSummary]="'File Type Incorrect'"
+        [invalidFileTypeMessageDetail]="
+          'The file uploaded is the wrong format. Please upload a jpeg, pdf or hiec file formats only.'
+        "
+        [fileLimit]="1"
+        [customUpload]="true"
+        (uploadHandler)="onUpload($event)"
+        accept="image/jpeg, image/heic, image/pdf"
+      ></p-fileUpload>
+    </div>
+    }
   </div>
+  }
+
+  <!-- Step 3: Upload ID -->
+  @if(activeIndex === 2) {
+  <div class="border-1 border-round border-gray-300 p-5"></div>
   }
 
   <!-- Other dashboard content -->
