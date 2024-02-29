@@ -40,7 +40,7 @@ export class VerificationComponent implements OnInit {
           this.messagesService.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Your account has been verified. You can now log in.',
+            detail: 'Congratulations! Your email has been verified.',
           });
         },
         (error) => {
