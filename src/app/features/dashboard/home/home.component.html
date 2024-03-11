@@ -79,7 +79,7 @@
   <!-- Step 2: ID Verification -->
   @if(activeIndex === 1) {
   <div class="border-1 border-round border-gray-300 p-5">
-    @if(!patientUpdated){
+    @if(patient?.account?.activationStep === 1){
     <h4>ID Verification Status</h4>
     <form [formGroup]="patientIdForm" class="flex flex-column gap-3">
       <!-- First Name -->
@@ -130,7 +130,7 @@
 
       <!-- Date of Birth -->
       <div class="flex flex-column gap-2 w-full md:w-4">
-        <label for="dob">Date of Birth {{ maxDate | date }}</label>
+        <label for="dob">Date of Birth</label>
         <p-calendar
           id="dob"
           formControlName="dob"
@@ -169,7 +169,7 @@
     }
 
     <!-- Image -->
-    @if(patientUpdated){
+    @if(patient?.account?.activationStep === 2){
     <h4>Upload ID Document</h4>
 
     <div class="flex flex-column gap-2 w-full md:w-4">

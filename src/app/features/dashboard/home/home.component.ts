@@ -91,6 +91,13 @@ export class HomeComponent implements OnInit {
         this.verificationStatus = patient.account.verified
           ? 'Verified'
           : 'Not Verified';
+        if (this.patient?.account?.activationStep === 0) {
+          this.activeIndex = 0;
+          this.activeTab = '1';
+        } else if (this.patient?.account?.activationStep === 1 || 2) {
+          this.activeIndex = 1;
+          this.activeTab = '2';
+        }
       });
     }
 
@@ -136,6 +143,11 @@ export class HomeComponent implements OnInit {
   next() {
     if (this.activeIndex < this.items!.length - 1) {
       this.activeIndex++;
+      this.patient!.account!.activationStep = this.activeIndex;
+      this.patientService.updatePatient(this.patient).subscribe((response) => {
+        console.log('Response: ', response);
+        console.log('Patient activationStep updated.');
+      });
     }
   }
 
