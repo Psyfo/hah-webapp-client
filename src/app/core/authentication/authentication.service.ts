@@ -82,4 +82,8 @@ export class AuthenticationService {
     }
     return this.isAuthenticatedFlag;
   }
+
+  getRole(): string {
+    return localStorage.getItem('role') || '';
+  }
 }
