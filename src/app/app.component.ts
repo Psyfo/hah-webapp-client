@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,9 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  constructor(private primengConfig: PrimeNGConfig) {
+    this.primengConfig.ripple = true;
+  }
+
   title = 'hah-webapp-client';
 }
