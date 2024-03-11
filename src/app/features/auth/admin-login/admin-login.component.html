@@ -1,0 +1,60 @@
+<div
+  [@routerTransitionSlideUp]
+  class="bg-primary-50 flex flex-column min-h-screen w-full"
+>
+  <p-toast position="top-right" [baseZIndex]="9000"></p-toast>
+
+  <div class="flex justify-content-center align-items-center mt-8 w-full">
+    <img src="assets/images/hah-logo.svg" alt="" class="w-12rem" />
+  </div>
+
+  <div
+    class="flex align-items-center flex-column justify-content-center w-full mt-4"
+  >
+    <form
+      [formGroup]="loginForm"
+      (submit)="login()"
+      class="flex flex-column gap-3 lg:w-6 md:w-6 sm:w-9 w-9"
+    >
+      <h5 class="text-xl font-semibold mb-3">Admin Login</h5>
+
+      <!-- Email -->
+      <div class="flex flex-column gap-2">
+        <label for="email">Email</label>
+        <input pInputText id="email" formControlName="email" />
+        @if(f['email'].hasError('required') && (f['email'].touched
+        ||isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="flex flex-column gap-2">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          pInputText
+          id="password"
+          formControlName="password"
+        />
+        @if (f['password'].hasError('required') && (f['password'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        }
+      </div>
+
+      <!-- Login Button -->
+      <p-button
+        type="submit"
+        label="Login"
+        [styleClass]="'sm: w-full'"
+        severity="secondary"
+      ></p-button>
+      @if(loginFailMessage){
+      <small class="text-center text-red-500"
+        >Email or password is incorrect. Please check and try again.</small
+      >
+      }
+    </form>
+  </div>
+</div>
