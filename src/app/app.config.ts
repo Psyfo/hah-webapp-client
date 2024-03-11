@@ -3,7 +3,11 @@ import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {
+  ConfirmationService,
+  MessageService,
+  PrimeNGConfig,
+} from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
@@ -12,7 +16,6 @@ import { routes } from './app.routes';
 import {
   BrowserAnimationsModule,
   provideAnimations,
-  provideNoopAnimations,
 } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
@@ -20,9 +23,9 @@ export const appConfig: ApplicationConfig = {
 
   providers: [
     provideRouter(routes),
+    PrimeNGConfig,
     provideHttpClient(),
     provideAnimations(),
-    provideNoopAnimations(),
     MessageService,
     DialogService,
     ConfirmationService,
