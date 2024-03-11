@@ -27,11 +27,18 @@ export const routes: Routes = [
       {
         path: 'appointments',
         loadComponent: () =>
-          import('./features/dashboard/appointments/appointments.component').then(
-            (m) => m.AppointmentsComponent
-          ),
+          import(
+            './features/dashboard/appointments/appointments.component'
+          ).then((m) => m.AppointmentsComponent),
       },
     ],
+  },
+  {
+    path: 'admin-login',
+    loadComponent: () =>
+      import('./features/auth/admin-login/admin-login.component').then(
+        (m) => m.AdminLoginComponent
+      ),
   },
   {
     path: 'login',
@@ -70,6 +77,42 @@ export const routes: Routes = [
     path: 'faq',
     loadComponent: () =>
       import('./features/faq/faq.component').then((m) => m.FaqComponent),
+  },
+  {
+    path: 'admin',
+    canActivate: [authenticationGuard],
+    loadComponent: () =>
+      import('./features/admin/admin.component').then((m) => m.AdminComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/admin/admin-home/admin-home.component').then(
+            (m) => m.AdminHomeComponent
+          ),
+      },
+      {
+        path: 'patient-management',
+        loadComponent: () =>
+          import(
+            './features/admin/patient-management/patient-management.component'
+          ).then((m) => m.PatientManagementComponent),
+      },
+      {
+        path: 'admin-management',
+        loadComponent: () =>
+          import(
+            './features/admin/admin-management/admin-management.component'
+          ).then((m) => m.AdminManagementComponent),
+      },
+      {
+        path: 'practitioner-management',
+        loadComponent: () =>
+          import(
+            './features/admin/practitioner-management/practitioner-management.component'
+          ).then((m) => m.PractitionerManagementComponent),
+      },
+    ],
   },
   {
     path: '**',
