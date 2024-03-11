@@ -32,6 +32,29 @@ export class AuthenticationService {
             localStorage.setItem(this.authSecretKey, response.token);
             localStorage.setItem('email', email);
             localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('role', 'patient');
+
+            // Update authentication flag
+            this.isAuthenticatedFlag = true;
+          }
+          return response;
+        })
+      );
+  }
+  adminLogin(email: string, password: string) {
+    console.log('ApiUrl: ' + this.apiUrl);
+
+    return this.http
+      .post<any>(`${this.apiUrl}/auth/admin/login`, { email, password })
+      .pipe(
+        tap((response) => {
+          // Check if the response contains an authentication token
+          if (response && response.token) {
+            // Save the token in local storage
+            localStorage.setItem(this.authSecretKey, response.token);
+            localStorage.setItem('email', email);
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('role', 'admin');
 
             // Update authentication flag
             this.isAuthenticatedFlag = true;
@@ -45,6 +68,8 @@ export class AuthenticationService {
     localStorage.removeItem(this.authSecretKey);
     localStorage.removeItem('email');
     localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('role');
+    localStorage.clear();
     this.isAuthenticatedFlag = false;
     this.router.navigate(['/login']);
   }
