@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { AuthenticationService } from 'app/core/authentication/authentication.service';
 import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { MenuItem, MessageService, PrimeIcons } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
@@ -15,6 +16,13 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { RippleModule } from 'primeng/ripple';
 import { SidebarModule } from 'primeng/sidebar';
 import { ToastModule } from 'primeng/toast';
+
+import {
+  ConfirmationService,
+  MenuItem,
+  MessageService,
+  PrimeIcons,
+} from 'primeng/api';
 
 @Component({
   selector: 'app-admin',
@@ -25,6 +33,7 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     CardModule,
     CommonModule,
+    ConfirmDialogModule,
     InputTextModule,
     MenuModule,
     MenubarModule,
@@ -42,6 +51,8 @@ import { ToastModule } from 'primeng/toast';
 export class AdminComponent implements OnInit {
   messageService = inject(MessageService);
   router = inject(Router);
+  authenticationService = inject(AuthenticationService);
+  confirmationService = inject(ConfirmationService);
 
   navItems: MenuItem[] = [];
   panelMenuItems: MenuItem[] = [];
@@ -148,7 +159,24 @@ export class AdminComponent implements OnInit {
     console.log('New Project');
   }
 
-  logout() {}
+  logout() {
+    this.confirmationService.confirm({
+      header: 'Logout',
+      message: 'Are you sure you want to logout?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Confirmed',
+          detail: 'Logging out',
+        });
+        setTimeout(() => {
+          this.authenticationService.logout();
+          console.log('Logged out');
+        }, 2000);
+      },
+    });
+  }
 
   closeCallback(event: any) {
     this.sidebarVisible = false;

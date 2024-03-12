@@ -19,11 +19,11 @@ export class AdminHomeComponent implements OnInit {
       this.adminService.getAdminByEmail(email).subscribe(
         (admin) => {
           if (admin) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Welcome',
-              detail: `Welcome back, ${admin.email}!`,
-            });
+            // this.messageService.add({
+            //   severity: 'success',
+            //   summary: 'Welcome',
+            //   detail: `Welcome back, ${admin.email}!`,
+            // });
           }
         },
         (error) => {
