@@ -154,20 +154,14 @@
   </p-table>
 </div>
 
-<!-- General Confirmation -->
-<p-confirmDialog
-  header="Confirmation"
-  icon="pi pi-exclamation-triangle"
-></p-confirmDialog>
-
 <!-- Update Form Dialog -->
-<p-dialog [(visible)]="updateDialogVisible" [modal]="true" [appendTo]="'body'">
+<p-dialog [(visible)]="patientDialogVisible" [modal]="true" [appendTo]="'body'">
   <ng-template pTemplate="header">
     <h3>Update Patient</h3>
   </ng-template>
   <ng-template pTemplate="content">
     <div class="flex">
-      <form [formGroup]="updatePatientForm" class="flex flex-column gap-3">
+      <form [formGroup]="patientForm" class="flex flex-column gap-3">
         <!-- Email -->
         <div class="flex flex-column gap-3">
           <label for="email">Email</label>
