@@ -85,10 +85,27 @@ export class AdminManagementComponent implements OnInit, AfterViewInit {
   isUpdate: boolean = false;
 
   ngOnInit(): void {
+    this.getAdmins();
+
+    this.adminForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
+  }
+  ngAfterViewInit(): void {
+    this.ref.detectChanges();
+  }
+
+  getAdmins() {
     this.adminService.getAdmins().subscribe(
       (admins) => {
         this.admins = admins;
         console.log(`Admins: ${this.admins}`);
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Info',
+          detail: 'Admins loaded.',
+        });
       },
       (error: any) => {
         console.error(error);
@@ -99,14 +116,6 @@ export class AdminManagementComponent implements OnInit, AfterViewInit {
         });
       }
     );
-
-    this.adminForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-    });
-  }
-  ngAfterViewInit(): void {
-    this.ref.detectChanges();
   }
 
   get f() {
@@ -187,6 +196,8 @@ export class AdminManagementComponent implements OnInit, AfterViewInit {
           });
           this.updatingAdmin = false;
           this.isFormSubmitted = false;
+
+          this.getAdmins();
         },
         (error: any) => {
           this.messageService.add({
