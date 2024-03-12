@@ -65,13 +65,16 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.removeItem(this.authSecretKey);
-    localStorage.removeItem('email');
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('role');
+    const role = localStorage.getItem('role');
+
     localStorage.clear();
     this.isAuthenticatedFlag = false;
-    this.router.navigate(['/login']);
+
+    if (role === 'admin') {
+      this.router.navigate(['/admin-login']);
+    } else if (role === 'patient') {
+      this.router.navigate(['/login']);
+    }
   }
 
   // Check if the user is authenticated
