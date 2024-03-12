@@ -3,6 +3,7 @@ interface IAdminAccount {
   verificationToken?: string;
   verified?: boolean;
   deleted?: boolean;
+  accountStatus?: string;
   role?: string;
 }
 

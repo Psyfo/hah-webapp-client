@@ -29,6 +29,18 @@ export class PatientService {
     return this.http.get<IPatient[]>(`${this.apiUrl}/patients`);
   }
 
+  getActivePatients() {
+    return this.http.get<IPatient[]>(`${this.apiUrl}/patients/active`);
+  }
+
+  getBlockedPatients() {
+    return this.http.get<IPatient[]>(`${this.apiUrl}/patients/blocked`);
+  }
+
+  getDeletedPatients() {
+    return this.http.get<IPatient[]>(`${this.apiUrl}/patients/deleted`);
+  }
+
   getPatientById(id: number) {
     return this.http.get<IPatient>(`${this.apiUrl}/patients/${id}`);
   }
@@ -45,7 +57,37 @@ export class PatientService {
     );
   }
 
+  updatePatientByEmail(patient: IPatient) {
+    return this.http.patch<IPatient>(
+      `${this.apiUrl}/patients/email/${patient.email}`,
+      patient,
+      this.httpOptions
+    );
+  }
+
   deletePatient(patient: IPatient) {
     return this.http.delete<IPatient>(`${this.apiUrl}/patients/${patient.id}`);
+  }
+
+  deletePatientByEmail(patient: IPatient) {
+    return this.http.delete<IPatient>(
+      `${this.apiUrl}/patients/email/${patient.email}`
+    );
+  }
+
+  blockPatientByEmail(patient: IPatient) {
+    return this.http.patch<IPatient>(
+      `${this.apiUrl}/patients/block/${patient.email}`,
+      patient,
+      this.httpOptions
+    );
+  }
+
+  reactivatePatientByEmail(patient: IPatient) {
+    return this.http.patch<IPatient>(
+      `${this.apiUrl}/patients/reactivate/${patient.email}`,
+      patient,
+      this.httpOptions
+    );
   }
 }

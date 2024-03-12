@@ -5,7 +5,7 @@ export interface IPatientAccount {
   activationStep?: number;
   approvalStatus?: string;
   country?: string;
-  deleted?: boolean;
+  accountStatus?: string;
 }
 
 export interface IPatient {

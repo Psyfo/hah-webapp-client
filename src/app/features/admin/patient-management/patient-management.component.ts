@@ -275,4 +275,14 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
       return 'danger';
     }
   }
+
+  getSeverityAccountStatus(accountStatus: string) {
+    if (accountStatus === 'blocked') {
+      return 'warning';
+    } else if (accountStatus === 'active') {
+      return 'success';
+    } else {
+      return 'danger';
+    }
+  }
 }

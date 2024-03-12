@@ -100,6 +100,9 @@
         <th pSortableColumn="approvalStatus" style="min-width: 10rem">
           Approval Status <p-sortIcon field="approvalStatus"></p-sortIcon>
         </th>
+        <th pSortableColumn="active" style="min-width: 10rem">
+          Account Status <p-sortIcon field="active"></p-sortIcon>
+        </th>
         <th></th>
       </tr>
     </ng-template>
@@ -123,6 +126,13 @@
           <p-tag
             [value]="patient.account.approvalStatus"
             [severity]="getSeverityApproval(patient.account.approvalStatus)"
+          ></p-tag>
+        </td>
+
+        <td>
+          <p-tag
+            [value]="patient.account.accountStatus"
+            [severity]="getSeverityAccountStatus(patient.account.accountStatus)"
           ></p-tag>
         </td>
 
