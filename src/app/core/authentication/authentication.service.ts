@@ -69,7 +69,7 @@ export class AuthenticationService {
     localStorage.removeItem('email');
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('role');
-    // localStorage.clear();
+    localStorage.clear();
     this.isAuthenticatedFlag = false;
     this.router.navigate(['/login']);
   }

@@ -27,6 +27,9 @@ export const authenticationGuard: CanActivateFn = (route, state) => {
       // Allow access to non-/admin routes
       return true;
     }
+  } else if (state.url.startsWith('admin-login')) {
+    // Allow access to /admin-login if not authenticated
+    return router.createUrlTree(['/admin-login']);
   } else {
     // Redirect to /login if not authenticated
     return router.createUrlTree(['/login']);
