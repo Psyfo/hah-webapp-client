@@ -82,9 +82,9 @@ export class AdminLoginComponent {
             this.router.navigate(['/admin']);
           }, 1500);
         },
-        (error) => {
+        (error: any) => {
           this.loginFailMessage = true;
-          console.error('Login failed');
+          console.error(error.message);
           this.messageService.add({
             severity: 'error',
             summary: 'Login Failed',
