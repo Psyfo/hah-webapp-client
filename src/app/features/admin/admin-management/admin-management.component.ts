@@ -144,6 +144,7 @@ export class AdminManagementComponent implements OnInit, AfterViewInit {
   }
 
   closeAdminDialog() {
+    this.isFormSubmitted = false;
     this.adminDialogVisible = false;
     this.adminForm.reset();
   }
@@ -210,6 +211,7 @@ export class AdminManagementComponent implements OnInit, AfterViewInit {
         }
       );
     }
+    this.adminDialogVisible = false;
   }
 
   deleteAdmin(admin: IAdmin) {
@@ -224,6 +226,8 @@ export class AdminManagementComponent implements OnInit, AfterViewInit {
                 summary: 'Success',
                 detail: 'Admin deleted successfully.',
               });
+
+              this.getAdmins();
             },
             (error: any) => {
               this.messageService.add({
