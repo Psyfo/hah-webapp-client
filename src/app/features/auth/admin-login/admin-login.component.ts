@@ -85,6 +85,7 @@ export class AdminLoginComponent {
         (error: any) => {
           this.loginFailMessage = true;
           console.error(error.message);
+          console.log(JSON.stringify(error));
           this.messageService.add({
             severity: 'error',
             summary: 'Login Failed',
