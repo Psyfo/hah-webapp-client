@@ -1,5 +1,5 @@
-import { Routes } from '@angular/router';
-import { authenticationGuard } from './core/authentication/authentication.guard';
+import { Routes } from "@angular/router";
+import { authenticationGuard } from "./core/authentication/authentication.guard";
 
 export const routes: Routes = [
   {
@@ -77,6 +77,37 @@ export const routes: Routes = [
     path: 'faq',
     loadComponent: () =>
       import('./features/faq/faq.component').then((m) => m.FaqComponent),
+  },
+  {
+    path: 'practitioner',
+    canActivate: [authenticationGuard],
+    loadComponent: () =>
+      import('./features/practitioner/practitioner.component').then(
+        (m) => m.PractitionerComponent
+      ),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import(
+            './features/practitioner/practitioner-home/practitioner-home.component'
+          ).then((m) => m.PractitionerHomeComponent),
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import(
+            './features/practitioner/practitioner-profile/practitioner-profile.component'
+          ).then((m) => m.PractitionerProfileComponent),
+      },
+      {
+        path: 'appointments',
+        loadComponent: () =>
+          import(
+            './features/practitioner/practitioner-appointments/practitioner-appointments.component'
+          ).then((m) => m.PractitionerAppointmentsComponent),
+      },
+    ],
   },
   {
     path: 'admin',
