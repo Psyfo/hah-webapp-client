@@ -8,6 +8,10 @@
   --text-color: #333;
 } */
 
+html {
+  font-size: 14px;
+}
+
 body {
   box-sizing: border-box;
   margin: 0;
