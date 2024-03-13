@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { ButtonModule } from 'primeng/button';
-import { MessagesModule } from 'primeng/messages';
-import { ToastModule } from 'primeng/toast';
+import { Component, inject } from "@angular/core";
+import { Router } from "@angular/router";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { ButtonModule } from "primeng/button";
+import { MessagesModule } from "primeng/messages";
+import { ToastModule } from "primeng/toast";
 
 @Component({
   selector: 'app-get-started',
@@ -18,6 +18,6 @@ export class GetStartedComponent {
   messageService = inject(MessagesModule);
 
   goToDashboard() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/login']);
   }
 }

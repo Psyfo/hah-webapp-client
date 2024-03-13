@@ -1,25 +1,25 @@
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { PatientService } from 'app/features/patient/patient.service';
-import { IPatient } from 'app/models/patient.interface';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { CheckboxModule } from 'primeng/checkbox';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { MenuModule } from 'primeng/menu';
-import { MenubarModule } from 'primeng/menubar';
-import { MessagesModule } from 'primeng/messages';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { RippleModule } from 'primeng/ripple';
-import { Table, TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
+import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
+import { IPatient } from "app/core/models/patient.interface";
+import { PatientService } from "app/core/services/patient.service";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { CheckboxModule } from "primeng/checkbox";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { DialogModule } from "primeng/dialog";
+import { DropdownModule } from "primeng/dropdown";
+import { InputTextModule } from "primeng/inputtext";
+import { MenuModule } from "primeng/menu";
+import { MenubarModule } from "primeng/menubar";
+import { MessagesModule } from "primeng/messages";
+import { PanelMenuModule } from "primeng/panelmenu";
+import { RippleModule } from "primeng/ripple";
+import { Table, TableModule } from "primeng/table";
+import { TagModule } from "primeng/tag";
+import { ToastModule } from "primeng/toast";
+import { ToolbarModule } from "primeng/toolbar";
 
 import {
   AfterViewInit,
@@ -234,7 +234,7 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
       this.confirmationService.confirm({
         message: `Are you sure you want to delete ${patient.firstName} ${patient.lastName} (${patient.email})?`,
         accept: () => {
-          this.patientService.deletePatient(patient.id!).subscribe(
+          this.patientService.deletePatient(patient).subscribe(
             (response) => {
               this.messageService.add({
                 severity: 'success',
@@ -284,5 +284,9 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
     } else {
       return 'danger';
     }
+  }
+
+  isAccountDeleted() {
+    return this.selectedPatient.account?.accountStatus === 'deleted';
   }
 }

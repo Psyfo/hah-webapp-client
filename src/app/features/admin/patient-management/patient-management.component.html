@@ -1,5 +1,5 @@
 <div
-  class="border-round border-1 border-gray-100 surface-card p-5"
+  class="border-round border-1 surface-border surface-card p-5"
   [@routerTransitionSlideUp]
 >
   <h3 class="text-xl text-color-secondary">Patient Management</h3>
@@ -55,9 +55,11 @@
       'firstName',
       'lastName',
       'account.verified',
-      'account.approvalStatus'
+      'account.approvalStatus',
+      'account.accountStatus'
     ]"
-    [tableStyle]="{ 'min-width': '75rem' }"
+    [tableStyle]="{ 'min-width': '100%' }"
+    [styleClass]="'w-full'"
     [(selection)]="selectedPatients"
     [rowHover]="true"
     dataKey="email"
@@ -137,22 +139,24 @@
         </td>
 
         <td>
-          <button
-            pButton
-            pRipple
-            icon="pi pi-pencil"
-            class="p-button-rounded p-button-primary mr-2"
-            (click)="openUpdatePatientDialog(patient)"
-            pTooltip="Update Patient"
-          ></button>
-          <button
-            pButton
-            pRipple
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-danger"
-            (click)="deletePatient(patient)"
-            pTooltip="Delete Patient"
-          ></button>
+          <div class="flex gap-2">
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-help mr-2"
+              (click)="openUpdatePatientDialog(patient)"
+              pTooltip="Update Patient"
+            ></button>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger"
+              (click)="deletePatient(patient)"
+              pTooltip="Delete Patient"
+            ></button>
+          </div>
         </td>
       </tr>
     </ng-template>
@@ -175,7 +179,12 @@
         <!-- Email -->
         <div class="flex flex-column gap-3">
           <label for="email">Email</label>
-          <input type="text" pInputText formControlName="email" />
+          <input
+            type="text"
+            pInputText
+            formControlName="email"
+            [disabled]="isAccountDeleted()"
+          />
           @if (f['email'].hasError('required') && (f['email'].touched ||
           isFormSubmitted)){
           <small class="text-red-500">This field is required</small>

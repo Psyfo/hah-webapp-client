@@ -1,15 +1,15 @@
-<div [@routerTransitionSlideRight] class="flex flex-column gap-2 py-5 px-3">
-  <p class="font-semibold mb-8">
+<div [@routerTransitionSlideRight] class="flex flex-column gap-2 p-5">
+  <p class="font-semibold text-xl text-gray-500 mb-8">
     Welcome to Your Dashboard {{ patient?.email }}
   </p>
 
   <!-- Steps -->
-  <p class="text-sm">
+  <p class="text-base text-gray-500">
     Complete the verification wizard to activate your account and make
     appointments.
   </p>
 
-  <div class="border-1 border-round border-gray-300 p-5">
+  <div class="border-1 border-round surface-border surface-card p-5">
     <p-toast></p-toast>
     <p-steps [model]="items" [readonly]="true" [(activeIndex)]="activeIndex">
     </p-steps>
@@ -17,7 +17,7 @@
 
   <!-- Step 1: Email Verification -->
   @if(activeIndex === 0) {
-  <div class="border-1 border-round border-gray-300 p-5">
+  <div class="border-1 border-round surface-border surface-card p-5">
     <!-- Verification Status -->
     <h4>Email Verification Status</h4>
 
@@ -78,7 +78,7 @@
 
   <!-- Step 2: ID Verification -->
   @if(activeIndex === 1) {
-  <div class="border-1 border-round border-gray-300 p-5">
+  <div class="border-1 border-round surface-border surface-card p-5">
     @if(patient?.account?.activationStep === 1){
     <h4>ID Verification Status</h4>
     <form [formGroup]="patientIdForm" class="flex flex-column gap-3">
@@ -200,13 +200,13 @@
 
   <!-- Step 3: Upload ID -->
   @if(activeIndex === 2) {
-  <div class="border-1 border-round border-gray-300 p-5"></div>
+  <div class="border-1 border-round surface-border surface-card p-5"></div>
   }
 
   <!-- Other dashboard content -->
 
   @if(patient?.account?.verified){
-  <!-- <div class="border-1 border-round border-gray-300 p-5 lg:w-6 sm:w-full">
+  <!-- <div class="border-1 border-round surface-border surface-card p-5 lg:w-6 sm:w-full">
     <h4>Appointments</h4>
     <p class="text-sm">
       View your upcoming appointments and schedule new appointments.

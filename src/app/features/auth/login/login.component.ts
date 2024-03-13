@@ -1,17 +1,22 @@
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
-import { ChangeDetectorRef, Component, OnInit, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthenticationService } from "app/core/authentication/authentication.service";
-import { customEmailValidator } from "app/core/validators/email.validator";
-import { customPasswordValidator } from "app/core/validators/password.validator";
-import { data } from "jquery";
 import { MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { InputTextModule } from "primeng/inputtext";
 import { MessagesModule } from "primeng/messages";
+import { TabView, TabViewModule } from "primeng/tabview";
 import { ToastModule } from "primeng/toast";
+
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 
 import {
   FormBuilder,
@@ -30,15 +35,16 @@ import {
   selector: 'app-login',
   standalone: true,
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    CommonModule,
-    MessagesModule,
-    ToastModule,
-    CardModule,
-    InputTextModule,
     ButtonModule,
+    CardModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    InputTextModule,
+    MessagesModule,
+    ReactiveFormsModule,
+    TabViewModule,
+    ToastModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -49,6 +55,8 @@ import {
   ],
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('tabView') tabView!: TabView;
+
   cdr = inject(ChangeDetectorRef);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -57,35 +65,51 @@ export class LoginComponent implements OnInit {
   messageService = inject(MessageService);
 
   loginForm!: FormGroup;
+  practitionerLoginForm!: FormGroup;
 
   isFormSubmitted: boolean = false;
   loginFailMessage: boolean = false;
+  tabViewIndex: number = 0;
 
   get f() {
     return this.loginForm.controls;
   }
+  get p() {
+    return this.practitionerLoginForm.controls;
+  }
 
   ngOnInit(): void {
+    // Set tab to practitioner if the route parameter is set
+    this.route.params.subscribe((params) => {
+      console.log('params', params);
+
+      if (params['tab'] === 'practitioner') {
+        this.tabViewIndex = 1;
+      }
+    });
+
     this.loginForm = this.fb.group({
-      email: [
-        '',
-        [Validators.required],
-      ],
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+    });
+
+    this.practitionerLoginForm = this.fb.group({
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
   }
 
   login() {
-	this.isFormSubmitted = true;
-    if (this.loginForm.invalid){
-		return;
-	} else {
+    this.isFormSubmitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    } else {
       const email = this.f['email'].value;
       const password = this.f['password'].value;
 
       this.authService.login(email, password).subscribe(
         (data) => {
-			this.loginFailMessage = false;
+          this.loginFailMessage = false;
           console.log('Login successful');
           this.messageService.add({
             severity: 'success',
@@ -97,7 +121,7 @@ export class LoginComponent implements OnInit {
           }, 1500);
         },
         (error) => {
-			this.loginFailMessage = true;
+          this.loginFailMessage = true;
           console.error('Login failed');
           this.messageService.add({
             severity: 'error',
@@ -107,11 +131,49 @@ export class LoginComponent implements OnInit {
           });
         }
       );
-    } 
+    }
+  }
+  loginPractitioner() {
+    this.isFormSubmitted = true;
+    if (this.practitionerLoginForm.invalid) {
+      return;
+    } else {
+      const email = this.p['email'].value;
+      const password = this.p['password'].value;
+
+      this.authService.practitionerLogin(email, password).subscribe(
+        (data) => {
+          this.loginFailMessage = false;
+          console.log('Login successful');
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Login',
+            detail: 'Login Successful',
+          });
+          setTimeout(() => {
+            this.router.navigate(['/practitioner']);
+          }, 1500);
+        },
+        (error) => {
+          this.loginFailMessage = true;
+          console.error('Login failed');
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Login Failed',
+            detail:
+              'Email or password is incorrect. Please check and try again.',
+          });
+        }
+      );
+    }
   }
 
   goToSignUp(): void {
     this.router.navigate(['/register']);
+  }
+
+  goToPractitionerSignup() {
+    this.router.navigate(['/register', { tab: 'practitioner' }]);
   }
 
   ngAfterContentChecked(): void {

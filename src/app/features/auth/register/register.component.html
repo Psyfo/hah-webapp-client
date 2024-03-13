@@ -1,120 +1,246 @@
-<div
-  [@routerTransitionSlideUp]
-  class="bg-primary-50 flex flex-column min-h-screen w-full"
->
-  <p-toast position="top-right" [baseZIndex]="9000"></p-toast>
+<p-toast position="top-right" [baseZIndex]="9000"></p-toast>
 
+<div
+  class="bg-primary-100 flex flex-column gap-5 align-items-center min-h-screen min-w-screen p-5"
+>
   <div class="flex justify-content-center align-items-center mt-8 w-full">
     <img src="assets/images/hah-logo.svg" alt="" class="w-12rem" />
   </div>
 
-  <div
-    class="flex align-items-center flex-column justify-content-center w-full mt-4"
-  >
-    <form
-      [formGroup]="registerForm"
-      (submit)="onSubmit()"
-      class="flex flex-column gap-3 lg:w-6 md:w-6 sm:w-9 w-9"
-    >
-      <h5 class="text-xl font-semibold mb-3">Patient Signup</h5>
+  <div class="w-full md:w-4" [@routerTransitionSlideUp]>
+    <p-tabView #tabView [(activeIndex)]="tabViewIndex">
+      <p-tabPanel>
+        <!-- Tab Header -->
+        <ng-template pTemplate="header">
+          <div class="flex justify-content-center align-items-center gap-2">
+            <i class="pi pi-user text-xl"></i>
+            <span>Patient</span>
+          </div>
+        </ng-template>
 
-      <!-- Email -->
-      <div class="flex flex-column gap-2">
-        <label for="email">Email</label>
-        <input
-          pInputText
-          id="email"
-          formControlName="email"
-          placeholder="johndoe@gmail.com"
-        />
-        @if(f['email'].hasError('required') && (f['email'].touched ||
-        isFormSubmitted)){
-        <small class="text-red-500">This field is required</small>
-        } @else if ((f['email'].hasError('email') ||
-        f['email'].hasError('policy')) && (f['email'].touched ||
-        isFormSubmitted)){
-        <small class="text-red-500">Please enter valid email address</small>
-        }
-      </div>
-
-      <!-- Password -->
-      <div class="flex flex-column gap-2">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          pInputText
-          id="password"
-          formControlName="password"
-          placeholder="Password"
-        />
-        @if (f['password'].hasError('required') && (f['password'].touched ||
-        isFormSubmitted)){
-        <small class="text-red-500">This field is required</small>
-        } @else if (f['password'].hasError('policy') && (f['password'].touched
-        || isFormSubmitted)){
-        <small class="text-red-500">
-          Password must contain at least 10 characters.
-        </small>
-        <small class="text-red-500">
-          Including lowercases, UPPERCASEs, numbers and special characters.
-          {{ passwordSymbols }}
-        </small>
-        }
-      </div>
-
-      <!-- Select Country -->
-      <div class="flex flex-column gap-2">
-        <label for="country">Country</label>
-        <p-dropdown
-          [options]="countries"
-          formControlName="selectedCountry"
-          optionLabel="name"
-          optionValue="code"
-          placeholder="Select a Country"
-        ></p-dropdown>
-        @if (f['selectedCountry'].hasError('required') &&
-        (f['selectedCountry'].touched || isFormSubmitted)){
-        <small class="text-red-500">This field is required</small>
-        }
-      </div>
-
-      <!-- Terms and Conditions -->
-      <div class="flex flex-column gap-2">
-        <div class="flex gap-2 align-items-center">
-          <p-checkbox
-            formControlName="terms"
-            inputId="terms"
-            [binary]="true"
-          ></p-checkbox>
-          <label for="terms"
-            >I agree to the
-            <a routerLink="/terms" class="btn-link" target="_blank"
-              >terms and conditions</a
-            ></label
+        <!-- Tab Content -->
+        <div class="">
+          <form
+            [formGroup]="registerForm"
+            (submit)="onSubmit()"
+            class="flex flex-column gap-3"
           >
+            <!-- Email -->
+            <div class="flex flex-column gap-2">
+              <label for="email">Email</label>
+              <input
+                pInputText
+                formControlName="email"
+                placeholder="johndoe@gmail.com"
+              />
+              @if(f['email'].hasError('required') && (f['email'].touched ||
+              isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              } @else if ((f['email'].hasError('email') ||
+              f['email'].hasError('policy')) && (f['email'].touched ||
+              isFormSubmitted)){
+              <small class="text-red-500"
+                >Please enter valid email address</small
+              >
+              }
+            </div>
+
+            <!-- Password -->
+            <div class="flex flex-column gap-2">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                pInputText
+                formControlName="password"
+                placeholder="Password"
+              />
+              @if (f['password'].hasError('required') && (f['password'].touched
+              || isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              } @else if (f['password'].hasError('policy') &&
+              (f['password'].touched || isFormSubmitted)){
+              <small class="text-red-500">
+                Password must contain at least 10 characters.
+              </small>
+              <small class="text-red-500">
+                Including lowercases, UPPERCASEs, numbers and special
+                characters.
+                {{ passwordSymbols }}
+              </small>
+              }
+            </div>
+
+            <!-- Select Country -->
+            <div class="flex flex-column gap-2">
+              <label for="country">Country</label>
+              <p-dropdown
+                [options]="countries"
+                formControlName="selectedCountry"
+                optionLabel="name"
+                optionValue="code"
+                placeholder="Select a Country"
+              ></p-dropdown>
+              @if (f['selectedCountry'].hasError('required') &&
+              (f['selectedCountry'].touched || isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              }
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="flex flex-column gap-2">
+              <div class="flex gap-2 align-items-center">
+                <p-checkbox
+                  formControlName="terms"
+                  [binary]="true"
+                ></p-checkbox>
+                <label for="terms"
+                  >I agree to the
+                  <a routerLink="/terms" class="btn-link" target="_blank"
+                    >terms and conditions</a
+                  ></label
+                >
+              </div>
+              @if (f['terms'].hasError('required') && (f['terms'].touched ||
+              isFormSubmitted)){
+              <small class="text-red-500">
+                Please agree on Terms & Conditions to continue
+              </small>
+              }
+            </div>
+
+            <!-- Sign Up Button -->
+            <p-button
+              type="submit"
+              label="Sign Up as Patient"
+              [styleClass]="'sm: w-full mt-4'"
+            ></p-button>
+
+            <p-button
+              label="Already have an account? Login"
+              [link]="true"
+              class="text-center"
+              (click)="goToLogin()"
+            ></p-button>
+          </form>
         </div>
-        @if (f['terms'].hasError('required') && (f['terms'].touched ||
-        isFormSubmitted)){
-        <small class="text-red-500">
-          Please agree on Terms & Conditions to continue
-        </small>
-        }
-      </div>
+      </p-tabPanel>
+      <p-tabPanel>
+        <!-- Tab Header -->
+        <ng-template pTemplate="header">
+          <div class="flex justify-content-center align-items-center gap-2">
+            <i class="fa-solid fa-stethoscope text-xl"></i>
+            <span>Practitioner</span>
+          </div>
+        </ng-template>
 
-      <!-- Login Button -->
-      <p-button
-        type="submit"
-        label="Sign Up"
-        [styleClass]="'sm: w-full mt-4'"
-      ></p-button>
+        <!-- Tab Content -->
+        <div class="">
+          <form
+            [formGroup]="practitionerRegisterForm"
+            (submit)="onSubmitPractitioner()"
+            class="flex flex-column gap-3"
+          >
+            <!-- Email -->
+            <div class="flex flex-column gap-2">
+              <label for="email">Email</label>
+              <input
+                pInputText
+                formControlName="email"
+                placeholder="johndoe@gmail.com"
+              />
+              @if(p['email'].hasError('required') && (p['email'].touched ||
+              isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              } @else if ((p['email'].hasError('email') ||
+              p['email'].hasError('policy')) && (p['email'].touched ||
+              isFormSubmitted)){
+              <small class="text-red-500"
+                >Please enter valid email address</small
+              >
+              }
+            </div>
 
-      <p-button
-        label="Already have an account? Login"
-        [link]="true"
-        class="text-center"
-        (click)="goToLogin()"
-      ></p-button>
-    </form>
+            <!-- Password -->
+            <div class="flex flex-column gap-2">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                pInputText
+                formControlName="password"
+                placeholder="Password"
+              />
+              @if (p['password'].hasError('required') && (p['password'].touched
+              || isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              } @else if (p['password'].hasError('policy') &&
+              (p['password'].touched || isFormSubmitted)){
+              <small class="text-red-500">
+                Password must contain at least 10 characters.
+              </small>
+              <small class="text-red-500">
+                Including lowercases, UPPERCASEs, numbers and special
+                characters.
+                {{ passwordSymbols }}
+              </small>
+              }
+            </div>
+
+            <!-- Select Country -->
+            <div class="flex flex-column gap-2">
+              <label for="country">Country</label>
+              <p-dropdown
+                [options]="countries"
+                formControlName="selectedCountry"
+                optionLabel="name"
+                optionValue="code"
+                placeholder="Select a Country"
+              ></p-dropdown>
+              @if (p['selectedCountry'].hasError('required') &&
+              (p['selectedCountry'].touched || isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              }
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="flex flex-column gap-2">
+              <div class="flex gap-2 align-items-center">
+                <p-checkbox
+                  formControlName="terms"
+                  [binary]="true"
+                ></p-checkbox>
+                <label for="terms"
+                  >I agree to the
+                  <a routerLink="/terms" class="btn-link" target="_blank"
+                    >terms and conditions</a
+                  ></label
+                >
+              </div>
+              @if (p['terms'].hasError('required') && (p['terms'].touched ||
+              isFormSubmitted)){
+              <small class="text-red-500">
+                Please agree on Terms & Conditions to continue
+              </small>
+              }
+            </div>
+
+            <!-- Sign Up Button -->
+            <p-button
+              type="submit"
+              label="Sign Up as Practitioner"
+              severity="help"
+              [styleClass]="'sm: w-full mt-4'"
+            ></p-button>
+
+            <p-button
+              label="Already have a Practitioner account? Login"
+              [link]="true"
+              class="text-center"
+              (click)="goToPractitionerLogin()"
+            ></p-button>
+          </form>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
   </div>
 </div>
 
@@ -153,7 +279,6 @@
   <ng-template pTemplate>
     <div class="flex flex-column gap-2">
       <p>{{ countryDialogMessage }}</p>
-       
 
       <div class="flex align-items-center justify-content-center gap-2">
         <p-button

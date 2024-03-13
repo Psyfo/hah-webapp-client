@@ -1,23 +1,23 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthenticationService } from 'app/core/authentication/authentication.service';
-import { VerificationService } from 'app/features/auth/verification/verification.service';
-import { PatientService } from 'app/features/patient/patient.service';
-import { IPatient } from 'app/models/patient.interface';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogModule } from 'primeng/dialog';
-import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
-import { InputMaskModule } from 'primeng/inputmask';
-import { InputTextModule } from 'primeng/inputtext';
-import { MenubarModule } from 'primeng/menubar';
-import { MessagesModule } from 'primeng/messages';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { StepsModule } from 'primeng/steps';
-import { ToastModule } from 'primeng/toast';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit, inject } from "@angular/core";
+import { Router } from "@angular/router";
+import { AuthenticationService } from "app/core/authentication/authentication.service";
+import { IPatient } from "app/core/models/patient.interface";
+import { PatientService } from "app/core/services/patient.service";
+import { VerificationService } from "app/features/auth/verification/verification.service";
+import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { CalendarModule } from "primeng/calendar";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { DialogModule } from "primeng/dialog";
+import { FileUploadHandlerEvent, FileUploadModule } from "primeng/fileupload";
+import { InputMaskModule } from "primeng/inputmask";
+import { InputTextModule } from "primeng/inputtext";
+import { MenubarModule } from "primeng/menubar";
+import { MessagesModule } from "primeng/messages";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { StepsModule } from "primeng/steps";
+import { ToastModule } from "primeng/toast";
 
 import {
   FormBuilder,
@@ -86,19 +86,21 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     const email = localStorage.getItem('email');
     if (email) {
-      this.patientService.getPatientByEmail(email).subscribe((patient) => {
-        this.patient = patient;
-        this.verificationStatus = patient.account.verified
-          ? 'Verified'
-          : 'Not Verified';
-        if (this.patient?.account?.activationStep === 0) {
-          this.activeIndex = 0;
-          this.activeTab = '1';
-        } else if (this.patient?.account?.activationStep === 1 || 2) {
-          this.activeIndex = 1;
-          this.activeTab = '2';
-        }
-      });
+      this.patientService
+        .getPatientByEmail(email)
+        .subscribe((patient: IPatient) => {
+          this.patient = patient;
+          this.verificationStatus = patient?.account?.verified
+            ? 'Verified'
+            : 'Not Verified';
+          if (this.patient?.account?.activationStep === 0) {
+            this.activeIndex = 0;
+            this.activeTab = '1';
+          } else if (this.patient?.account?.activationStep === 1 || 2) {
+            this.activeIndex = 1;
+            this.activeTab = '2';
+          }
+        });
     }
 
     this.navItems = [
@@ -144,7 +146,7 @@ export class HomeComponent implements OnInit {
     if (this.activeIndex < this.items!.length - 1) {
       this.activeIndex++;
       this.patient!.account!.activationStep = this.activeIndex;
-      this.patientService.updatePatient(this.patient).subscribe((response) => {
+      this.patientService.updatePatient(this.patient!).subscribe((response) => {
         console.log('Response: ', response);
         console.log('Patient activationStep updated.');
       });
@@ -214,8 +216,8 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.patientService.updatePatient(this.patient).subscribe(
-      (response) => {
+    this.patientService.updatePatient(this.patient!).subscribe(
+      (response: IPatient) => {
         console.log('Response: ', response);
         this.messageService.add({
           severity: 'success',

@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { AuthenticationService } from "app/core/authentication/authentication.service";
-import { IPatient } from "app/core/models/patient.interface";
-import { PatientService } from "app/core/services/patient.service";
+import { IPractitioner } from "app/core/models/practitioner.interface";
+import { PractitionerService } from "app/core/services/practitioner.service";
 import { routerTransitionSlideUp } from "app/core/utilities/animations";
 import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-practitioner',
   standalone: true,
   imports: [
     ButtonModule,
@@ -33,18 +33,18 @@ import {
     StepsModule,
     ToastModule,
   ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  templateUrl: './practitioner.component.html',
+  styleUrl: './practitioner.component.css',
   animations: [routerTransitionSlideUp],
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class PractitionerComponent implements OnInit, AfterViewInit {
   authService = inject(AuthenticationService);
-  patientService = inject(PatientService);
+  practitionerService = inject(PractitionerService);
   messageService = inject(MessageService);
   confirmationService = inject(ConfirmationService);
   ref = inject(ChangeDetectorRef);
 
-  patient?: IPatient;
+  practitioner?: IPractitioner;
   verificationStatus: string = '';
   emailSent: boolean = false;
 
@@ -54,40 +54,26 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   navItems?: MenuItem[];
 
   ngOnInit(): void {
-    const email = localStorage.getItem('email');
-    if (email) {
-      this.patientService
-        .getPatientByEmail(email)
-        .subscribe((patient: IPatient) => {
-          this.patient = patient;
-          this.verificationStatus = patient.account?.verified
-            ? 'Verified'
-            : 'Not Verified';
-        });
-    }
-
     this.navItems = [
       {
         label: 'Home',
         icon: 'pi pi-fw pi-home',
-        routerLink: ['/dashboard'], // Update with your route
+        routerLink: ['/practitioner'], // Update with your route
       },
       {
         label: 'Profile',
         icon: 'pi pi-fw pi-user',
-        routerLink: ['/dashboard/profile'], // Update with your route
+        routerLink: ['/practitioner/profile'], // Update with your route
       },
       {
         label: 'Appointments',
         icon: 'pi pi-fw pi-calendar',
-        routerLink: ['/dashboard/appointments'], // Update with your route
+        routerLink: ['/practitioner/appointments'], // Update with your route
       },
     ];
   }
 
   ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
     this.ref.detectChanges();
   }
 
