@@ -11,6 +11,7 @@ import { TabView, TabViewModule } from "primeng/tabview";
 import { ToastModule } from "primeng/toast";
 
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   OnInit,
@@ -54,7 +55,7 @@ import {
     routerTransitionSlideUp,
   ],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild('tabView') tabView!: TabView;
 
   cdr = inject(ChangeDetectorRef);
@@ -97,6 +98,10 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
   }
 
   login() {
@@ -174,9 +179,5 @@ export class LoginComponent implements OnInit {
 
   goToPractitionerSignup() {
     this.router.navigate(['/register', { tab: 'practitioner' }]);
-  }
-
-  ngAfterContentChecked(): void {
-    this.cdr.detectChanges();
   }
 }

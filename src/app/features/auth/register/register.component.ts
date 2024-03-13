@@ -138,6 +138,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // Handle change detection
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
+  }
+
   //getters for form controls
   get f() {
     return this.registerForm.controls;
@@ -332,10 +337,5 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
   hideCountryDialog() {
     this.countryDialogVisible = false;
-  }
-
-  // Handle change detection
-  ngAfterViewInit(): void {
-    this.cdr.detectChanges();
   }
 }

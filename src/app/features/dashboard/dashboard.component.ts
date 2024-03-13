@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   patientService = inject(PatientService);
   messageService = inject(MessageService);
   confirmationService = inject(ConfirmationService);
-  ref = inject(ChangeDetectorRef);
+  cdr = inject(ChangeDetectorRef);
 
   patient?: IPatient;
   verificationStatus: string = '';
@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    this.ref.detectChanges();
+    this.cdr.detectChanges();
   }
 
   logout() {
