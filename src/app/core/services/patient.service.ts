@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { IPatient } from 'app/models/patient.interface';
-import { environment } from 'environments/environment';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable, inject } from "@angular/core";
+import { IPatient } from "app/core/models/patient.interface";
+import { environment } from "environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,7 @@ export class PatientService {
   }
 
   getPatientByEmail(email: string) {
-    return this.http.get<IPatient>(`${this.apiUrl}/patients/${email}`);
+    return this.http.get<IPatient>(`${this.apiUrl}/patients/email/${email}`);
   }
 
   updatePatient(patient: IPatient) {
