@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { AdminService } from 'app/core/services/admin.service';
-import { MessageService } from 'primeng/api';
+import { Component, OnInit, inject } from "@angular/core";
+import { AdminService } from "app/core/services/admin.service";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: 'app-admin-home',
@@ -8,6 +9,7 @@ import { MessageService } from 'primeng/api';
   imports: [],
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.css',
+  animations: [routerTransitionSlideUp],
 })
 export class AdminHomeComponent implements OnInit {
   adminService = inject(AdminService);

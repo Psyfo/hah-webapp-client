@@ -3,7 +3,11 @@
 
 <!-- Admin Navigation -->
 <div class="" [ngClass]="{ 'sidebar-open': sidebarVisible }">
-  <p-menubar [@routerTransitionSlideUp] [model]="navItems">
+  <p-menubar
+    [@routerTransitionSlideUp]
+    [model]="navItems"
+    [styleClass]="'surface-ground'"
+  >
     <ng-template pTemplate="start">
       <!-- <img
       src="assets/images/hah-logo.svg"
@@ -31,7 +35,7 @@
 </div>
 
 <!-- Admin Sidebar -->
-<div class="">
+<div class="surface-ground">
   <p-sidebar
     #sidebarRef
     [(visible)]="sidebarVisible"
@@ -41,7 +45,7 @@
     <ng-template pTemplate="headless">
       <div class="flex flex-column h-full">
         <div
-          class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0"
+          class="flex align-items-center justify-content-between p-3 flex-shrink-0"
         >
           <span class="inline-flex align-items-center gap-2">
             <img src="assets/images/hah-logo.svg" alt="Health at Home Logo" />
@@ -86,12 +90,12 @@
 
 <div
   [@routerTransitionSlideUp]
-  class="background-primary"
+  class="surface-ground"
   [ngClass]="{ 'sidebar-open': sidebarVisible }"
 >
   <div class="flex gap-2">
     <!-- Admin Content -->
-    <div class="flex flex-column p-5">
+    <div class="flex flex-column p-5 w-full">
       <router-outlet></router-outlet>
     </div>
   </div>

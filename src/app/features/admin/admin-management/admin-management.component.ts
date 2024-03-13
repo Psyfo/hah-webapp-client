@@ -1,25 +1,25 @@
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { AdminService } from 'app/core/services/admin.service';
-import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { IAdmin } from 'app/models/admin.interface';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { CheckboxModule } from 'primeng/checkbox';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { MenuModule } from 'primeng/menu';
-import { MenubarModule } from 'primeng/menubar';
-import { MessagesModule } from 'primeng/messages';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { RippleModule } from 'primeng/ripple';
-import { Table, TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
+import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
+import { IAdmin } from "app/core/models/admin.interface";
+import { AdminService } from "app/core/services/admin.service";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { CheckboxModule } from "primeng/checkbox";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { DialogModule } from "primeng/dialog";
+import { DropdownModule } from "primeng/dropdown";
+import { InputTextModule } from "primeng/inputtext";
+import { MenuModule } from "primeng/menu";
+import { MenubarModule } from "primeng/menubar";
+import { MessagesModule } from "primeng/messages";
+import { PanelMenuModule } from "primeng/panelmenu";
+import { RippleModule } from "primeng/ripple";
+import { Table, TableModule } from "primeng/table";
+import { TagModule } from "primeng/tag";
+import { ToastModule } from "primeng/toast";
+import { ToolbarModule } from "primeng/toolbar";
 
 import {
   AfterViewInit,
@@ -208,6 +208,7 @@ export class AdminManagementComponent implements OnInit, AfterViewInit {
           });
           this.updatingAdmin = false;
           this.isFormSubmitted = false;
+          this.adminForm.reset();
         }
       );
     }

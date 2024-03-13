@@ -1,21 +1,21 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { AuthenticationService } from 'app/core/authentication/authentication.service';
-import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { MenuModule } from 'primeng/menu';
-import { MenubarModule } from 'primeng/menubar';
-import { MessagesModule } from 'primeng/messages';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { RippleModule } from 'primeng/ripple';
-import { SidebarModule } from 'primeng/sidebar';
-import { ToastModule } from 'primeng/toast';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit, inject } from "@angular/core";
+import { Router, RouterModule } from "@angular/router";
+import { AuthenticationService } from "app/core/authentication/authentication.service";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { AvatarModule } from "primeng/avatar";
+import { AvatarGroupModule } from "primeng/avatargroup";
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { InputTextModule } from "primeng/inputtext";
+import { MenuModule } from "primeng/menu";
+import { MenubarModule } from "primeng/menubar";
+import { MessagesModule } from "primeng/messages";
+import { PanelMenuModule } from "primeng/panelmenu";
+import { RippleModule } from "primeng/ripple";
+import { SidebarModule } from "primeng/sidebar";
+import { ToastModule } from "primeng/toast";
 
 import {
   ConfirmationService,
@@ -100,6 +100,9 @@ export class AdminComponent implements OnInit {
           {
             label: 'Practitioners',
             icon: 'pi pi-fw pi-user',
+            command: () => {
+              this.router.navigate(['/admin/practitioner-management']);
+            },
           },
           {
             label: 'Admins',
