@@ -74,6 +74,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'verify-practitioner/:token',
+    loadComponent: () =>
+      import(
+        './features/auth/practitioner-verification/practitioner-verification.component'
+      ).then((m) => m.PractitionerVerificationComponent),
+  },
+  {
     path: 'faq',
     loadComponent: () =>
       import('./features/faq/faq.component').then((m) => m.FaqComponent),

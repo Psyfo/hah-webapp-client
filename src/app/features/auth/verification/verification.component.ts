@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { MessageService } from 'primeng/api';
-import { Messages, MessagesModule } from 'primeng/messages';
-import { ToastModule } from 'primeng/toast';
-import { VerificationService } from './verification.service';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit, inject } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { MessageService } from "primeng/api";
+import { Messages, MessagesModule } from "primeng/messages";
+import { ToastModule } from "primeng/toast";
+import { VerificationService } from "../../../core/services/verification.service";
 
 @Component({
   selector: 'app-verification',

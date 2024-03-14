@@ -5,7 +5,7 @@ import { AuthenticationService } from "app/core/authentication/authentication.se
 import { IPatient } from "app/core/models/patient.interface";
 import { PatientService } from "app/core/services/patient.service";
 import { UploadService } from "app/core/services/upload.service";
-import { VerificationService } from "app/features/auth/verification/verification.service";
+import { VerificationService } from "app/core/services/verification.service";
 import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { CalendarModule } from "primeng/calendar";
