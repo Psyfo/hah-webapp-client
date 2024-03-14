@@ -12,7 +12,7 @@ interface IAdmin {
   email?: string;
   password?: string;
   dob?: Date;
-  imgUrl?: string;
+  avatarUrl?: string;
   account?: IAdminAccount;
 }
 

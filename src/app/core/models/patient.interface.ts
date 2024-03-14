@@ -16,7 +16,8 @@ export interface IPatient {
   lastName?: string;
   idNumber?: string;
   dob?: Date;
-  imgUrl?: string;
+  idUrl?: string;
+  avatarUrl?: string;
   phoneNumber?: string;
   account?: IPatientAccount;
 }

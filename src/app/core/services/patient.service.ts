@@ -7,6 +7,8 @@ import { environment } from "environments/environment";
   providedIn: 'root',
 })
 export class PatientService {
+  http = inject(HttpClient);
+
   apiUrl = environment.apiUrl;
 
   httpOptions = {
@@ -14,8 +16,6 @@ export class PatientService {
       'Content-Type': 'application/json',
     }),
   };
-
-  http = inject(HttpClient);
 
   createPatient(patient: IPatient) {
     return this.http.post<IPatient>(

@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { AuthenticationService } from "app/core/authentication/authentication.service";
 import { IPatient } from "app/core/models/patient.interface";
 import { PatientService } from "app/core/services/patient.service";
+import { UploadService } from "app/core/services/upload.service";
 import { VerificationService } from "app/features/auth/verification/verification.service";
 import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -67,6 +68,7 @@ export class HomeComponent implements OnInit {
   verificationService = inject(VerificationService);
   confirmationService = inject(ConfirmationService);
   fb: FormBuilder = inject(FormBuilder);
+  uploadService = inject(UploadService);
 
   patient?: IPatient;
   verificationStatus: string = '';
@@ -75,6 +77,7 @@ export class HomeComponent implements OnInit {
   maxDate: Date = new Date(2006, 2, 1);
   updatingPatient: boolean = false;
   patientUpdated: boolean = false;
+  selectedFile: File | null = null;
 
   items?: any[];
   activeIndex: number = 0;
@@ -239,7 +242,43 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  onUpload(event: FileUploadHandlerEvent) {}
+  onUpload(event: FileUploadHandlerEvent) {
+    const file = event.files[0];
+    const email = this.patient!.email as string;
+
+    if (!file || !email) {
+      return;
+    }
+    this.uploadService.uploadPatientId(file, email).subscribe(
+      (response: any) => {
+        console.log('Upload successful!', response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Patient ID uploaded successfully.',
+        });
+
+        this.patient!.account!.activationStep = 3;
+        this.patientService.updatePatient(this.patient!).subscribe(
+          (response: IPatient) => {
+            console.log('Response: ', response);
+            console.log('Patient activationStep updated.');
+          },
+          (error: any) => {
+            console.error('Error: ', error);
+          }
+        );
+      },
+      (error: any) => {
+        console.error('Upload failed:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to upload patient ID.',
+        });
+      }
+    );
+  }
 
   get f() {
     return this.patientIdForm.controls;

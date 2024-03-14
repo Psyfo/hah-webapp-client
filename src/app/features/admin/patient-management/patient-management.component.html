@@ -179,12 +179,7 @@
         <!-- Email -->
         <div class="flex flex-column gap-3">
           <label for="email">Email</label>
-          <input
-            type="text"
-            pInputText
-            formControlName="email"
-            [disabled]="isAccountDeleted()"
-          />
+          <input type="text" pInputText formControlName="email" />
           @if (f['email'].hasError('required') && (f['email'].touched ||
           isFormSubmitted)){
           <small class="text-red-500">This field is required</small>
@@ -193,7 +188,7 @@
 
         <!-- First and last Names -->
         <div class="flex gap-2">
-          <div class="flex flex-column gap-3">
+          <div class="flex flex-column gap-3 w-6">
             <label for="firstName">First Name</label>
             <input type="text" pInputText formControlName="firstName" />
             @if (f['firstName'].hasError('required') && (f['firstName'].touched
@@ -201,7 +196,7 @@
             <small class="text-red-500">This field is required</small>
             }
           </div>
-          <div class="flex flex-column gap-3">
+          <div class="flex flex-column gap-3 w-6">
             <label for="lastName">Last Name</label>
             <input type="text" pInputText formControlName="lastName" />
             @if (f['lastName'].hasError('required') && (f['lastName'].touched ||
@@ -211,33 +206,87 @@
           </div>
         </div>
 
-        <!-- Verification Checkbox -->
-        <div class="flex flex-column gap-2">
-          <div class="flex gap-2 align-items-center">
-            <p-checkbox
-              formControlName="verified"
-              inputId="verified"
-              [binary]="true"
-            ></p-checkbox>
-            <label for="terms">Email Verified</label>
+        <div class="flex gap-2">
+          <!-- ID Number -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="idNumber">ID Number</label>
+            <p-inputMask
+              mask="99-9999999-a-99"
+              placeholder="00-0000000-A-00"
+              id="idNumber"
+              formControlName="idNumber"
+              styleClass="w-full"
+            ></p-inputMask>
+            @if(f['idNumber'].hasError('required') && (f['idNumber'].touched ||
+            isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+
+          <!-- PHone Number -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="phoneNumber">Phone Number</label>
+            <p-inputMask
+              mask="999 999 9999"
+              placeholder="079 999 9999"
+              id="phoneNumber"
+              formControlName="phoneNumber"
+              styleClass="w-full"
+            ></p-inputMask>
+            @if(f['phoneNumber'].hasError('required') &&
+            (f['phoneNumber'].touched || isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
           </div>
         </div>
 
-        <!-- Approval Status -->
-        <div class="flex flex-column gap-2 mb-5">
-          <label for="approvalStatus">Approval Status</label>
-          <p-dropdown
-            [options]="approvalStatuses"
-            formControlName="approvalStatus"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Select an Approval Status"
-            [appendTo]="'body'"
-          ></p-dropdown>
-          @if (f['approvalStatus'].hasError('required') &&
-          (f['approvalStatus'].touched || isFormSubmitted)){
-          <small class="text-red-500">This field is required</small>
-          }
+        <div class="flex align-items-center gap-2">
+          <!-- Date of Birth -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="dob">Date of Birth</label>
+            <p-calendar
+              id="dob"
+              formControlName="dob"
+              [showIcon]="true"
+              [readonlyInput]="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              styleClass="w-full"
+              [appendTo]="'body'"
+            ></p-calendar>
+          </div>
+
+          <!-- Approval Status -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="approvalStatus">Approval Status</label>
+            <p-dropdown
+              [options]="approvalStatuses"
+              formControlName="approvalStatus"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select an Approval Status"
+              [appendTo]="'body'"
+              [styleClass]="'w-full'"
+            ></p-dropdown>
+            @if (f['approvalStatus'].hasError('required') &&
+            (f['approvalStatus'].touched || isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <!-- Verification Checkbox -->
+          <div class="flex flex-column gap-2 w-6">
+            <div class="flex gap-2 align-items-center">
+              <p-checkbox
+                formControlName="verified"
+                inputId="verified"
+                [binary]="true"
+              ></p-checkbox>
+              <label for="terms">Email Verified</label>
+            </div>
+          </div>
         </div>
       </form>
     </div>

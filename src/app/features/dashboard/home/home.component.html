@@ -1,3 +1,4 @@
+@if(patient?.account?.activationStep !== 3){
 <div [@routerTransitionSlideRight] class="flex flex-column gap-2 p-5">
   <p class="font-semibold text-xl text-gray-500 mb-8">
     Welcome to Your Dashboard {{ patient?.email }}
@@ -207,14 +208,31 @@
 
   @if(patient?.account?.verified){
   <!-- <div class="border-1 border-round surface-border surface-card p-5 lg:w-6 sm:w-full">
-    <h4>Appointments</h4>
-    <p class="text-sm">
-      View your upcoming appointments and schedule new appointments.
-    </p>
-    <p-button label="View Appointments" (click)="goToAppointments()"></p-button>
-  </div> -->
+      <h4>Appointments</h4>
+      <p class="text-sm">
+        View your upcoming appointments and schedule new appointments.
+      </p>
+      <p-button label="View Appointments" (click)="goToAppointments()"></p-button>
+    </div> -->
   }
 </div>
+} @else if (patient?.account?.activationStep === 3){
+<div class="flex flex-column gap-2 p-5">
+  <p class="font-semibold text-xl text-gray-500 mb-8">
+    Welcome to Your Dashboard {{ patient?.email }}
+  </p>
+  <div class="border-1 border-round surface-border surface-card p-5">
+    <h4 class="text-lg text-gray-500">Account Activation</h4>
+    <p class="text-base text-gray-500">
+      Thank you for completing the verification process.
+    </p>
+    <p class="text-base text-gray-500">
+      The details you provided are under review. You will be notified by email
+      once your account is activated.
+    </p>
+  </div>
+</div>
+}
 
 <!-- Dialogs -->
 <p-dialog

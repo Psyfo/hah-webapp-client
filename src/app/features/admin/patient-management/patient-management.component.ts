@@ -5,11 +5,13 @@ import { PatientService } from "app/core/services/patient.service";
 import { routerTransitionSlideUp } from "app/core/utilities/animations";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
+import { CalendarModule } from "primeng/calendar";
 import { CardModule } from "primeng/card";
 import { CheckboxModule } from "primeng/checkbox";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { DialogModule } from "primeng/dialog";
 import { DropdownModule } from "primeng/dropdown";
+import { InputMaskModule } from "primeng/inputmask";
 import { InputTextModule } from "primeng/inputtext";
 import { MenuModule } from "primeng/menu";
 import { MenubarModule } from "primeng/menubar";
@@ -42,12 +44,14 @@ import {
   standalone: true,
   imports: [
     ButtonModule,
+    CalendarModule,
     CardModule,
     CheckboxModule,
     CommonModule,
     ConfirmDialogModule,
     DialogModule,
     DropdownModule,
+    InputMaskModule,
     InputTextModule,
     MenuModule,
     MenubarModule,
@@ -96,6 +100,9 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
       email: ['', [Validators.required, Validators.email]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
+      dob: [new Date()],
+      idNumber: [''],
+      phoneNumber: [''],
       verified: [false],
       approvalStatus: ['pending'],
     });
@@ -148,11 +155,16 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
       email: patient.email,
       firstName: patient.firstName,
       lastName: patient.lastName,
+      dob: patient.dob,
+      idNumber: patient.idNumber,
+      phoneNumber: patient.phoneNumber,
       verified: patient.account?.verified,
       approvalStatus: patient.account?.approvalStatus,
     });
 
     this.selectedPatient = patient;
+
+    this.isAccountDeleted();
   }
   closeUpdatePatientDialog() {
     this.isFormSubmitted = false;
@@ -287,6 +299,14 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
   }
 
   isAccountDeleted() {
-    return this.selectedPatient.account?.accountStatus === 'deleted';
+    const isAccountDeleted: boolean =
+      this.selectedPatient.account?.accountStatus === 'deleted';
+    if (isAccountDeleted) {
+      this.f['email'].disable();
+      this.f['firstName'].disable();
+      this.f['lastName'].disable();
+      this.f['verified'].disable();
+      this.f['approvalStatus'].disable();
+    }
   }
 }
