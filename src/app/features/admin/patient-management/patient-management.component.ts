@@ -80,7 +80,7 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
   ref = inject(ChangeDetectorRef);
 
   patients: IPatient[] = [];
-  selectedPatient: IPatient = {};
+  selectedPatient!: IPatient;
   selectedPatients: IPatient[] = [];
   approvalStatuses = [
     { label: 'Pending', value: 'pending' },
@@ -101,7 +101,7 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
       email: ['', [Validators.required, Validators.email]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      dob: [new Date()],
+      dob: [new Date(), [Validators.required]],
       idNumber: [''],
       phoneNumber: [''],
       verified: [false],
