@@ -132,15 +132,17 @@
       <!-- Date of Birth -->
       <div class="flex flex-column gap-2 w-full md:w-4">
         <label for="dob">Date of Birth</label>
+        {{ f["dob"].value | date : "dd/MM/yyyy" }}
         <p-calendar
           id="dob"
           formControlName="dob"
           [showIcon]="true"
-          [readonlyInput]="true"
+          [readonlyInput]="false"
           [monthNavigator]="true"
           [yearNavigator]="true"
-          [maxDate]="maxDate"
           styleClass="w-full"
+          [dateFormat]="'dd/mm/yy'"
+          [appendTo]="'body'"
         ></p-calendar>
       </div>
 

@@ -1,24 +1,32 @@
-import { CommonModule } from "@angular/common";
-import { Component, OnInit, inject } from "@angular/core";
-import { Router } from "@angular/router";
-import { AuthenticationService } from "app/core/authentication/authentication.service";
-import { IPatient } from "app/core/models/patient.interface";
-import { PatientService } from "app/core/services/patient.service";
-import { UploadService } from "app/core/services/upload.service";
-import { VerificationService } from "app/core/services/verification.service";
-import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
-import { ButtonModule } from "primeng/button";
-import { CalendarModule } from "primeng/calendar";
-import { ConfirmDialogModule } from "primeng/confirmdialog";
-import { DialogModule } from "primeng/dialog";
-import { FileUploadHandlerEvent, FileUploadModule } from "primeng/fileupload";
-import { InputMaskModule } from "primeng/inputmask";
-import { InputTextModule } from "primeng/inputtext";
-import { MenubarModule } from "primeng/menubar";
-import { MessagesModule } from "primeng/messages";
-import { ProgressSpinnerModule } from "primeng/progressspinner";
-import { StepsModule } from "primeng/steps";
-import { ToastModule } from "primeng/toast";
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'app/core/authentication/authentication.service';
+import { IPatient } from 'app/core/models/patient.interface';
+import { PatientService } from 'app/core/services/patient.service';
+import { UploadService } from 'app/core/services/upload.service';
+import { VerificationService } from 'app/core/services/verification.service';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextModule } from 'primeng/inputtext';
+import { MenubarModule } from 'primeng/menubar';
+import { MessagesModule } from 'primeng/messages';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { StepsModule } from 'primeng/steps';
+import { ToastModule } from 'primeng/toast';
+import { merge } from 'ts-deepmerge';
+
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 
 import {
   FormBuilder,
@@ -60,7 +68,7 @@ import {
     routerTransitionSlideRight,
   ],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   authService = inject(AuthenticationService);
   patientService = inject(PatientService);
   messageService = inject(MessageService);
@@ -69,8 +77,9 @@ export class HomeComponent implements OnInit {
   confirmationService = inject(ConfirmationService);
   fb: FormBuilder = inject(FormBuilder);
   uploadService = inject(UploadService);
+  cdr = inject(ChangeDetectorRef);
 
-  patient?: IPatient;
+  patient!: IPatient;
   verificationStatus: string = '';
   emailSent: boolean = false;
   patientIdForm!: FormGroup;
@@ -87,25 +96,6 @@ export class HomeComponent implements OnInit {
   isFormSubmitted: boolean = false;
 
   ngOnInit(): void {
-    const email = localStorage.getItem('email');
-    if (email) {
-      this.patientService
-        .getPatientByEmail(email)
-        .subscribe((patient: IPatient) => {
-          this.patient = patient;
-          this.verificationStatus = patient?.account?.verified
-            ? 'Verified'
-            : 'Not Verified';
-          if (this.patient?.account?.activationStep === 0) {
-            this.activeIndex = 0;
-            this.activeTab = '1';
-          } else if (this.patient?.account?.activationStep === 1 || 2) {
-            this.activeIndex = 1;
-            this.activeTab = '2';
-          }
-        });
-    }
-
     this.navItems = [
       {
         label: 'Profile',
@@ -140,9 +130,43 @@ export class HomeComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       idNumber: ['', [Validators.required]],
-      dob: [new Date(2006, 0, 1), [Validators.required]],
+      dob: [new Date(1987, 8, 13), [Validators.required]],
       phoneNumber: ['', [Validators.required]],
     });
+
+    const email = localStorage.getItem('email');
+    if (email) {
+      this.patientService
+        .getPatientByEmail(email)
+        .subscribe((patient: IPatient) => {
+          this.patient = patient;
+
+          this.patientIdForm.patchValue({
+            firstName: this.patient?.firstName,
+            lastName: this.patient?.lastName,
+            idNumber: this.patient?.idNumber,
+            dob: this.patient.dob as Date,
+            phoneNumber: this.patient?.phoneNumber,
+          });
+
+          this.f['dob'].setValue(this.patient.dob as Date);
+
+          this.verificationStatus = patient?.account?.verified
+            ? 'Verified'
+            : 'Not Verified';
+          if (this.patient?.account?.activationStep === 0) {
+            this.activeIndex = 0;
+            this.activeTab = '1';
+          } else if (this.patient?.account?.activationStep === 1 || 2) {
+            this.activeIndex = 1;
+            this.activeTab = '2';
+          }
+        });
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
   }
 
   next() {
@@ -203,30 +227,33 @@ export class HomeComponent implements OnInit {
   updatePatient() {
     this.isFormSubmitted = true;
     this.updatingPatient = true;
-    // let patient: IPatient = this.patientIdForm.value;
-    // patient.account = {};
-    this.patient!.firstName = this.patientIdForm.value.firstName;
-    this.patient!.lastName = this.patientIdForm.value.lastName;
-    this.patient!.idNumber = this.patientIdForm.value.idNumber;
-    this.patient!.dob = this.patientIdForm.value.dob;
-    this.patient!.phoneNumber = this.patientIdForm.value.phoneNumber;
-    this.patient!.account!.activationStep = 2;
 
-    console.log('Patient: ', this.patient);
+    const updatedPatient: IPatient = merge(this.patient, {
+      account: { activationStep: 2 },
+      firstName: this.patientIdForm.value.firstName,
+      lastName: this.patientIdForm.value.lastName,
+      idNumber: this.patientIdForm.value.idNumber,
+      dob: this.patientIdForm.value.dob as Date,
+      phoneNumber: this.patientIdForm.value.phoneNumber,
+    } as IPatient);
+
+    console.log('Updated Patient before API: ', updatedPatient);
 
     if (this.patientIdForm.invalid) {
       this.updatingPatient = false;
       return;
     }
 
-    this.patientService.updatePatient(this.patient!).subscribe(
-      (response: IPatient) => {
-        console.log('Response: ', response);
+    this.patientService.updatePatient(updatedPatient).subscribe(
+      (patient: IPatient) => {
+        console.log('Updated Patient from API: ', patient);
+        this.patient = patient;
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Patient updated successfully.',
         });
+
         this.updatingPatient = false;
         this.patientUpdated = true;
       },
@@ -237,6 +264,7 @@ export class HomeComponent implements OnInit {
           summary: 'Error',
           detail: 'Failed to update patient.',
         });
+
         this.updatingPatient = false;
       }
     );
@@ -258,10 +286,12 @@ export class HomeComponent implements OnInit {
           detail: 'Patient ID uploaded successfully.',
         });
 
-        this.patient!.account!.activationStep = 3;
-        this.patientService.updatePatient(this.patient!).subscribe(
-          (response: IPatient) => {
-            console.log('Response: ', response);
+        const updatedPatient: IPatient = Object.assign({}, this.patient, {
+          account: { activationStep: 3 },
+        });
+        this.patientService.updatePatient(updatedPatient!).subscribe(
+          (patient: IPatient) => {
+            this.patient = patient;
             console.log('Patient activationStep updated.');
           },
           (error: any) => {
