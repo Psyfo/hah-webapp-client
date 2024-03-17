@@ -1,27 +1,28 @@
-import { CommonModule } from "@angular/common";
-import { RouterModule } from "@angular/router";
-import { IPatient } from "app/core/models/patient.interface";
-import { PatientService } from "app/core/services/patient.service";
-import { routerTransitionSlideUp } from "app/core/utilities/animations";
-import { ConfirmationService, MessageService } from "primeng/api";
-import { ButtonModule } from "primeng/button";
-import { CalendarModule } from "primeng/calendar";
-import { CardModule } from "primeng/card";
-import { CheckboxModule } from "primeng/checkbox";
-import { ConfirmDialogModule } from "primeng/confirmdialog";
-import { DialogModule } from "primeng/dialog";
-import { DropdownModule } from "primeng/dropdown";
-import { InputMaskModule } from "primeng/inputmask";
-import { InputTextModule } from "primeng/inputtext";
-import { MenuModule } from "primeng/menu";
-import { MenubarModule } from "primeng/menubar";
-import { MessagesModule } from "primeng/messages";
-import { PanelMenuModule } from "primeng/panelmenu";
-import { RippleModule } from "primeng/ripple";
-import { Table, TableModule } from "primeng/table";
-import { TagModule } from "primeng/tag";
-import { ToastModule } from "primeng/toast";
-import { ToolbarModule } from "primeng/toolbar";
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { IPatient } from 'app/core/models/patient.interface';
+import { PatientService } from 'app/core/services/patient.service';
+import { routerTransitionSlideUp } from 'app/core/utilities/animations';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { CardModule } from 'primeng/card';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextModule } from 'primeng/inputtext';
+import { MenuModule } from 'primeng/menu';
+import { MenubarModule } from 'primeng/menubar';
+import { MessagesModule } from 'primeng/messages';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { RippleModule } from 'primeng/ripple';
+import { Table, TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { merge } from 'ts-deepmerge';
 
 import {
   AfterViewInit,
@@ -155,7 +156,7 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
       email: patient.email,
       firstName: patient.firstName,
       lastName: patient.lastName,
-      dob: patient.dob,
+      dob: new Date(patient.dob as Date),
       idNumber: patient.idNumber,
       phoneNumber: patient.phoneNumber,
       verified: patient.account?.verified,
@@ -181,7 +182,7 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
     }
 
     if (this.isUpdate) {
-      const updatedPatient: IPatient = Object.assign({}, this.selectedPatient, {
+      const updatedPatient: IPatient = merge(this.selectedPatient, {
         email: this.patientForm.value.email,
         firstName: this.patientForm.value.firstName,
         lastName: this.patientForm.value.lastName,
@@ -189,7 +190,8 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
           verified: this.patientForm.value.verified,
           approvalStatus: this.patientForm.value.approvalStatus,
         },
-      });
+      } as IPatient);
+
       console.log('Updated Patient:', updatedPatient);
 
       this.patientService.updatePatient(updatedPatient).subscribe(
@@ -238,6 +240,7 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
         }
       );
     }
+
     this.patientDialogVisible = false;
   }
 
