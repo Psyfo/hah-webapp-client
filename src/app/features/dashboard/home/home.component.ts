@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   uploadService = inject(UploadService);
   cdr = inject(ChangeDetectorRef);
 
-  patient!: IPatient;
+  patient?: IPatient;
   verificationStatus: string = '';
   emailSent: boolean = false;
   patientIdForm!: FormGroup;
@@ -130,7 +130,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       idNumber: ['', [Validators.required]],
-      dob: [new Date(1987, 8, 13), [Validators.required]],
+      dob: [new Date()],
       phoneNumber: ['', [Validators.required]],
     });
 
@@ -140,12 +140,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
         .getPatientByEmail(email)
         .subscribe((patient: IPatient) => {
           this.patient = patient;
+          console.log('Patient: ', this.patient);
 
           this.patientIdForm.patchValue({
             firstName: this.patient?.firstName,
             lastName: this.patient?.lastName,
             idNumber: this.patient?.idNumber,
-            dob: this.patient.dob as Date,
+            dob: new Date(this.patient.dob as Date),
             phoneNumber: this.patient?.phoneNumber,
           });
 
@@ -228,7 +229,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isFormSubmitted = true;
     this.updatingPatient = true;
 
-    const updatedPatient: IPatient = merge(this.patient, {
+    const updatedPatient: IPatient = merge(this.patient!, {
       account: { activationStep: 2 },
       firstName: this.patientIdForm.value.firstName,
       lastName: this.patientIdForm.value.lastName,
@@ -286,9 +287,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
           detail: 'Patient ID uploaded successfully.',
         });
 
-        const updatedPatient: IPatient = Object.assign({}, this.patient, {
+        const updatedPatient: IPatient = merge(this.patient!, {
           account: { activationStep: 3 },
-        });
+        } as IPatient);
         this.patientService.updatePatient(updatedPatient!).subscribe(
           (patient: IPatient) => {
             this.patient = patient;
