@@ -45,6 +45,7 @@
     </ng-template>
   </p-toolbar>
 
+  <p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
   <p-table
     #dt
     [value]="patients"
@@ -67,6 +68,8 @@
     [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 25, 50]"
     [loading]="updatingPatient"
+    [(contextMenuSelection)]="selectedPatient"
+    [contextMenu]="cm"
   >
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
@@ -109,7 +112,7 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-patient>
-      <tr>
+      <tr [pContextMenuRow]="patient">
         <td>
           <p-tableCheckbox [value]="selectedPatient"></p-tableCheckbox>
         </td>

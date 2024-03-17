@@ -3,12 +3,13 @@ import { RouterModule } from '@angular/router';
 import { IPatient } from 'app/core/models/patient.interface';
 import { PatientService } from 'app/core/services/patient.service';
 import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -50,6 +51,7 @@ import {
     CheckboxModule,
     CommonModule,
     ConfirmDialogModule,
+    ContextMenuModule,
     DialogModule,
     DropdownModule,
     InputMaskModule,
@@ -87,6 +89,7 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
     { label: 'Approved', value: 'approved' },
     { label: 'Rejected', value: 'rejected' },
   ];
+  contextMenuItems: MenuItem[] = [];
 
   patientForm!: FormGroup;
   isFormSubmitted: boolean = false;
@@ -107,6 +110,25 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
       verified: [false],
       approvalStatus: ['pending'],
     });
+    this.f['verified'].disable();
+
+    this.contextMenuItems = [
+      {
+        label: 'View',
+        icon: 'pi pi-fw pi-eye',
+        command: (event) => this.openUpdatePatientDialog(this.selectedPatient),
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-fw pi-trash',
+        command: (event) => this.deletePatient(this.selectedPatient),
+      },
+      {
+        label: 'Approve / Reject',
+        icon: 'pi pi-fw pi-check',
+        command: (event) => this.openApprovalDialog(this.selectedPatient),
+      },
+    ];
   }
   ngAfterViewInit(): void {
     this.ref.detectChanges();
@@ -171,6 +193,8 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
     this.isFormSubmitted = false;
     this.patientDialogVisible = false;
   }
+
+  openApprovalDialog(patient: IPatient) {}
 
   updatePatient() {
     this.isFormSubmitted = true;
