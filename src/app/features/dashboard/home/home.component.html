@@ -79,12 +79,14 @@
 
   <!-- Step 2: ID Verification -->
   @if(activeIndex === 1) {
-  <div class="border-1 border-round surface-border surface-card p-5">
+  <div
+    class="border-1 border-round surface-border surface-card p-5 w-full md:w-4"
+  >
     @if(patient?.account!.activationStep === 1){
     <h4>ID Verification Status</h4>
     <form [formGroup]="patientIdForm" class="flex flex-column gap-3">
       <!-- First Name -->
-      <div class="flex flex-column gap-2 w-full md:w-4">
+      <div class="flex flex-column gap-2 w-full">
         <label for="firstName">First Name</label>
         <input
           pInputText
@@ -95,11 +97,16 @@
         @if(f['firstName'].hasError('required') && (f['firstName'].touched ||
         isFormSubmitted)){
         <small class="text-red-500">This field is required</small>
+        } @if(f['firstName'].hasError('minlength') && (f['firstName'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500"
+          >First Name must be at least 2 characters long</small
+        >
         }
       </div>
 
       <!-- Last Name -->
-      <div class="flex flex-column gap-2 w-full md:w-4">
+      <div class="flex flex-column gap-2 w-full">
         <label for="lastName">Last Name</label>
         <input
           pInputText
@@ -114,7 +121,7 @@
       </div>
 
       <!-- ID Number -->
-      <div class="flex flex-column gap-2 w-full md:w-4">
+      <div class="flex flex-column gap-2 w-full">
         <label for="idNumber">ID Number</label>
         <p-inputMask
           mask="99-9999999-a-99"
@@ -130,7 +137,7 @@
       </div>
 
       <!-- Date of Birth -->
-      <div class="flex flex-column gap-2 w-full md:w-4">
+      <div class="flex flex-column gap-2 w-full">
         <label for="dob">Date of Birth</label>
 
         <p-calendar
@@ -141,22 +148,26 @@
           [monthNavigator]="true"
           [yearNavigator]="true"
           styleClass="w-full"
-          [dateFormat]="'dd/mm/yy'"
+          dateFormat="dd-mm-yy"
           [appendTo]="'body'"
-          [placeholder]="'dd/mm/yy'"
+          [placeholder]="'DD-MM-YYYY'"
         ></p-calendar>
       </div>
 
       <!-- PHone Number -->
-      <div class="flex flex-column gap-2 w-full md:w-4">
+      <div class="flex flex-column gap-2 w-full">
         <label for="phoneNumber">Phone Number</label>
-        <p-inputMask
-          mask="999 999 9999"
-          placeholder="079 999 9999"
-          id="phoneNumber"
-          formControlName="phoneNumber"
-          styleClass="w-full"
-        ></p-inputMask>
+        <p-inputGroup styleClass="w-full">
+          <p-inputGroupAddon>+263</p-inputGroupAddon>
+          <p-inputGroupAddon>07</p-inputGroupAddon>
+          <p-inputMask
+            mask="99999999?9"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            styleClass="w-full"
+          ></p-inputMask>
+        </p-inputGroup>
+
         @if(f['phoneNumber'].hasError('required') && (f['phoneNumber'].touched
         || isFormSubmitted)){
         <small class="text-red-500">This field is required</small>
@@ -166,7 +177,7 @@
       <p-button
         submit
         [loading]="updatingPatient"
-        label="submit"
+        label="Submit"
         (click)="updatePatient()"
       ></p-button>
     </form>
@@ -176,7 +187,7 @@
     @if(patient?.account?.activationStep === 2){
     <h4>Upload ID Document</h4>
 
-    <div class="flex flex-column gap-2 w-full md:w-4">
+    <div class="flex flex-column gap-2 w-full">
       <label for="idImage">ID Image</label>
       <p-fileUpload
         id="idImage"
@@ -190,7 +201,7 @@
         "
         [invalidFileTypeMessageSummary]="'File Type Incorrect'"
         [invalidFileTypeMessageDetail]="
-          'The file uploaded is the wrong format. Please upload a jpeg, pdf or hiec file formats only.'
+          'The file uploaded is the wrong format. Please upload a jpeg, pdf or heic file format only.'
         "
         [fileLimit]="1"
         [customUpload]="true"

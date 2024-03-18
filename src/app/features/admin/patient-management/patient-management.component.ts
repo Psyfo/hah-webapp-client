@@ -211,7 +211,6 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
         firstName: this.patientForm.value.firstName,
         lastName: this.patientForm.value.lastName,
         account: {
-          verified: this.patientForm.value.verified,
           approvalStatus: this.patientForm.value.approvalStatus,
         },
       } as IPatient);

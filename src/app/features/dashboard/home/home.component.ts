@@ -11,6 +11,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
@@ -45,20 +47,22 @@ import {
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule,
-    MessagesModule,
-    ToastModule,
-    MenubarModule,
-    StepsModule,
     ButtonModule,
-    ProgressSpinnerModule,
-    DialogModule,
-    ConfirmDialogModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    InputMaskModule,
     CalendarModule,
+    CommonModule,
+    ConfirmDialogModule,
+    DialogModule,
     FileUploadModule,
+    InputGroupAddonModule,
+    InputGroupModule,
+    InputMaskModule,
+    InputTextModule,
+    MenubarModule,
+    MessagesModule,
+    ProgressSpinnerModule,
+    ReactiveFormsModule,
+    StepsModule,
+    ToastModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -127,8 +131,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     ];
 
     this.patientIdForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      firstName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(20),
+        ],
+      ],
+      lastName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(20),
+        ],
+      ],
       idNumber: ['', [Validators.required]],
       dob: [new Date()],
       phoneNumber: ['', [Validators.required]],
