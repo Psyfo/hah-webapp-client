@@ -139,6 +139,17 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
         command: (event) => this.openApprovalDialog(this.selectedPatient),
       },
     ];
+
+    // Subscribe to a[approvalStatus] value changes
+    this.a['approvalStatus'].valueChanges.subscribe((value) => {
+      if (value === 'rejected') {
+        this.rejectionReasonVisible = true;
+        this.a['rejectionReason'].setValidators([Validators.required]);
+      } else {
+        this.rejectionReasonVisible = false;
+        this.a['rejectionReason'].clearValidators();
+      }
+    });
   }
   ngAfterViewInit(): void {
     this.ref.detectChanges();
@@ -209,7 +220,16 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
   }
 
   openApprovalDialog(patient: IPatient) {
+    if (this.a['approvalStatus']!.value === 'rejected') {
+      this.rejectionReasonVisible = true;
+      this.a['rejectionReason'].setValidators([Validators.required]);
+    } else {
+      this.rejectionReasonVisible = false;
+      this.a['rejectionReason'].clearValidators();
+    }
+
     this.approvalDialogVisible = true;
+
     this.approvalForm.patchValue({
       approvalStatus: patient.account?.approvalStatus,
     });
@@ -220,14 +240,13 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
   }
 
   onApprovalStatusChange() {
-    console.log('Approval Status:', this.a['approvalStatus']!.value);
-    if (this.a['approvalStatus'].value === 'rejected') {
-      this.rejectionReasonVisible = true;
-      this.a['rejectionReason'].setValidators([Validators.required]);
-    } else {
-      this.rejectionReasonVisible = false;
-      this.a['rejectionReason'].clearValidators();
-    }
+    // if (this.a['approvalStatus'].value === 'rejected') {
+    //   this.rejectionReasonVisible = true;
+    //   this.a['rejectionReason'].setValidators([Validators.required]);
+    // } else {
+    //   this.rejectionReasonVisible = false;
+    //   this.a['rejectionReason'].clearValidators();
+    // }
   }
 
   updatePatient() {
