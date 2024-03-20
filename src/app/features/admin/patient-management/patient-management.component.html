@@ -316,3 +316,78 @@
     </div>
   </ng-template>
 </p-dialog>
+
+<!-- Approval Form Dialog -->
+<p-dialog
+  [(visible)]="approvalDialogVisible"
+  [modal]="true"
+  [appendTo]="'body'"
+  styleClass="w-4"
+>
+  <ng-template pTemplate="header">
+    <h3>Approve/Reject Patient</h3>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="flex">
+      <form [formGroup]="approvalForm" class="flex flex-column gap-3 w-full">
+        <div class="flex flex-column gap-2">
+          <!-- Approval Status -->
+          <div class="flex flex-column gap-2 w-full">
+            <label for="approvalStatus">Approval Status</label>
+            <p-dropdown
+              [options]="approvalStatuses"
+              formControlName="approvalStatus"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select an Approval Status"
+              [appendTo]="'body'"
+              styleClass="w-full"
+              (onChange)="onApprovalStatusChange()"
+            ></p-dropdown>
+            @if (a['approvalStatus'].hasError('required') &&
+            (a['approvalStatus'].touched || isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+
+          <!-- Rejection Reason -->
+          <div class="flex flex-column gap-2 w-full">
+            @if(rejectionReasonVisible){
+            <div class="flex flex-column gap-2 w-full">
+              <label for="rejectionReason">Rejection Reason</label>
+              <textarea
+                pInputTextarea
+                formControlName="rejectionReason"
+                rows="10"
+              ></textarea>
+              @if (a['rejectionReason'].hasError('required') &&
+              (a['rejectionReason'].touched || isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              }
+            </div>
+            }
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-between">
+      <button
+        pButton
+        pRipple
+        label="Cancel"
+        class="p-button-secondary"
+        (click)="closeApprovalDialog()"
+      ></button>
+      <button
+        pButton
+        pRipple
+        label="Save"
+        class="p-button-success"
+        (click)="approvePatient()"
+        [loading]="approvingPatient"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>

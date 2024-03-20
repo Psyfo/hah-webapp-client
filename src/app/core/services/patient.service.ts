@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
-import { IPatient } from "app/core/models/patient.interface";
-import { environment } from "environments/environment";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { IPatient } from 'app/core/models/patient.interface';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -86,6 +86,14 @@ export class PatientService {
   reactivatePatientByEmail(patient: IPatient) {
     return this.http.patch<IPatient>(
       `${this.apiUrl}/patients/reactivate/${patient.email}`,
+      patient,
+      this.httpOptions
+    );
+  }
+
+  approvePatient(patient: IPatient) {
+    return this.http.patch<IPatient>(
+      `${this.apiUrl}/patients/approve/${patient.id}`,
       patient,
       this.httpOptions
     );

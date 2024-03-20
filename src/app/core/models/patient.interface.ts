@@ -4,6 +4,7 @@ export interface IPatientAccount {
   verified?: boolean;
   activationStep?: number;
   approvalStatus?: string;
+  rejectionReason?: string;
   country?: string;
   accountStatus?: string;
 }

@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { IPatient } from 'app/core/models/patient.interface';
 import { PatientService } from 'app/core/services/patient.service';
 import { routerTransitionSlideUp } from 'app/core/utilities/animations';
+import { get } from 'jquery';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -92,9 +93,13 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
   contextMenuItems: MenuItem[] = [];
 
   patientForm!: FormGroup;
+  approvalForm!: FormGroup;
   isFormSubmitted: boolean = false;
   updatingPatient: boolean = false;
+  approvingPatient: boolean = false;
   patientDialogVisible = false;
+  approvalDialogVisible = false;
+  rejectionReasonVisible = false;
   isUpdate: boolean = false;
 
   ngOnInit(): void {
@@ -111,6 +116,11 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
       approvalStatus: ['pending'],
     });
     this.f['verified'].disable();
+
+    this.approvalForm = this.fb.group({
+      approvalStatus: ['pending', [Validators.required]],
+      rejectionReason: [''],
+    });
 
     this.contextMenuItems = [
       {
@@ -136,6 +146,10 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
 
   get f() {
     return this.patientForm.controls;
+  }
+
+  get a() {
+    return this.approvalForm.controls;
   }
 
   getPatients() {
@@ -194,7 +208,27 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
     this.patientDialogVisible = false;
   }
 
-  openApprovalDialog(patient: IPatient) {}
+  openApprovalDialog(patient: IPatient) {
+    this.approvalDialogVisible = true;
+    this.approvalForm.patchValue({
+      approvalStatus: patient.account?.approvalStatus,
+    });
+  }
+
+  closeApprovalDialog() {
+    this.approvalDialogVisible = false;
+  }
+
+  onApprovalStatusChange() {
+    console.log('Approval Status:', this.a['approvalStatus']!.value);
+    if (this.a['approvalStatus'].value === 'rejected') {
+      this.rejectionReasonVisible = true;
+      this.a['rejectionReason'].setValidators([Validators.required]);
+    } else {
+      this.rejectionReasonVisible = false;
+      this.a['rejectionReason'].clearValidators();
+    }
+  }
 
   updatePatient() {
     this.isFormSubmitted = true;
@@ -294,6 +328,48 @@ export class PatientManagementComponent implements OnInit, AfterViewInit {
         reject: () => {},
       });
     }
+  }
+
+  approvePatient() {
+    this.approvalDialogVisible = false;
+    this.approvingPatient = true;
+
+    const updatedPatient: IPatient = merge(this.selectedPatient, {
+      account: {
+        approvalStatus: this.approvalForm.value.approvalStatus,
+      },
+    } as IPatient);
+
+    if (this.approvalForm.value.approvalStatus === 'rejected') {
+      updatedPatient.account!.rejectionReason =
+        this.approvalForm.value.rejectionReason;
+    }
+
+    this.patientService.approvePatient(updatedPatient).subscribe(
+      (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Patient approved successfully.',
+        });
+        this.approvingPatient = false;
+        this.approvalDialogVisible = false;
+
+        this.approvalForm.reset();
+        this.getPatients();
+      },
+      (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'An error occurred while approving the patient.',
+        });
+        this.approvingPatient = false;
+        this.approvalDialogVisible = false;
+
+        this.approvalForm.reset();
+      }
+    );
   }
 
   getSeverityApproval(approvalStatus: string) {
