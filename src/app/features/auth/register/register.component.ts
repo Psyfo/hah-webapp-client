@@ -89,8 +89,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   practitionerRegisterForm!: FormGroup;
 
   isFormSubmitted = false;
-  passwordSymbols = '(policy symbols)';
-  emailExists = false;
+passwordSymbols = '(!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)';  
+emailExists = false;
   messages: any[] = [];
   ref: DynamicDialogRef | undefined;
   tabViewIndex: number = 0;
