@@ -1,0 +1,53 @@
+.register {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100vh;
+  background-color: #EBF2F4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+  padding: 0 20vw;
+}
+
+
+@media (min-width: 479px) {
+  .register {
+    padding-top: 100px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 14px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+  }
+}
+
+.logo-wrapper {
+  width: 200px;
+  height: auto;
+  object-fit: fill;
+}
+
+@media (max-width: 479px) {
+  .logo-wrapper {
+    width: 160px;
+    height: auto;
+    object-fit: fill;
+  }
+}
+
+.logo {
+  width: 180px;
+  height: 100%;
+  object-fit: fill;
+}
+
+.get-started-message {
+  width: 60vw;
+  ;
+}

@@ -1,0 +1,215 @@
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 18px;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 17px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: var(--Primary-Turquoise-500, #137EA0);
+  color: var(--Neutral-Gray-50, #F8FAFC);
+
+  &:active {
+    background-color: var(--Primary-Turquoise-700, #0A5B75);
+  }
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background-color: var(--Secondary-500, #F7CE46);
+  color: var(--Neutral-Gray-900, #0F172A);
+
+  &:active {
+    background-color: var(--Secondary-600, #C6A538);
+  }
+}
+
+/* Tertiary Button */
+.btn-tertiary {
+  background-color: #FFF;
+  color: var(--Primary-Turquoise-500, #137EA0);
+  border: 1px solid var(--Primary-Turquoise-500, #137EA0);
+
+  &:active {
+    border: 1px solid var(--Primary-Turquoise-200, #AACAD5);
+    background-color: var(--Primary-Turquoise-50, #EBF2F4);
+    color: var(--Primary-Turquoise-300, #87C1D4);
+  }
+}
+
+/* Small Button */
+.btn-small {
+  padding: 8px 12px;
+  /* Caption / Semi Bold */
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  /* 150% */
+}
+
+/* Large Button */
+.btn-large {
+  padding: 14px 20px;
+  /* Paragraph/P3/Semi Bold */
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
+  /* 122.222% */
+}
+
+/* Disabled styles */
+.btn:disabled,
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  background: var(--Neutral-Gray-200, #E2E8F0);
+  color: var(--Neutral-Gray-400, #94A3B8);
+}
+
+/* Disabled styles */
+
+.btn-tertiary:disabled {
+  border: 1px solid var(--Neutral-Gray-400, #94A3B8);
+  background: var(--Neutral-Gray-100, #F1F5F9);
+}
+
+label {
+  color: var(--Neutral-Gray-600, #475569);
+
+  /* Paragraph/P1 / Regular */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  text-transform: capitalize;
+  /* 121.429% */
+}
+
+.form-control {
+  width: 100%;
+  margin-top: 7px;
+
+  border-radius: 8px;
+  border: 1px solid var(--Neutral-Gray-300, #CBD5E1);
+  background: var(--Shades-White, #FFF);
+  padding: 14px 16px;
+
+  color: var(--Neutral-Gray-400, #94A3B8);
+
+  /* Paragraph/P1 / Regular */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  /* 121.429% */
+}
+
+/* Large form control */
+.form-control-lg {
+  border-radius: 8px;
+  border: 1px solid var(--Neutral-Gray-300, #CBD5E1);
+  background: var(--Shades-White, #FFF);
+  padding: 14px 16px;
+
+  color: var(--Neutral-Gray-400, #94A3B8);
+
+  /* Paragraph / P2 / Regular */
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+/* Small form control */
+.form-control-sm {
+  border-radius: 8px;
+  border: 1px solid var(--Neutral-Gray-300, #CBD5E1);
+  background: var(--Shades-White, #FFF);
+  padding: 10px 16px;
+
+  color: var(--Neutral-Gray-400, #94A3B8);
+
+  /* Paragraph/P1 / Regular */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  /* 121.429% */
+}
+
+/* Error state */
+.form-control-error {
+  border-radius: 8px;
+  border: 1px solid var(--Error-Red-500, #EF4444);
+  background: var(--Shades-White, #FFF);
+}
+
+/* Disabled state */
+.form-control:disabled,
+.form-control-lg:disabled,
+.form-control-sm:disabled,
+.form-control-error:disabled {
+  border-radius: 8px;
+  border: 1px solid var(--Neutral-Gray-300, #CBD5E1);
+  background: var(--Neutral-Gray-100, #F1F5F9);
+  cursor: not-allowed;
+
+  color: var(--Neutral-Gray-400, #94A3B8);
+
+
+}
+
+/* Active state */
+input.form-control:focus,
+input.form-control-lg:focus,
+input.form-control-sm:focus,
+input.form-control-error:focus {
+  border-radius: 8px;
+  background-color: var(--Shades-White, #FFF);
+  outline: 2px solid var(--Primary-Turquoise-100, #D3E3E9) !important;
+  color: var(--Neutral-Gray-800, #1E293B);
+
+
+}
+
+.text-danger {
+  color: var(--Error-Red-500, #EF4444);
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  /* 150% */
+}
+
+.input-caption {
+  color: var(--Neutral-Gray-500, #64748B);
+
+  /* Caption / Regular */
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  /* 150% */
+}

@@ -1,0 +1,134 @@
+<p-toast position="top-right" [baseZIndex]="9000"></p-toast>
+
+<div
+  class="bg-primary-100 flex flex-column gap-5 align-items-center min-h-screen min-w-screen p-5"
+>
+  <div class="flex justify-content-center align-items-center mt-8 w-full">
+    <img src="assets/images/hah-logo.svg" alt="" class="w-12rem" />
+  </div>
+
+  <div class="w-full md:w-4" [@routerTransitionSlideUp]>
+    <p-tabView #tabView [(activeIndex)]="tabViewIndex">
+      <!-- Patient Tab -->
+      <p-tabPanel header="Patient Login">
+        <!-- Tab Header -->
+        <ng-template pTemplate="header">
+          <div class="flex justify-content-center align-items-center gap-2">
+            <i class="pi pi-user text-xl"></i>
+            <span>Patient</span>
+          </div>
+        </ng-template>
+
+        <!-- Tab Content -->
+        <div class="">
+          <form
+            [formGroup]="loginForm"
+            (submit)="login()"
+            class="flex flex-column gap-3"
+          >
+            <!-- Email -->
+            <div class="flex flex-column gap-2">
+              <label for="email">Email</label>
+              <input pInputText formControlName="email" />
+              @if(f['email'].hasError('required') && (f['email'].touched
+              ||isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              }
+            </div>
+
+            <!-- Password -->
+            <div class="flex flex-column gap-2">
+              <label for="password">Password</label>
+              <input type="password" pInputText formControlName="password" />
+              @if (f['password'].hasError('required') && (f['password'].touched
+              || isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              }
+            </div>
+
+            <!-- Login Button -->
+            <p-button
+              type="submit"
+              label="Login as Patient"
+              [styleClass]="'sm: w-full'"
+            ></p-button>
+            @if(loginFailMessage){
+            <small class="text-center text-red-500"
+              >Email or password is incorrect. Please check and try
+              again.</small
+            >
+            }
+
+            <p-button
+              label="Don't have a Patient account? Sign Up"
+              [link]="true"
+              class="text-center mt-4"
+              (click)="goToSignUp()"
+            ></p-button>
+          </form>
+        </div>
+      </p-tabPanel>
+
+      <!-- Practitioner Tab -->
+      <p-tabPanel>
+        <!-- Tab Header -->
+        <ng-template pTemplate="header">
+          <div class="flex justify-content-center align-items-center gap-2">
+            <i class="fa-solid fa-stethoscope text-xl"></i>
+            <span>Practitioner</span>
+          </div>
+        </ng-template>
+
+        <!-- Tab Content -->
+        <div class="">
+          <form
+            [formGroup]="practitionerLoginForm"
+            (submit)="loginPractitioner()"
+            class="flex flex-column gap-3"
+          >
+            <!-- Email -->
+            <div class="flex flex-column gap-2">
+              <label for="email">Email</label>
+              <input pInputText formControlName="email" />
+              @if(p['email'].hasError('required') && (p['email'].touched
+              ||isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              }
+            </div>
+
+            <!-- Password -->
+            <div class="flex flex-column gap-2">
+              <label for="password">Password</label>
+              <input type="password" pInputText formControlName="password" />
+              @if (p['password'].hasError('required') && (p['password'].touched
+              || isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              }
+            </div>
+
+            <!-- Login Button -->
+            <p-button
+              type="submit"
+              label="Login as Practitioner"
+              [styleClass]="'sm: w-full'"
+              severity="help"
+            ></p-button>
+            @if(loginFailMessage){
+            <small class="text-center text-red-500"
+              >Email or password is incorrect. Please check and try
+              again.</small
+            >
+            }
+
+            <p-button
+              label="Don't have a Practitioner account? Sign Up"
+              [link]="true"
+              class="text-center mt-4"
+              (click)="goToPractitionerSignup()"
+            ></p-button>
+          </form>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>

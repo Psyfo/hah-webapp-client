@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* @import "~@fortawesome/fontawesome-free/css/all.min.css"; */
+
+/* :root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --text-color: #333;
+} */
+
+html {
+  font-size: 14px;
+}
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: var(--surface-ground);
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}

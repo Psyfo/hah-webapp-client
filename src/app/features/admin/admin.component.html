@@ -1,0 +1,108 @@
+<!-- General Admin Toast -->
+<p-toast></p-toast>
+
+<!-- Admin Navigation -->
+<div class="" [ngClass]="{ 'sidebar-open': sidebarVisible }">
+  <p-menubar
+    [@routerTransitionSlideUp]
+    [model]="navItems"
+    [styleClass]="'surface-ground'"
+  >
+    <ng-template pTemplate="start">
+      <!-- <img
+      src="assets/images/hah-logo.svg"
+      height="40"
+      class="mr-2"
+      alt="HAH Logo"
+    /> -->
+      <p-button
+        (click)="sidebarVisible = !sidebarVisible"
+        icon="pi pi-bars"
+        [outlined]="true"
+        severity="primary"
+      ></p-button>
+    </ng-template>
+    <ng-template pTemplate="end">
+      <p-button
+        icon="pi pi-power-off"
+        label="Logout"
+        (click)="logout()"
+        severity="secondary"
+        [outlined]="true"
+      ></p-button>
+    </ng-template>
+  </p-menubar>
+</div>
+
+<!-- Admin Sidebar -->
+<div class="surface-ground">
+  <p-sidebar
+    #sidebarRef
+    [(visible)]="sidebarVisible"
+    [position]="'left'"
+    [modal]="false"
+  >
+    <ng-template pTemplate="headless">
+      <div class="flex flex-column h-full">
+        <div
+          class="flex align-items-center justify-content-between p-3 flex-shrink-0"
+        >
+          <span class="inline-flex align-items-center gap-2">
+            <img src="assets/images/hah-logo.svg" alt="Health at Home Logo" />
+            <!-- <span class="font-semibold text-2xl text-primary"
+          >Health At Home</span
+        > -->
+          </span>
+          <span>
+            <!-- <p-button
+              type="button"
+              (click)="closeCallback($event)"
+              icon="pi pi-times"
+              [rounded]="true"
+              [outlined]="true"
+              styleClass="h-2rem w-2rem"
+            ></p-button> -->
+          </span>
+        </div>
+        <div class="overflow-y-auto">
+          <p-panelMenu
+            [model]="panelMenuItems"
+            [style]="{ width: '100%' }"
+          ></p-panelMenu>
+        </div>
+        <div class="mt-auto">
+          <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />
+          <a
+            pRipple
+            class="m-3 flex align-items-center cursor-pointer p-3 gap-2 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+          >
+            <p-avatar
+              image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+              shape="circle"
+            />
+            <span class="font-bold">HAH Admin</span>
+          </a>
+        </div>
+      </div>
+    </ng-template>
+  </p-sidebar>
+</div>
+
+<div
+  [@routerTransitionSlideUp]
+  class="surface-ground"
+  [ngClass]="{ 'sidebar-open': sidebarVisible }"
+>
+  <div class="flex gap-2">
+    <!-- Admin Content -->
+    <div class="flex flex-column p-5 w-full">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<!-- General Confirmation Dialog -->
+<p-confirmDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>

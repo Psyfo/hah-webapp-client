@@ -1,0 +1,27 @@
+<div [@routerTransitionSlideUp] class="surface-ground min-h-screen">
+  <p-menubar [@routerTransitionSlideUp] [model]="navItems">
+    <ng-template pTemplate="start">
+      <img
+        src="assets/images/hah-logo.svg"
+        height="40"
+        class="mr-2"
+        alt="HAH Logo"
+      />
+    </ng-template>
+    <ng-template pTemplate="end">
+      <p-button
+        icon="pi pi-power-off"
+        label="Logout"
+        (click)="logout()"
+        severity="secondary"
+        [outlined]="true"
+      ></p-button>
+    </ng-template>
+  </p-menubar>
+
+  <!-- Dialogs -->
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+
+  <router-outlet></router-outlet>
+</div>

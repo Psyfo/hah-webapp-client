@@ -1,0 +1,393 @@
+<div
+  class="border-round border-1 surface-border surface-card p-5"
+  [@routerTransitionSlideUp]
+>
+  <h3 class="text-xl text-color-secondary">Patient Management</h3>
+
+  <p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+      <!-- <button
+        pButton
+        pRipple
+        label="New"
+        icon="pi pi-plus"
+        class="p-button-primary mr-2"
+        (click)="openNew()"
+      ></button> -->
+      <!-- <button
+        pButton
+        pRipple
+        [label]="Delete"
+        icon="pi pi-trash"
+        class="p-button-danger"
+        (click)="deleteSelectedProducts()"
+        [disabled]="!selectedProducts || !selectedProducts.length"
+      ></button> -->
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <!-- <p-fileUpload
+        mode="basic"
+        accept="image/*"
+        [maxFileSize]="1000000"
+        label="Import"
+        chooseLabel="Import"
+        class="mr-2 inline-block"
+      ></p-fileUpload> -->
+      <button
+        pButton
+        pRipple
+        label="Export"
+        icon="pi pi-upload"
+        class="p-button-help"
+        [title]="'Export'"
+      ></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
+  <p-table
+    #dt
+    [value]="patients"
+    [rows]="10"
+    [paginator]="true"
+    [globalFilterFields]="[
+      'email',
+      'firstName',
+      'lastName',
+      'account.verified',
+      'account.approvalStatus',
+      'account.accountStatus'
+    ]"
+    [tableStyle]="{ 'min-width': '100%' }"
+    [styleClass]="'w-full'"
+    [(selection)]="selectedPatients"
+    [rowHover]="true"
+    dataKey="email"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [loading]="updatingPatient"
+    [(contextMenuSelection)]="selectedPatient"
+    [contextMenu]="cm"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h5 class="m-0">Patients</h5>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="onInput($event)"
+            placeholder="Search..."
+          />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 4rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="email" style="min-width: 15rem">
+          Email <p-sortIcon field="email"></p-sortIcon>
+        </th>
+        <th pSortableColumn="firstName">
+          First Name <p-sortIcon field="firstName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="lastName" style="min-width: 10rem">
+          Last Name <p-sortIcon field="lastName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="verified">
+          Verified <p-sortIcon field="verified"></p-sortIcon>
+        </th>
+        <th pSortableColumn="approvalStatus" style="min-width: 10rem">
+          Approval Status <p-sortIcon field="approvalStatus"></p-sortIcon>
+        </th>
+        <th pSortableColumn="active" style="min-width: 10rem">
+          Account Status <p-sortIcon field="active"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-patient>
+      <tr [pContextMenuRow]="patient">
+        <td>
+          <p-tableCheckbox [value]="selectedPatient"></p-tableCheckbox>
+        </td>
+        <td>{{ patient.email }}</td>
+        <td>
+          {{ patient.firstName }}
+        </td>
+        <td>{{ patient.lastName }}</td>
+        <td>
+          <p-tag
+            [value]="patient.account.verified"
+            [severity]="getSeverityVerified(patient.account.verified)"
+          ></p-tag>
+        </td>
+        <td>
+          <p-tag
+            [value]="patient.account.approvalStatus"
+            [severity]="getSeverityApproval(patient.account.approvalStatus)"
+          ></p-tag>
+        </td>
+
+        <td>
+          <p-tag
+            [value]="patient.account.accountStatus"
+            [severity]="getSeverityAccountStatus(patient.account.accountStatus)"
+          ></p-tag>
+        </td>
+
+        <td>
+          <div class="flex gap-2">
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-help mr-2"
+              (click)="openUpdatePatientDialog(patient)"
+              pTooltip="Update Patient"
+            ></button>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger"
+              (click)="deletePatient(patient)"
+              pTooltip="Delete Patient"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        In total there are {{ patients ? patients.length : 0 }} patients.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Update Form Dialog -->
+<p-dialog [(visible)]="patientDialogVisible" [modal]="true" [appendTo]="'body'">
+  <ng-template pTemplate="header">
+    <h3>Update Patient</h3>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="flex">
+      <form [formGroup]="patientForm" class="flex flex-column gap-3">
+        <!-- Email -->
+        <div class="flex flex-column gap-3">
+          <label for="email">Email</label>
+          <input type="text" pInputText formControlName="email" />
+          @if (f['email'].hasError('required') && (f['email'].touched ||
+          isFormSubmitted)){
+          <small class="text-red-500">This field is required</small>
+          }
+        </div>
+
+        <!-- First and last Names -->
+        <div class="flex gap-2">
+          <div class="flex flex-column gap-3 w-6">
+            <label for="firstName">First Name</label>
+            <input type="text" pInputText formControlName="firstName" />
+            @if (f['firstName'].hasError('required') && (f['firstName'].touched
+            || isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+          <div class="flex flex-column gap-3 w-6">
+            <label for="lastName">Last Name</label>
+            <input type="text" pInputText formControlName="lastName" />
+            @if (f['lastName'].hasError('required') && (f['lastName'].touched ||
+            isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <!-- ID Number -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="idNumber">ID Number</label>
+            <p-inputMask
+              mask="99-9999999-a-99"
+              placeholder="00-0000000-A-00"
+              id="idNumber"
+              formControlName="idNumber"
+              styleClass="w-full"
+            ></p-inputMask>
+            @if(f['idNumber'].hasError('required') && (f['idNumber'].touched ||
+            isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+
+          <!-- PHone Number -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="phoneNumber">Phone Number</label>
+            <p-inputMask
+              mask="999 999 9999"
+              placeholder="079 999 9999"
+              id="phoneNumber"
+              formControlName="phoneNumber"
+              styleClass="w-full"
+            ></p-inputMask>
+            @if(f['phoneNumber'].hasError('required') &&
+            (f['phoneNumber'].touched || isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <!-- Date of Birth -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="dob">Date of Birth</label>
+            <p-calendar
+              id="dob"
+              formControlName="dob"
+              [showIcon]="true"
+              [readonlyInput]="false"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              styleClass="w-full"
+              [appendTo]="'body'"
+              dateFormat="dd-mm-yy"
+              [placeholder]="'DD-MM-YYYY'"
+            ></p-calendar>
+          </div>
+
+          <!-- Approval Status -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="approvalStatus">Approval Status</label>
+            <p-dropdown
+              [options]="approvalStatuses"
+              formControlName="approvalStatus"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select an Approval Status"
+              [appendTo]="'body'"
+              [styleClass]="'w-full'"
+            ></p-dropdown>
+            @if (f['approvalStatus'].hasError('required') &&
+            (f['approvalStatus'].touched || isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <!-- Verification Checkbox -->
+          <div class="flex flex-column gap-2 w-6">
+            <div class="flex gap-2 align-items-center">
+              <p-checkbox
+                formControlName="verified"
+                inputId="verified"
+                [binary]="true"
+              ></p-checkbox>
+              <label for="terms">Email Verified</label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-between">
+      <button
+        pButton
+        pRipple
+        label="Cancel"
+        class="p-button-secondary"
+        (click)="closeUpdatePatientDialog()"
+      ></button>
+      <button
+        pButton
+        pRipple
+        label="Save"
+        class="p-button-success"
+        (click)="updatePatient()"
+        [loading]="updatingPatient"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Approval Form Dialog -->
+<p-dialog
+  [(visible)]="approvalDialogVisible"
+  [modal]="true"
+  [appendTo]="'body'"
+  styleClass="w-4"
+>
+  <ng-template pTemplate="header">
+    <h3>Approve/Reject Patient</h3>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="flex">
+      <form [formGroup]="approvalForm" class="flex flex-column gap-3 w-full">
+        <div class="flex flex-column gap-2">
+          <!-- Approval Status -->
+          <div class="flex flex-column gap-2 w-full">
+            <label for="approvalStatus">Approval Status</label>
+            <p-dropdown
+              [options]="approvalStatuses"
+              formControlName="approvalStatus"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select an Approval Status"
+              [appendTo]="'body'"
+              styleClass="w-full"
+              (onChange)="onApprovalStatusChange()"
+            ></p-dropdown>
+            @if (a['approvalStatus'].hasError('required') &&
+            (a['approvalStatus'].touched || isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+
+          <!-- Rejection Reason -->
+          <div class="flex flex-column gap-2 w-full">
+            @if(rejectionReasonVisible){
+            <div class="flex flex-column gap-2 w-full">
+              <label for="rejectionReason">Rejection Reason</label>
+              <textarea
+                pInputTextarea
+                formControlName="rejectionReason"
+                rows="10"
+              ></textarea>
+              @if (a['rejectionReason'].hasError('required') &&
+              (a['rejectionReason'].touched || isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              }
+            </div>
+            }
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-between">
+      <button
+        pButton
+        pRipple
+        label="Cancel"
+        class="p-button-secondary"
+        (click)="closeApprovalDialog()"
+      ></button>
+      <button
+        pButton
+        pRipple
+        label="Save"
+        class="p-button-success"
+        (click)="approvePatient()"
+        [loading]="approvingPatient"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
