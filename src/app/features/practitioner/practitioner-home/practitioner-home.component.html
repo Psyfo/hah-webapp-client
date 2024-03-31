@@ -1,5 +1,5 @@
 @if(practitioner?.account?.activationStep !== 3){
-<div [@routerTransitionSlideRight] class="flex flex-column gap-2 p-5">
+<div [@routerTransitionSlideUp] class="flex flex-column gap-2 p-5">
   <p class="font-semibold text-xl text-gray-500 mb-8">
     Welcome to Your Dashboard {{ practitioner?.email }}
   </p>
@@ -136,24 +136,29 @@
           id="dob"
           formControlName="dob"
           [showIcon]="true"
-          [readonlyInput]="true"
+          [readonlyInput]="false"
           [monthNavigator]="true"
           [yearNavigator]="true"
           [maxDate]="maxDate"
           styleClass="w-full"
+          dateFormat="dd-mm-yy"
+          [placeholder]="'DD-MM-YYYY'"
         ></p-calendar>
       </div>
 
-      <!-- PHone Number -->
+      <!-- Phone Number -->
       <div class="flex flex-column gap-2 w-full md:w-4">
         <label for="phoneNumber">Phone Number</label>
-        <p-inputMask
-          mask="999 999 9999"
-          placeholder="079 999 9999"
-          id="phoneNumber"
-          formControlName="phoneNumber"
-          styleClass="w-full"
-        ></p-inputMask>
+        <p-inputGroup styleClass="w-full">
+          <p-inputGroupAddon>+263</p-inputGroupAddon>
+          <p-inputMask
+            mask="99999999?9"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            styleClass="w-full"
+          ></p-inputMask>
+        </p-inputGroup>
+
         @if(f['phoneNumber'].hasError('required') && (f['phoneNumber'].touched
         || isFormSubmitted)){
         <small class="text-red-500">This field is required</small>
