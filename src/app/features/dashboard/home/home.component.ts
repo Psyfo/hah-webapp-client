@@ -115,14 +115,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.items = [
       {
-        label: 'Email Verification',
+        label: 'Email',
         command: (event: any) => {
           this.activeIndex = 0;
           this.activeTab = '1';
         },
       },
       {
-        label: 'ID Verification',
+        label: 'Identity',
         command: (event: any) => {
           this.activeIndex = 1;
           this.activeTab = '2';
@@ -135,7 +135,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         '',
         [
           Validators.required,
-          Validators.minLength(1),
+          Validators.minLength(2),
           Validators.maxLength(20),
         ],
       ],
@@ -143,12 +143,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         '',
         [
           Validators.required,
-          Validators.minLength(1),
+          Validators.minLength(2),
           Validators.maxLength(20),
         ],
       ],
       idNumber: ['', [Validators.required]],
-      dob: [new Date()],
+      dob: [new Date(), [Validators.required]],
       phoneNumber: ['', [Validators.required]],
     });
 
@@ -167,8 +167,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
             dob: new Date(this.patient.dob as Date),
             phoneNumber: this.patient?.phoneNumber,
           });
-
-          this.f['dob'].setValue(this.patient.dob as Date);
 
           this.verificationStatus = patient?.account?.verified
             ? 'Verified'
