@@ -1,14 +1,15 @@
-import { CommonModule } from "@angular/common";
-import { HttpClientModule } from "@angular/common/http";
-import { ActivatedRoute, Router } from "@angular/router";
-import { AuthenticationService } from "app/core/authentication/authentication.service";
-import { MessageService } from "primeng/api";
-import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
-import { InputTextModule } from "primeng/inputtext";
-import { MessagesModule } from "primeng/messages";
-import { TabView, TabViewModule } from "primeng/tabview";
-import { ToastModule } from "primeng/toast";
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from 'app/core/authentication/authentication.service';
+import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessagesModule } from 'primeng/messages';
+import { TabView, TabViewModule } from 'primeng/tabview';
+import { ToastModule } from 'primeng/toast';
 
 import {
   AfterViewInit,
@@ -38,6 +39,7 @@ import {
   imports: [
     ButtonModule,
     CardModule,
+    CheckboxModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
@@ -92,11 +94,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required]],
+      rememberMe: [false],
     });
 
     this.practitionerLoginForm = this.fb.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required]],
+      rememberMe: [false],
     });
   }
 
@@ -111,8 +115,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
     } else {
       const email = this.f['email'].value;
       const password = this.f['password'].value;
+      const rememberMe = this.f['rememberMe'].value;
 
-      this.authService.login(email, password).subscribe(
+      this.authService.login(email, password, rememberMe).subscribe(
         (data) => {
           this.loginFailMessage = false;
           console.log('Login successful');
@@ -123,7 +128,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           });
           setTimeout(() => {
             this.router.navigate(['/dashboard']);
-          }, 1500);
+          }, 500);
         },
         (error) => {
           this.loginFailMessage = true;
@@ -145,8 +150,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
     } else {
       const email = this.p['email'].value;
       const password = this.p['password'].value;
+      const rememberMe = this.p['rememberMe'].value;
 
-      this.authService.practitionerLogin(email, password).subscribe(
+      this.authService.practitionerLogin(email, password, rememberMe).subscribe(
         (data) => {
           this.loginFailMessage = false;
           console.log('Login successful');
@@ -157,7 +163,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           });
           setTimeout(() => {
             this.router.navigate(['/practitioner']);
-          }, 1500);
+          }, 500);
         },
         (error) => {
           this.loginFailMessage = true;
@@ -179,5 +185,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   goToPractitionerSignup() {
     this.router.navigate(['/register', { tab: 'practitioner' }]);
+  }
+
+  goToForgotPassword(): void {
+    this.router.navigate(['/forgot-password']);
+  }
+
+  goToForgotPasswordAsPractitioner(): void {
+    this.router.navigate(['/forgot-password', { tab: 'practitioner' }]);
   }
 }

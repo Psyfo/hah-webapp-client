@@ -46,6 +46,25 @@
               }
             </div>
 
+            <div class="flex gap2 justify-content-between">
+              <!-- Remember Me -->
+              <div class="flex gap-2">
+                <p-checkbox
+                  label="Remember Me"
+                  formControlName="rememberMe"
+                  [binary]="true"
+                ></p-checkbox>
+              </div>
+
+              <!-- Forgot Password -->
+              <p-button
+                label="Forgot Password?"
+                [link]="true"
+                styleClass="pr-0"
+                (click)="goToForgotPassword()"
+              ></p-button>
+            </div>
+
             <!-- Login Button -->
             <p-button
               type="submit"
@@ -104,6 +123,26 @@
               || isFormSubmitted)){
               <small class="text-red-500">This field is required</small>
               }
+            </div>
+
+            <div class="flex gap2 justify-content-between">
+              <!-- Remember Me -->
+              <div class="flex gap-2">
+                <p-checkbox
+                  name="rememberMe"
+                  label="Remember Me"
+                  formControlName="rememberMe"
+                  [binary]="true"
+                ></p-checkbox>
+              </div>
+
+              <!-- Forgot Password -->
+              <p-button
+                label="Forgot Password?"
+                [link]="true"
+                styleClass="pr-0"
+                (click)="goToForgotPasswordAsPractitioner()"
+              ></p-button>
             </div>
 
             <!-- Login Button -->
