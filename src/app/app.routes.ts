@@ -1,5 +1,5 @@
-import { Routes } from "@angular/router";
-import { authenticationGuard } from "./core/authentication/authentication.guard";
+import { Routes } from '@angular/router';
+import { authenticationGuard } from './core/authentication/authentication.guard';
 
 export const routes: Routes = [
   {
@@ -52,6 +52,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/register/register.component').then(
         (m) => m.RegisterComponent
+      ),
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./features/forgot-password/forgot-password.component').then(
+        (m) => m.ForgotPasswordComponent
       ),
   },
   {
