@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { environment } from 'environments/environment';
-import { IPractitioner } from '../models/practitioner.interface';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable, inject } from "@angular/core";
+import { environment } from "environments/environment";
+import { IPractitioner } from "../models/practitioner.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -101,6 +101,14 @@ export class PractitionerService {
     );
   }
 
+  approvePractitioner(practitioner: IPractitioner) {
+    return this.http.patch<IPractitioner>(
+      `${this.apiUrl}/practitioners/approve/${practitioner.id}`,
+      practitioner,
+      this.httpOptions
+    );
+  }
+
   forgotPassword(email: string) {
     return this.http.post<IPractitioner>(
       `${this.apiUrl}/practitioners/forgot-password`,
@@ -109,10 +117,10 @@ export class PractitionerService {
     );
   }
 
-  resetPassword(oldPassword: string, newPassword: string) {
+  resetPassword(resetPasswordToken: string, newPassword: string) {
     return this.http.post<IPractitioner>(
       `${this.apiUrl}/practitioners/reset-password`,
-      { oldPassword, newPassword },
+      { resetPasswordToken, newPassword },
       this.httpOptions
     );
   }

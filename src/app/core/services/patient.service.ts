@@ -107,10 +107,10 @@ export class PatientService {
     );
   }
 
-  resetPassword(oldPassword: string, newPassword: string) {
+  resetPassword(resetPasswordToken: string, newPassword: string) {
     return this.http.post<IPatient>(
       `${this.apiUrl}/patients/reset-password`,
-      { oldPassword, newPassword },
+      { resetPasswordToken, newPassword },
       this.httpOptions
     );
   }
