@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
-import { environment } from "environments/environment";
-import { Observable } from "rxjs";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { environment } from 'environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -69,5 +69,17 @@ export class UploadService {
     console.log('Form Data: ', formData);
 
     return this.http.post<any>(`${this.apiUrl}/upload/admin-avatar`, formData);
+  }
+
+  uploadPractitionerQualification(file: File, email: string) {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('email', email);
+    console.log('Form Data: ', formData);
+
+    return this.http.post<any>(
+      `${this.apiUrl}/upload/practitioner-qualification`,
+      formData
+    );
   }
 }
