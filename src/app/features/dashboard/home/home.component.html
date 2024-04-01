@@ -82,6 +82,7 @@
   <div
     class="border-1 border-round surface-border surface-card p-5 w-full md:w-4"
   >
+    <!-- Part 1: ID Details -->
     @if(patient?.account!.activationStep === 1){
     <h4>ID Verification Status</h4>
     <form [formGroup]="patientIdForm" class="flex flex-column gap-3">
@@ -199,7 +200,7 @@
     </form>
     }
 
-    <!-- Image -->
+    <!-- Part 2: Upload ID Document -->
     @if(patient?.account?.activationStep === 2){
     <h4>Upload ID Document</h4>
 
@@ -227,11 +228,6 @@
     </div>
     }
   </div>
-  }
-
-  <!-- Step 3: Upload ID -->
-  @if(activeIndex === 2) {
-  <div class="border-1 border-round surface-border surface-card p-5"></div>
   }
 
   <!-- Other dashboard content -->
