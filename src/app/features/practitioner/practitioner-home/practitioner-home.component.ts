@@ -105,19 +105,30 @@ export class PractitionerHomeComponent implements OnInit, AfterViewInit {
             phoneNumber: this.practitioner?.phoneNumber,
           });
 
+          // Set verification status
           this.verificationStatus = practitioner?.account?.verified
             ? 'Verified'
             : 'Not Verified';
+
+          // Set active index and tab based on activation step
           if (this.practitioner?.account?.activationStep === 0) {
             this.activeIndex = 0;
             this.activeTab = '1';
-          } else if (this.practitioner?.account?.activationStep === 1 || 2) {
+          }
+          if (this.practitioner?.account?.activationStep === 1 || 2) {
             this.activeIndex = 1;
             this.activeTab = '2';
-          } else if (this.practitioner?.account?.activationStep === 3) {
+          }
+          if (this.practitioner?.account?.activationStep === 3) {
             this.activeIndex = 2;
             this.activeTab = '3';
           }
+          console.log(
+            'Activation step: ',
+            this.practitioner?.account?.activationStep
+          );
+          console.log('Active index: ', this.activeIndex);
+          console.log('Active tab: ', this.activeTab);
         });
     }
 
@@ -277,6 +288,7 @@ export class PractitionerHomeComponent implements OnInit, AfterViewInit {
     if (!file || !email) {
       return;
     }
+
     this.uploadService.uploadPractitionerId(file, email).subscribe(
       (response: any) => {
         console.log('Upload successful!', response);
@@ -298,6 +310,55 @@ export class PractitionerHomeComponent implements OnInit, AfterViewInit {
               console.error('Error: ', error);
             }
           );
+
+        // Update the active index and tab
+        this.activeIndex = 2;
+        this.activeTab = '3';
+      },
+      (error: any) => {
+        console.error('Upload failed:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to upload practitioner ID.',
+        });
+      }
+    );
+  }
+
+  onQualificationUpload(event: FileUploadHandlerEvent) {
+    const file = event.files[0];
+    const email = this.practitioner!.email as string;
+
+    if (!file || !email) {
+      return;
+    }
+
+    this.uploadService.uploadPractitionerQualification(file, email).subscribe(
+      (response: any) => {
+        console.log('Upload successful!', response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Practitioner ID uploaded successfully.',
+        });
+
+        this.practitioner!.account!.activationStep = 4;
+        this.practitionerService
+          .updatePractitioner(this.practitioner!)
+          .subscribe(
+            (response: IPractitioner) => {
+              console.log('Response: ', response);
+              console.log('Practitioner activationStep updated.');
+            },
+            (error: any) => {
+              console.error('Error: ', error);
+            }
+          );
+
+        // Update the active index and tab
+        this.activeIndex = 2;
+        this.activeTab = '3';
       },
       (error: any) => {
         console.error('Upload failed:', error);
