@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/authentication/authentication.service';
 import { PatientService } from 'app/core/services/patient.service';
 import { PractitionerService } from 'app/core/services/practitioner.service';
@@ -43,6 +43,7 @@ import {
 export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   cdr = inject(ChangeDetectorRef);
   route = inject(ActivatedRoute);
+  router = inject(Router);
   fb = inject(FormBuilder);
   messageService = inject(MessageService);
   authService = inject(AuthenticationService);
@@ -55,15 +56,20 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   isFormSubmitted: boolean = false;
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      if (params['tab'] === 'practitioner') {
-        console.log('Practitioner tab selected');
-        this.practitionerFlag = true;
-      } else {
-        console.log('Patient tab selected');
-        this.practitionerFlag = false;
+    this.route.params.subscribe(
+      (params) => {
+        if (params['tab'] === 'practitioner') {
+          console.log('Practitioner tab selected');
+          this.practitionerFlag = true;
+        } else {
+          console.log('Patient tab selected');
+          this.practitionerFlag = false;
+        }
+      },
+      (error) => {
+        console.error('Error getting route params', error);
       }
-    });
+    );
 
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -97,7 +103,9 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
               detail: 'Password reset email sent',
             });
           }
+
           console.log(response);
+
           this.isFormSubmitted = false;
           this.forgotPasswordForm.reset();
         },
@@ -107,6 +115,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
             summary: 'Error',
             detail: 'Error sending password reset email',
           });
+
           console.error('Error sending password reset email', error);
         }
       );
@@ -120,6 +129,9 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
               detail: 'Password reset email sent',
             });
           }
+
+          console.log(response);
+
           this.isFormSubmitted = false;
           this.forgotPasswordForm.reset();
         },
@@ -129,9 +141,18 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
             summary: 'Error',
             detail: 'Error sending password reset email',
           });
+
           console.error('Error sending password reset email', error);
         }
       );
+    }
+  }
+
+  returnToLogin() {
+    if (this.practitionerFlag) {
+      this.router.navigate(['/login', { tab: 'practitioner' }]);
+    } else {
+      this.router.navigate(['/login']);
     }
   }
 }
