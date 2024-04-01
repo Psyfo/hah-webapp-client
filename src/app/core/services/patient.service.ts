@@ -98,4 +98,20 @@ export class PatientService {
       this.httpOptions
     );
   }
+
+  forgotPassword(email: string) {
+    return this.http.post<IPatient>(
+      `${this.apiUrl}/patients/forgot-password`,
+      { email: email },
+      this.httpOptions
+    );
+  }
+
+  resetPassword(oldPassword: string, newPassword: string) {
+    return this.http.post<IPatient>(
+      `${this.apiUrl}/patients/reset-password`,
+      { oldPassword, newPassword },
+      this.httpOptions
+    );
+  }
 }
