@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'app/core/authentication/authentication.service';
+import { PatientService } from 'app/core/services/patient.service';
+import { PractitionerService } from 'app/core/services/practitioner.service';
 import { routerTransitionSlideUp } from 'app/core/utilities/animations';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -44,6 +46,8 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   fb = inject(FormBuilder);
   messageService = inject(MessageService);
   authService = inject(AuthenticationService);
+  patientService = inject(PatientService);
+  practitionerService = inject(PractitionerService);
 
   forgotPasswordForm!: FormGroup;
   practitionerFlag: boolean = false;
@@ -51,7 +55,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   isFormSubmitted: boolean = false;
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       if (params['tab'] === 'practitioner') {
         console.log('Practitioner tab selected');
         this.practitionerFlag = true;
@@ -84,9 +88,30 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
     const email = this.f['email'].value;
 
     if (this.practitionerFlag) {
-      console.log('Practitioner forgot password');
+      this.practitionerService.forgotPassword(email).subscribe(
+        (response: any) => {
+          if (response) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Password reset email sent',
+            });
+          }
+          console.log(response);
+          this.isFormSubmitted = false;
+          this.forgotPasswordForm.reset();
+        },
+        (error: any) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error sending password reset email',
+          });
+          console.error('Error sending password reset email', error);
+        }
+      );
     } else {
-      this.authService.patientPasswordReset(email).subscribe(
+      this.patientService.forgotPassword(email).subscribe(
         (response: any) => {
           if (response) {
             this.messageService.add({
@@ -104,6 +129,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
             summary: 'Error',
             detail: 'Error sending password reset email',
           });
+          console.error('Error sending password reset email', error);
         }
       );
     }
