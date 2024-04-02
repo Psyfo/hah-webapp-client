@@ -33,7 +33,7 @@ export function customPasswordValidator(): ValidatorFn {
       errors['policy'] = true;
     }
 
-    if (!/[!@#$%^&*-_(),.?":{}|<>]/.test(password)) {
+    if (!/[!@#$%^&*(),.?":{}|<>\-_]/.test(password)) {
       errors['specialCharacter'] = true;
       errors['policy'] = true;
     }
