@@ -97,7 +97,7 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit {
           this.isFormSubmitted = false;
 
           setTimeout(() => {
-            this.router.navigate(['/auth/login']);
+            this.router.navigate(['/login']);
           }, 1000);
         },
         (error) => {
