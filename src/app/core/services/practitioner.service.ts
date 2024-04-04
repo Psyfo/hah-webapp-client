@@ -117,10 +117,10 @@ export class PractitionerService {
     );
   }
 
-  resetPassword(resetPasswordToken: string, newPassword: string) {
+  resetPassword(passwordResetToken: string, newPassword: string) {
     return this.http.post<IPractitioner>(
       `${this.apiUrl}/practitioners/reset-password`,
-      { resetPasswordToken, newPassword },
+      { passwordResetToken, newPassword },
       this.httpOptions
     );
   }

@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { IPatient } from 'app/core/models/patient.interface';
-import { environment } from 'environments/environment';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable, inject } from "@angular/core";
+import { IPatient } from "app/core/models/patient.interface";
+import { environment } from "environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -107,10 +107,10 @@ export class PatientService {
     );
   }
 
-  resetPassword(resetPasswordToken: string, newPassword: string) {
+  resetPassword(passwordResetToken: string, newPassword: string) {
     return this.http.post<IPatient>(
       `${this.apiUrl}/patients/reset-password`,
-      { resetPasswordToken, newPassword },
+      { passwordResetToken, newPassword },
       this.httpOptions
     );
   }
