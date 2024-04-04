@@ -1,14 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from 'app/core/authentication/authentication.service';
-import { PatientService } from 'app/core/services/patient.service';
-import { PractitionerService } from 'app/core/services/practitioner.service';
-import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessagesModule } from 'primeng/messages';
-import { ToastModule } from 'primeng/toast';
+import { CommonModule } from "@angular/common";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthenticationService } from "app/core/authentication/authentication.service";
+import { PatientService } from "app/core/services/patient.service";
+import { PractitionerService } from "app/core/services/practitioner.service";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { InputTextModule } from "primeng/inputtext";
+import { MessagesModule } from "primeng/messages";
+import { ToastModule } from "primeng/toast";
 
 import {
   FormBuilder,
@@ -108,6 +108,8 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
 
           this.isFormSubmitted = false;
           this.forgotPasswordForm.reset();
+
+          this.router.navigate(['/login', { tab: 'practitioner' }]);
         },
         (error: any) => {
           this.messageService.add({
@@ -134,6 +136,8 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
 
           this.isFormSubmitted = false;
           this.forgotPasswordForm.reset();
+
+          this.router.navigate(['/login']);
         },
         (error: any) => {
           this.messageService.add({
