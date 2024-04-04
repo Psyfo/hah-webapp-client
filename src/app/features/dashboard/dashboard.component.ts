@@ -54,7 +54,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   navItems?: MenuItem[];
 
   ngOnInit(): void {
-    const email = localStorage.getItem('email');
+    // Check local storage or session storage for email
+    const email =
+      localStorage.getItem('email') || sessionStorage.getItem('email');
+
     if (email) {
       this.patientService
         .getPatientByEmail(email)

@@ -1,26 +1,26 @@
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { AuthenticationService } from 'app/core/authentication/authentication.service';
-import { IPractitioner } from 'app/core/models/practitioner.interface';
-import { PractitionerService } from 'app/core/services/practitioner.service';
-import { UploadService } from 'app/core/services/upload.service';
-import { VerificationService } from 'app/core/services/verification.service';
-import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogModule } from 'primeng/dialog';
-import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputMaskModule } from 'primeng/inputmask';
-import { InputTextModule } from 'primeng/inputtext';
-import { MenubarModule } from 'primeng/menubar';
-import { MessagesModule } from 'primeng/messages';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { StepsModule } from 'primeng/steps';
-import { ToastModule } from 'primeng/toast';
+import { CommonModule } from "@angular/common";
+import { Router } from "@angular/router";
+import { AuthenticationService } from "app/core/authentication/authentication.service";
+import { IPractitioner } from "app/core/models/practitioner.interface";
+import { PractitionerService } from "app/core/services/practitioner.service";
+import { UploadService } from "app/core/services/upload.service";
+import { VerificationService } from "app/core/services/verification.service";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { CalendarModule } from "primeng/calendar";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { DialogModule } from "primeng/dialog";
+import { FileUploadHandlerEvent, FileUploadModule } from "primeng/fileupload";
+import { InputGroupModule } from "primeng/inputgroup";
+import { InputGroupAddonModule } from "primeng/inputgroupaddon";
+import { InputMaskModule } from "primeng/inputmask";
+import { InputTextModule } from "primeng/inputtext";
+import { MenubarModule } from "primeng/menubar";
+import { MessagesModule } from "primeng/messages";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { StepsModule } from "primeng/steps";
+import { ToastModule } from "primeng/toast";
 
 import {
   AfterViewInit,
@@ -90,7 +90,9 @@ export class PractitionerHomeComponent implements OnInit, AfterViewInit {
   isFormSubmitted: boolean = false;
 
   ngOnInit(): void {
-    const email = localStorage.getItem('email');
+    // Check local storage or session storage for email
+    const email =
+      localStorage.getItem('email') || sessionStorage.getItem('email');
     if (email) {
       this.practitionerService
         .getPractitionerByEmail(email)

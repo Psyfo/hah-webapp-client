@@ -1,26 +1,26 @@
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { AuthenticationService } from 'app/core/authentication/authentication.service';
-import { IPatient } from 'app/core/models/patient.interface';
-import { PatientService } from 'app/core/services/patient.service';
-import { UploadService } from 'app/core/services/upload.service';
-import { VerificationService } from 'app/core/services/verification.service';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogModule } from 'primeng/dialog';
-import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputMaskModule } from 'primeng/inputmask';
-import { InputTextModule } from 'primeng/inputtext';
-import { MenubarModule } from 'primeng/menubar';
-import { MessagesModule } from 'primeng/messages';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { StepsModule } from 'primeng/steps';
-import { ToastModule } from 'primeng/toast';
-import { merge } from 'ts-deepmerge';
+import { CommonModule } from "@angular/common";
+import { Router } from "@angular/router";
+import { AuthenticationService } from "app/core/authentication/authentication.service";
+import { IPatient } from "app/core/models/patient.interface";
+import { PatientService } from "app/core/services/patient.service";
+import { UploadService } from "app/core/services/upload.service";
+import { VerificationService } from "app/core/services/verification.service";
+import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { CalendarModule } from "primeng/calendar";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { DialogModule } from "primeng/dialog";
+import { FileUploadHandlerEvent, FileUploadModule } from "primeng/fileupload";
+import { InputGroupModule } from "primeng/inputgroup";
+import { InputGroupAddonModule } from "primeng/inputgroupaddon";
+import { InputMaskModule } from "primeng/inputmask";
+import { InputTextModule } from "primeng/inputtext";
+import { MenubarModule } from "primeng/menubar";
+import { MessagesModule } from "primeng/messages";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { StepsModule } from "primeng/steps";
+import { ToastModule } from "primeng/toast";
+import { merge } from "ts-deepmerge";
 
 import {
   AfterViewInit,
@@ -152,7 +152,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       phoneNumber: ['', [Validators.required]],
     });
 
-    const email = localStorage.getItem('email');
+    // Check local storage or session storage for email
+    const email =
+      localStorage.getItem('email') || sessionStorage.getItem('email');
     if (email) {
       this.patientService
         .getPatientByEmail(email)
