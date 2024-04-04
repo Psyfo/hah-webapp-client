@@ -1,5 +1,5 @@
-import { Routes } from '@angular/router';
-import { authenticationGuard } from './core/authentication/authentication.guard';
+import { Routes } from "@angular/router";
+import { authenticationGuard } from "./core/authentication/authentication.guard";
 
 export const routes: Routes = [
   {
@@ -62,14 +62,14 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'reset-password/:resetPasswordToken',
+    path: 'reset-password/:passwordResetToken',
     loadComponent: () =>
       import('./features/auth/reset-password/reset-password.component').then(
         (m) => m.ResetPasswordComponent
       ),
   },
   {
-    path: 'practitioner-reset-password/:resetPasswordToken',
+    path: 'practitioner-reset-password/:passwordResetToken',
     loadComponent: () =>
       import(
         './features/auth/practitioner-reset-password/practitioner-reset-password.component'
