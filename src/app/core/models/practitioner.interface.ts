@@ -5,6 +5,7 @@ export interface IPractitionerAccount {
   passwordResetToken?: string;
   activationStep?: number;
   approvalStatus?: string;
+  rejectionReason?: string;
   country?: string;
   accountStatus?: string;
 }

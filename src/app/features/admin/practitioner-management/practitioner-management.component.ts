@@ -3,13 +3,16 @@ import { RouterModule } from "@angular/router";
 import { IPractitioner } from "app/core/models/practitioner.interface";
 import { PractitionerService } from "app/core/services/practitioner.service";
 import { routerTransitionSlideUp } from "app/core/utilities/animations";
-import { ConfirmationService, MessageService } from "primeng/api";
+import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
+import { CalendarModule } from "primeng/calendar";
 import { CardModule } from "primeng/card";
 import { CheckboxModule } from "primeng/checkbox";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { ContextMenuModule } from "primeng/contextmenu";
 import { DialogModule } from "primeng/dialog";
 import { DropdownModule } from "primeng/dropdown";
+import { InputMaskModule } from "primeng/inputmask";
 import { InputTextModule } from "primeng/inputtext";
 import { MenuModule } from "primeng/menu";
 import { MenubarModule } from "primeng/menubar";
@@ -20,6 +23,7 @@ import { Table, TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
 import { ToastModule } from "primeng/toast";
 import { ToolbarModule } from "primeng/toolbar";
+import { merge } from "ts-deepmerge";
 
 import {
   AfterViewInit,
@@ -41,12 +45,15 @@ import {
   standalone: true,
   imports: [
     ButtonModule,
+    CalendarModule,
     CardModule,
     CheckboxModule,
     CommonModule,
     ConfirmDialogModule,
+    ContextMenuModule,
     DialogModule,
     DropdownModule,
+    InputMaskModule,
     InputTextModule,
     MenuModule,
     MenubarModule,
@@ -81,11 +88,16 @@ export class PractitionerManagementComponent {
     { label: 'Approved', value: 'approved' },
     { label: 'Rejected', value: 'rejected' },
   ];
+  contextMenuItems: MenuItem[] = [];
 
   practitionerForm!: FormGroup;
+  approvalForm!: FormGroup;
   isFormSubmitted: boolean = false;
   updatingPractitioner: boolean = false;
+  approvingPractitioner: boolean = false;
   practitionerDialogVisible = false;
+  approvalDialogVisible = false;
+  rejectionReasonVisible: boolean = false;
   isUpdate: boolean = false;
 
   ngOnInit(): void {
@@ -95,16 +107,60 @@ export class PractitionerManagementComponent {
       email: ['', [Validators.required, Validators.email]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
+      dob: [new Date(), [Validators.required]],
+      idNumber: [''],
+      phoneNumber: [''],
       verified: [false],
       approvalStatus: ['pending'],
     });
+    this.f['verified'].disable();
+
+    this.approvalForm = this.fb.group({
+      approvalStatus: ['pending', [Validators.required]],
+      rejectionReason: [''],
+    });
+
+    this.contextMenuItems = [
+      {
+        label: 'View',
+        icon: 'pi pi-fw pi-eye',
+        command: (event) =>
+          this.openUpdatePractitionerDialog(this.selectedPractitioner),
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-fw pi-trash',
+        command: (event) => this.deletePractitioner(this.selectedPractitioner),
+      },
+      {
+        label: 'Approve / Reject',
+        icon: 'pi pi-fw pi-check',
+        command: (event) => this.openApprovalDialog(this.selectedPractitioner),
+      },
+    ];
+
+    // Subscribe to a[approvalStatus] value changes
+    this.a['approvalStatus'].valueChanges.subscribe((value) => {
+      if (value === 'rejected') {
+        this.rejectionReasonVisible = true;
+        this.a['rejectionReason'].setValidators([Validators.required]);
+      } else {
+        this.rejectionReasonVisible = false;
+        this.a['rejectionReason'].clearValidators();
+      }
+    });
   }
+
   ngAfterViewInit(): void {
     this.ref.detectChanges();
   }
 
   get f() {
     return this.practitionerForm.controls;
+  }
+
+  get a() {
+    return this.approvalForm.controls;
   }
 
   getPractitioners() {
@@ -154,6 +210,36 @@ export class PractitionerManagementComponent {
   closeUpdatePractitionerDialog() {
     this.isFormSubmitted = false;
     this.practitionerDialogVisible = false;
+  }
+
+  openApprovalDialog(practitioner: IPractitioner) {
+    if (this.a['approvalStatus']!.value === 'rejected') {
+      this.rejectionReasonVisible = true;
+      this.a['rejectionReason'].setValidators([Validators.required]);
+    } else {
+      this.rejectionReasonVisible = false;
+      this.a['rejectionReason'].clearValidators();
+    }
+
+    this.approvalDialogVisible = true;
+
+    this.approvalForm.patchValue({
+      approvalStatus: practitioner.account?.approvalStatus,
+    });
+  }
+
+  closeApprovalDialog() {
+    this.approvalDialogVisible = false;
+  }
+
+  onApprovalStatusChange() {
+    // if (this.a['approvalStatus'].value === 'rejected') {
+    //   this.rejectionReasonVisible = true;
+    //   this.a['rejectionReason'].setValidators([Validators.required]);
+    // } else {
+    //   this.rejectionReasonVisible = false;
+    //   this.a['rejectionReason'].clearValidators();
+    // }
   }
 
   updatePractitioner() {
@@ -261,6 +347,51 @@ export class PractitionerManagementComponent {
         reject: () => {},
       });
     }
+  }
+
+  approvePractitioner() {
+    this.approvalDialogVisible = false;
+    this.approvingPractitioner = true;
+
+    const updatedPractitioner: IPractitioner = merge(
+      this.selectedPractitioner,
+      {
+        account: {
+          approvalStatus: this.approvalForm.value.approvalStatus,
+        },
+      } as IPractitioner
+    );
+
+    if (this.approvalForm.value.approvalStatus === 'rejected') {
+      updatedPractitioner.account!.rejectionReason =
+        this.approvalForm.value.rejectionReason;
+    }
+
+    this.practitionerService.approvePractitioner(updatedPractitioner).subscribe(
+      (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Practitioner approved successfully.',
+        });
+        this.approvingPractitioner = false;
+        this.approvalDialogVisible = false;
+
+        this.approvalForm.reset();
+        this.getPractitioners();
+      },
+      (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'An error occurred while approving the practitioner.',
+        });
+        this.approvingPractitioner = false;
+        this.approvalDialogVisible = false;
+
+        this.approvalForm.reset();
+      }
+    );
   }
 
   getSeverityApproval(approvalStatus: string) {
