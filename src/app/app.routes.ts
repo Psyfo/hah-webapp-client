@@ -55,6 +55,27 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./features/auth/forgot-password/forgot-password.component').then(
+        (m) => m.ForgotPasswordComponent
+      ),
+  },
+  {
+    path: 'reset-password/:passwordResetToken',
+    loadComponent: () =>
+      import('./features/auth/reset-password/reset-password.component').then(
+        (m) => m.ResetPasswordComponent
+      ),
+  },
+  {
+    path: 'practitioner-reset-password/:passwordResetToken',
+    loadComponent: () =>
+      import(
+        './features/auth/practitioner-reset-password/practitioner-reset-password.component'
+      ).then((m) => m.PractitionerResetPasswordComponent),
+  },
+  {
     path: 'get-started',
     loadComponent: () =>
       import('./features/auth/register/get-started/get-started.component').then(

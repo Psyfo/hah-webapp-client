@@ -100,4 +100,28 @@ export class PractitionerService {
       this.httpOptions
     );
   }
+
+  approvePractitioner(practitioner: IPractitioner) {
+    return this.http.patch<IPractitioner>(
+      `${this.apiUrl}/practitioners/approve/${practitioner.id}`,
+      practitioner,
+      this.httpOptions
+    );
+  }
+
+  forgotPassword(email: string) {
+    return this.http.post<IPractitioner>(
+      `${this.apiUrl}/practitioners/forgot-password`,
+      { email: email },
+      this.httpOptions
+    );
+  }
+
+  resetPassword(passwordResetToken: string, newPassword: string) {
+    return this.http.post<IPractitioner>(
+      `${this.apiUrl}/practitioners/reset-password`,
+      { passwordResetToken, newPassword },
+      this.httpOptions
+    );
+  }
 }

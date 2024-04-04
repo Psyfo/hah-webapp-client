@@ -1,5 +1,5 @@
-@if(practitioner?.account?.activationStep !== 3){
-<div [@routerTransitionSlideRight] class="flex flex-column gap-2 p-5">
+@if(practitioner?.account?.activationStep !== 4){
+<div [@routerTransitionSlideUp] class="flex flex-column gap-2 p-5">
   <p class="font-semibold text-xl text-gray-500 mb-8">
     Welcome to Your Dashboard {{ practitioner?.email }}
   </p>
@@ -12,7 +12,7 @@
 
   <div class="border-1 border-round surface-border surface-card p-5">
     <p-toast></p-toast>
-    <p-steps [model]="items" [readonly]="true" [(activeIndex)]="activeIndex">
+    <p-steps [model]="items" [readonly]="false" [(activeIndex)]="activeIndex">
     </p-steps>
   </div>
 
@@ -80,6 +80,7 @@
   <!-- Step 2: ID Verification -->
   @if(activeIndex === 1) {
   <div class="border-1 border-round surface-border surface-card p-5">
+    <!-- Part 1: ID Details -->
     @if(practitioner?.account?.activationStep === 1){
     <h4>ID Verification Status</h4>
     <form [formGroup]="practitionerIdForm" class="flex flex-column gap-3">
@@ -136,24 +137,29 @@
           id="dob"
           formControlName="dob"
           [showIcon]="true"
-          [readonlyInput]="true"
+          [readonlyInput]="false"
           [monthNavigator]="true"
           [yearNavigator]="true"
           [maxDate]="maxDate"
           styleClass="w-full"
+          dateFormat="dd-mm-yy"
+          [placeholder]="'DD-MM-YYYY'"
         ></p-calendar>
       </div>
 
-      <!-- PHone Number -->
+      <!-- Phone Number -->
       <div class="flex flex-column gap-2 w-full md:w-4">
         <label for="phoneNumber">Phone Number</label>
-        <p-inputMask
-          mask="999 999 9999"
-          placeholder="079 999 9999"
-          id="phoneNumber"
-          formControlName="phoneNumber"
-          styleClass="w-full"
-        ></p-inputMask>
+        <p-inputGroup styleClass="w-full">
+          <p-inputGroupAddon>+263</p-inputGroupAddon>
+          <p-inputMask
+            mask="99999999?9"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            styleClass="w-full"
+          ></p-inputMask>
+        </p-inputGroup>
+
         @if(f['phoneNumber'].hasError('required') && (f['phoneNumber'].touched
         || isFormSubmitted)){
         <small class="text-red-500">This field is required</small>
@@ -169,7 +175,7 @@
     </form>
     }
 
-    <!-- Image -->
+    <!-- Part 2: Upload ID Document -->
     @if(practitioner?.account?.activationStep === 2){
     <h4>Upload ID Document</h4>
 
@@ -199,9 +205,34 @@
   </div>
   }
 
-  <!-- Step 3: Upload ID -->
-  @if(activeIndex === 2) {
-  <div class="border-1 border-round surface-border surface-card p-5"></div>
+  <!--Step 3: Upload Qualifications  -->
+  @if(activeIndex === 2){
+  <div class="border-1 border-round surface-border surface-card p-5">
+    <h4 class="font-semibold text-gray-500">Upload Medical Qualification</h4>
+
+    <div class="flex flex-column gap-2 w-full md:w-4">
+      <label for="qualificationImage">ID Image</label>
+      <p-fileUpload
+        id="qualificationImage"
+        name="qualificationImage"
+        url="https://primefaces.org/primeng"
+        [auto]="false"
+        [maxFileSize]="3000000"
+        [invalidFileSizeMessageSummary]="'File Size Exceeded'"
+        [invalidFileSizeMessageDetail]="
+          'The size of the file is too large please upload files less than 3 MB.'
+        "
+        [invalidFileTypeMessageSummary]="'File Type Incorrect'"
+        [invalidFileTypeMessageDetail]="
+          'The file uploaded is the wrong format. Please upload a jpeg, pdf or hiec file formats only.'
+        "
+        [fileLimit]="1"
+        [customUpload]="true"
+        (uploadHandler)="onQualificationUpload($event)"
+        accept="image/jpeg, image/heic, image/pdf"
+      ></p-fileUpload>
+    </div>
+  </div>
   }
 
   <!-- Other dashboard content -->
@@ -216,7 +247,7 @@
       </div> -->
   }
 </div>
-} @else if (practitioner?.account?.activationStep === 3){
+} @if (practitioner?.account?.activationStep === 4){
 <div class="flex flex-column gap-2 p-5">
   <p class="font-semibold text-xl text-gray-500 mb-8">
     Welcome to Your Dashboard {{ practitioner?.email }}

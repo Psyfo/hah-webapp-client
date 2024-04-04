@@ -1,25 +1,34 @@
-import { CommonModule } from "@angular/common";
-import { Component, OnInit, inject } from "@angular/core";
-import { Router } from "@angular/router";
-import { AuthenticationService } from "app/core/authentication/authentication.service";
-import { IPractitioner } from "app/core/models/practitioner.interface";
-import { PractitionerService } from "app/core/services/practitioner.service";
-import { UploadService } from "app/core/services/upload.service";
-import { VerificationService } from "app/core/services/verification.service";
-import { routerTransitionSlideUp } from "app/core/utilities/animations";
-import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
-import { ButtonModule } from "primeng/button";
-import { CalendarModule } from "primeng/calendar";
-import { ConfirmDialogModule } from "primeng/confirmdialog";
-import { DialogModule } from "primeng/dialog";
-import { FileUploadHandlerEvent, FileUploadModule } from "primeng/fileupload";
-import { InputMaskModule } from "primeng/inputmask";
-import { InputTextModule } from "primeng/inputtext";
-import { MenubarModule } from "primeng/menubar";
-import { MessagesModule } from "primeng/messages";
-import { ProgressSpinnerModule } from "primeng/progressspinner";
-import { StepsModule } from "primeng/steps";
-import { ToastModule } from "primeng/toast";
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'app/core/authentication/authentication.service';
+import { IPractitioner } from 'app/core/models/practitioner.interface';
+import { PractitionerService } from 'app/core/services/practitioner.service';
+import { UploadService } from 'app/core/services/upload.service';
+import { VerificationService } from 'app/core/services/verification.service';
+import { routerTransitionSlideUp } from 'app/core/utilities/animations';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextModule } from 'primeng/inputtext';
+import { MenubarModule } from 'primeng/menubar';
+import { MessagesModule } from 'primeng/messages';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { StepsModule } from 'primeng/steps';
+import { ToastModule } from 'primeng/toast';
+
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 
 import {
   FormBuilder,
@@ -32,26 +41,28 @@ import {
   selector: 'app-practitioner-home',
   standalone: true,
   imports: [
-    CommonModule,
-    MessagesModule,
-    ToastModule,
-    MenubarModule,
-    StepsModule,
     ButtonModule,
-    ProgressSpinnerModule,
-    DialogModule,
-    ConfirmDialogModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    InputMaskModule,
     CalendarModule,
+    CommonModule,
+    ConfirmDialogModule,
+    DialogModule,
     FileUploadModule,
+    InputGroupAddonModule,
+    InputGroupModule,
+    InputMaskModule,
+    InputTextModule,
+    MenubarModule,
+    MessagesModule,
+    ProgressSpinnerModule,
+    ReactiveFormsModule,
+    StepsModule,
+    ToastModule,
   ],
   templateUrl: './practitioner-home.component.html',
   styleUrl: './practitioner-home.component.css',
   animations: [routerTransitionSlideUp],
 })
-export class PractitionerHomeComponent {
+export class PractitionerHomeComponent implements OnInit, AfterViewInit {
   authService = inject(AuthenticationService);
   practitionerService = inject(PractitionerService);
   messageService = inject(MessageService);
@@ -60,6 +71,7 @@ export class PractitionerHomeComponent {
   confirmationService = inject(ConfirmationService);
   fb: FormBuilder = inject(FormBuilder);
   uploadService = inject(UploadService);
+  cdr = inject(ChangeDetectorRef);
 
   practitioner?: IPractitioner;
   verificationStatus: string = '';
@@ -84,16 +96,39 @@ export class PractitionerHomeComponent {
         .getPractitionerByEmail(email)
         .subscribe((practitioner: IPractitioner) => {
           this.practitioner = practitioner;
+
+          this.practitionerIdForm.patchValue({
+            firstName: this.practitioner?.firstName,
+            lastName: this.practitioner?.lastName,
+            idNumber: this.practitioner?.idNumber,
+            dob: new Date(this.practitioner?.dob as Date),
+            phoneNumber: this.practitioner?.phoneNumber,
+          });
+
+          // Set verification status
           this.verificationStatus = practitioner?.account?.verified
             ? 'Verified'
             : 'Not Verified';
+
+          // Set active index and tab based on activation step
           if (this.practitioner?.account?.activationStep === 0) {
             this.activeIndex = 0;
             this.activeTab = '1';
-          } else if (this.practitioner?.account?.activationStep === 1 || 2) {
+          }
+          if (this.practitioner?.account?.activationStep === 1 || 2) {
             this.activeIndex = 1;
             this.activeTab = '2';
           }
+          if (this.practitioner?.account?.activationStep === 3) {
+            this.activeIndex = 2;
+            this.activeTab = '3';
+          }
+          console.log(
+            'Activation step: ',
+            this.practitioner?.account?.activationStep
+          );
+          console.log('Active index: ', this.activeIndex);
+          console.log('Active tab: ', this.activeTab);
         });
     }
 
@@ -112,17 +147,24 @@ export class PractitionerHomeComponent {
 
     this.items = [
       {
-        label: 'Email Verification',
+        label: 'Email',
         command: (event: any) => {
           this.activeIndex = 0;
           this.activeTab = '1';
         },
       },
       {
-        label: 'ID Verification',
+        label: 'Identity',
         command: (event: any) => {
           this.activeIndex = 1;
           this.activeTab = '2';
+        },
+      },
+      {
+        label: 'Documents',
+        command: (event: any) => {
+          this.activeIndex = 2;
+          this.activeTab = '3';
         },
       },
     ];
@@ -134,6 +176,10 @@ export class PractitionerHomeComponent {
       dob: [new Date(2006, 0, 1), [Validators.required]],
       phoneNumber: ['', [Validators.required]],
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
   }
 
   next() {
@@ -242,6 +288,7 @@ export class PractitionerHomeComponent {
     if (!file || !email) {
       return;
     }
+
     this.uploadService.uploadPractitionerId(file, email).subscribe(
       (response: any) => {
         console.log('Upload successful!', response);
@@ -263,6 +310,55 @@ export class PractitionerHomeComponent {
               console.error('Error: ', error);
             }
           );
+
+        // Update the active index and tab
+        this.activeIndex = 2;
+        this.activeTab = '3';
+      },
+      (error: any) => {
+        console.error('Upload failed:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to upload practitioner ID.',
+        });
+      }
+    );
+  }
+
+  onQualificationUpload(event: FileUploadHandlerEvent) {
+    const file = event.files[0];
+    const email = this.practitioner!.email as string;
+
+    if (!file || !email) {
+      return;
+    }
+
+    this.uploadService.uploadPractitionerQualification(file, email).subscribe(
+      (response: any) => {
+        console.log('Upload successful!', response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Practitioner ID uploaded successfully.',
+        });
+
+        this.practitioner!.account!.activationStep = 4;
+        this.practitionerService
+          .updatePractitioner(this.practitioner!)
+          .subscribe(
+            (response: IPractitioner) => {
+              console.log('Response: ', response);
+              console.log('Practitioner activationStep updated.');
+            },
+            (error: any) => {
+              console.error('Error: ', error);
+            }
+          );
+
+        // Update the active index and tab
+        this.activeIndex = 2;
+        this.activeTab = '3';
       },
       (error: any) => {
         console.error('Upload failed:', error);

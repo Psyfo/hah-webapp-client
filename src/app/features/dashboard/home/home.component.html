@@ -1,5 +1,5 @@
 @if(patient?.account?.activationStep !== 3){
-<div [@routerTransitionSlideRight] class="flex flex-column gap-2 p-5">
+<div [@routerTransitionSlideUp] class="flex flex-column gap-2 p-5">
   <p class="font-semibold text-xl text-gray-500 mb-8">
     Welcome to Your Dashboard {{ patient?.email }}
   </p>
@@ -82,6 +82,7 @@
   <div
     class="border-1 border-round surface-border surface-card p-5 w-full md:w-4"
   >
+    <!-- Part 1: ID Details -->
     @if(patient?.account!.activationStep === 1){
     <h4>ID Verification Status</h4>
     <form [formGroup]="patientIdForm" class="flex flex-column gap-3">
@@ -93,6 +94,7 @@
           id="firstName"
           formControlName="firstName"
           placeholder="First Name"
+          [size]="20"
         />
         @if(f['firstName'].hasError('required') && (f['firstName'].touched ||
         isFormSubmitted)){
@@ -100,7 +102,12 @@
         } @if(f['firstName'].hasError('minlength') && (f['firstName'].touched ||
         isFormSubmitted)){
         <small class="text-red-500"
-          >First Name must be at least 2 characters long</small
+          >This field requires a minimum of 2 characters</small
+        >
+        } @if(f['firstName'].hasError('maxlength') && (f['firstName'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500"
+          >This field has a maximum length of 20 characters</small
         >
         }
       </div>
@@ -113,10 +120,21 @@
           id="lastName"
           formControlName="lastName"
           placeholder="Last Name"
+          [size]="20"
         />
         @if(f['lastName'].hasError('required') && (f['lastName'].touched ||
         isFormSubmitted)){
         <small class="text-red-500">This field is required</small>
+        } @if(f['lastName'].hasError('minlength') && (f['lastName'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500"
+          >This field requires a minimum of 2 characters</small
+        >
+        } @if(f['lastName'].hasError('maxlength') && (f['lastName'].touched ||
+        isFormSubmitted)){
+        <small class="text-red-500"
+          >This field has a maximum length of 20 characters</small
+        >
         }
       </div>
 
@@ -154,12 +172,11 @@
         ></p-calendar>
       </div>
 
-      <!-- PHone Number -->
+      <!-- Phone Number -->
       <div class="flex flex-column gap-2 w-full">
         <label for="phoneNumber">Phone Number</label>
         <p-inputGroup styleClass="w-full">
           <p-inputGroupAddon>+263</p-inputGroupAddon>
-          <p-inputGroupAddon>07</p-inputGroupAddon>
           <p-inputMask
             mask="99999999?9"
             id="phoneNumber"
@@ -183,7 +200,7 @@
     </form>
     }
 
-    <!-- Image -->
+    <!-- Part 2: Upload ID Document -->
     @if(patient?.account?.activationStep === 2){
     <h4>Upload ID Document</h4>
 
@@ -211,11 +228,6 @@
     </div>
     }
   </div>
-  }
-
-  <!-- Step 3: Upload ID -->
-  @if(activeIndex === 2) {
-  <div class="border-1 border-round surface-border surface-card p-5"></div>
   }
 
   <!-- Other dashboard content -->

@@ -2,6 +2,7 @@ export interface IPractitionerAccount {
   firstVerificationEmailSent?: boolean;
   verificationToken?: string;
   verified?: boolean;
+  passwordResetToken?: string;
   activationStep?: number;
   approvalStatus?: string;
   country?: string;
