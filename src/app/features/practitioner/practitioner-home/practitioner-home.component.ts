@@ -83,7 +83,7 @@ export class PractitionerHomeComponent implements OnInit, AfterViewInit {
   selectedFile: File | null = null;
 
   items?: any[];
-  activeIndex: number = 0;
+  activeIndex!: number;
   activeTab: string = '1';
   navItems?: MenuItem[];
   loading: boolean = false;
@@ -115,15 +115,13 @@ export class PractitionerHomeComponent implements OnInit, AfterViewInit {
           // Set active index and tab based on activation step
           if (this.practitioner?.account?.activationStep === 0) {
             this.activeIndex = 0;
-            this.activeTab = '1';
-          }
-          if (this.practitioner?.account?.activationStep === 1 || 2) {
+            //this.activeTab = '1';
+          } else if (this.practitioner?.account?.activationStep === 1 || 2) {
             this.activeIndex = 1;
-            this.activeTab = '2';
-          }
-          if (this.practitioner?.account?.activationStep === 3) {
+            //this.activeTab = '2';
+          } else if (this.practitioner?.account?.activationStep === 3) {
             this.activeIndex = 2;
-            this.activeTab = '3';
+            //this.activeTab = '3';
           }
           console.log(
             'Activation step: ',
