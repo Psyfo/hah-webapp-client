@@ -103,6 +103,7 @@ export class PractitionerHomeComponent implements OnInit, AfterViewInit {
             firstName: this.practitioner?.firstName,
             lastName: this.practitioner?.lastName,
             idNumber: this.practitioner?.idNumber,
+            medicalLicenseNumber: this.practitioner?.medicalLicenseNumber,
             dob: new Date(this.practitioner?.dob as Date),
             phoneNumber: this.practitioner?.phoneNumber,
           });
@@ -173,6 +174,7 @@ export class PractitionerHomeComponent implements OnInit, AfterViewInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       idNumber: ['', [Validators.required]],
+      medicalLicenseNumber: ['', [Validators.required]],
       dob: [new Date(2006, 0, 1), [Validators.required]],
       phoneNumber: ['', [Validators.required]],
     });
@@ -247,6 +249,8 @@ export class PractitionerHomeComponent implements OnInit, AfterViewInit {
     this.practitioner!.firstName = this.practitionerIdForm.value.firstName;
     this.practitioner!.lastName = this.practitionerIdForm.value.lastName;
     this.practitioner!.idNumber = this.practitionerIdForm.value.idNumber;
+    this.practitioner!.medicalLicenseNumber =
+      this.practitionerIdForm.value.medicalLicenseNumber;
     this.practitioner!.dob = this.practitionerIdForm.value.dob;
     this.practitioner!.phoneNumber = this.practitionerIdForm.value.phoneNumber;
     this.practitioner!.account!.activationStep = 2;

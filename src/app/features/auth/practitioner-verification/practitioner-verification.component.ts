@@ -32,7 +32,7 @@ export class PractitionerVerificationComponent {
 
   verifyPractitionerToken(token: string) {
     setTimeout(() => {
-      this.verificationService.verifyToken(token).subscribe(
+      this.verificationService.verifyPractitionerToken(token).subscribe(
         (response) => {
           this.message = response.message;
           this.waiting = false;

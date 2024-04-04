@@ -135,6 +135,20 @@
         }
       </div>
 
+      <!-- Medical License Number -->
+      <div class="flex flex-column gap-2 w-full md:w-4">
+        <label for="medicalLicenseNumber">Medical License Number</label>
+        <input
+          pInputText
+          formControlName="medicalLicenseNumber"
+          placeholder="Medical License Number"
+        />
+        @if(f['medicalLicenseNumber'].hasError('required') &&
+        (f['medicalLicenseNumber'].touched || isFormSubmitted)){
+        <small class="text-red-500">This field is required</small>
+        }
+      </div>
+
       <!-- Date of Birth -->
       <div class="flex flex-column gap-2 w-full md:w-4">
         <label for="dob">Date of Birth</label>
