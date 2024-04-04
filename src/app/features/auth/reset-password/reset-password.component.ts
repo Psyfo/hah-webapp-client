@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PatientService } from 'app/core/services/patient.service';
-import { routerTransitionSlideUp } from 'app/core/utilities/animations';
-import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessagesModule } from 'primeng/messages';
-import { ToastModule } from 'primeng/toast';
+import { CommonModule } from "@angular/common";
+import { ActivatedRoute, Router } from "@angular/router";
+import { PatientService } from "app/core/services/patient.service";
+import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { InputTextModule } from "primeng/inputtext";
+import { MessagesModule } from "primeng/messages";
+import { ToastModule } from "primeng/toast";
 
 import {
   AfterViewInit,
@@ -45,23 +45,23 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit {
   router = inject(Router);
   route = inject(ActivatedRoute);
 
-  resetPasswordToken!: string;
+  passwordResetToken!: string;
 
   isFormSubmitted: boolean = false;
   isPasswordVisible: boolean = false;
 
-  resetPasswordForm!: FormGroup;
+  passwordResetForm!: FormGroup;
 
   ngOnInit(): void {
-    this.resetPasswordForm = this.fb.group({
+    this.passwordResetForm = this.fb.group({
       newPassword: ['', Validators.required],
       confirmPassword: ['', Validators.required],
     });
 
     // Get the reset password token from the URL
     this.route.params.subscribe((params) => {
-      this.resetPasswordToken = params['resetPasswordToken'];
-      console.log('Reset password token:', this.resetPasswordToken);
+      this.passwordResetToken = params['passwordResetToken'];
+      console.log('Reset password token:', this.passwordResetToken);
     });
   }
 
@@ -70,22 +70,24 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit {
   }
 
   get f() {
-    return this.resetPasswordForm.controls;
+    return this.passwordResetForm.controls;
   }
 
   resetPassword() {
     this.isFormSubmitted = true;
 
-    if (this.resetPasswordForm.invalid) {
+    if (this.passwordResetForm.invalid) {
       return;
     }
 
     const newPassword = this.f['newPassword'].value;
+    console.log('New password:', newPassword);
+    console.log('Password reset token:', this.passwordResetToken);
 
     this.patientService
-      .resetPassword(this.resetPasswordToken, newPassword)
+      .resetPassword(this.passwordResetToken, newPassword)
       .subscribe(
-        (response) => {
+        (response: any) => {
           console.log('Password reset successfully', response);
           this.messageService.add({
             severity: 'success',
@@ -93,14 +95,14 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit {
             detail: 'Please login with your new password',
           });
 
-          this.resetPasswordForm.reset();
+          this.passwordResetForm.reset();
           this.isFormSubmitted = false;
 
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 1000);
         },
-        (error) => {
+        (error: any) => {
           console.error('Error resetting password', error);
           this.messageService.add({
             severity: 'error',
