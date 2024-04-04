@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { PatientService } from "app/core/services/patient.service";
 import { routerTransitionSlideUp } from "app/core/utilities/animations";
+import { customPasswordValidator } from "app/core/validators/password.validator";
 import { MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
@@ -46,6 +47,7 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit {
   route = inject(ActivatedRoute);
 
   passwordResetToken!: string;
+  passwordSymbols = '(!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)'; 
 
   isFormSubmitted: boolean = false;
   isPasswordVisible: boolean = false;
@@ -54,8 +56,8 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.passwordResetForm = this.fb.group({
-      newPassword: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
+      newPassword: ['', [Validators.required, customPasswordValidator()]],
+      confirmPassword: ['', [Validators.required]],
     });
 
     // Get the reset password token from the URL
