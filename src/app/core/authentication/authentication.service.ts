@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { environment } from 'environments/environment';
-import { map } from 'jquery';
-import { tap } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable, inject } from "@angular/core";
+import { Router } from "@angular/router";
+import { environment } from "environments/environment";
+import { map } from "jquery";
+import { tap } from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +31,7 @@ export class AuthenticationService {
             // Determine where to store the authentication data based on rememberMe flag
             const storage = rememberMe ? localStorage : sessionStorage;
 
-            // Save the token in local storage
+            // Save the token in storage
             storage.setItem(this.authSecretKey, response.token);
             storage.setItem('email', email);
             storage.setItem('isAuthenticated', 'true');
@@ -54,13 +54,14 @@ export class AuthenticationService {
         tap((response) => {
           // Check if the response contains an authentication token
           if (response && response.token) {
+            // Determine where to store the authentication data based on rememberMe flag
             const storage = rememberMe ? localStorage : sessionStorage;
 
             // Save the token in local storage
-            localStorage.setItem(this.authSecretKey, response.token);
-            localStorage.setItem('email', email);
-            localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('role', 'practitioner');
+            storage.setItem(this.authSecretKey, response.token);
+            storage.setItem('email', email);
+            storage.setItem('isAuthenticated', 'true');
+            storage.setItem('role', 'practitioner');
 
             // Update authentication flag
             this.isAuthenticatedFlag = true;
@@ -94,9 +95,12 @@ export class AuthenticationService {
   }
 
   logout() {
-    const role = localStorage.getItem('role');
+    // Get role from local storage or session storage
+    const role = localStorage.getItem('role') || sessionStorage.getItem('role');
 
     localStorage.clear();
+    sessionStorage.clear();
+
     this.isAuthenticatedFlag = false;
 
     if (role === 'admin') {
@@ -108,7 +112,12 @@ export class AuthenticationService {
 
   // Check if the user is authenticated
   isAuthenticated(): boolean {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    // Get the value of isAuthenticated from local storage or session storage
+
+    const isAuthenticated =
+      localStorage.getItem('isAuthenticated') ||
+      sessionStorage.getItem('isAuthenticated');
+
     if (isAuthenticated === 'true') {
       this.isAuthenticatedFlag = true;
     }
@@ -116,7 +125,7 @@ export class AuthenticationService {
   }
 
   getRole(): string {
-    return localStorage.getItem('role') || '';
+    return localStorage.getItem('role') || sessionStorage.getItem('role') || '';
   }
 
   patientPasswordReset(email: string) {
