@@ -45,6 +45,8 @@
     </ng-template>
   </p-toolbar>
 
+  <!-- Datatable -->
+  <p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
   <p-table
     #dt
     [value]="practitioners"
@@ -54,6 +56,7 @@
       'email',
       'firstName',
       'lastName',
+      'medicalLicenseNumber',
       'account.verified',
       'account.approvalStatus',
       'account.accountStatus'
@@ -67,6 +70,8 @@
     [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 25, 50]"
     [loading]="updatingPractitioner"
+    [(contextMenuSelection)]="selectedPractitioner"
+    [contextMenu]="cm"
   >
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
@@ -96,6 +101,10 @@
         <th pSortableColumn="lastName" style="min-width: 10rem">
           Last Name <p-sortIcon field="lastName"></p-sortIcon>
         </th>
+        <th pSortableColumn="medicalLicenseNumber" style="min-width: 10rem">
+          Medical License Number
+          <p-sortIcon field="medicalLicenseNumber"></p-sortIcon>
+        </th>
         <th pSortableColumn="verified">
           Verified <p-sortIcon field="verified"></p-sortIcon>
         </th>
@@ -109,7 +118,7 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-practitioner>
-      <tr>
+      <tr [pContextMenuRow]="practitioner">
         <td>
           <p-tableCheckbox [value]="selectedPractitioner"></p-tableCheckbox>
         </td>
@@ -118,6 +127,7 @@
           {{ practitioner.firstName }}
         </td>
         <td>{{ practitioner.lastName }}</td>
+        <td>{{ practitioner.medicalLicenseNumber }}</td>
         <td>
           <p-tag
             [value]="practitioner.account.verified"
@@ -188,12 +198,7 @@
         <!-- Email -->
         <div class="flex flex-column gap-3">
           <label for="email">Email</label>
-          <input
-            type="text"
-            pInputText
-            formControlName="email"
-            [disabled]="isAccountDeleted()"
-          />
+          <input type="text" pInputText formControlName="email" />
           @if (f['email'].hasError('required') && (f['email'].touched ||
           isFormSubmitted)){
           <small class="text-red-500">This field is required</small>
@@ -202,7 +207,7 @@
 
         <!-- First and last Names -->
         <div class="flex gap-2">
-          <div class="flex flex-column gap-3">
+          <div class="flex flex-column gap-3 w-6">
             <label for="firstName">First Name</label>
             <input type="text" pInputText formControlName="firstName" />
             @if (f['firstName'].hasError('required') && (f['firstName'].touched
@@ -210,7 +215,7 @@
             <small class="text-red-500">This field is required</small>
             }
           </div>
-          <div class="flex flex-column gap-3">
+          <div class="flex flex-column gap-3 w-6">
             <label for="lastName">Last Name</label>
             <input type="text" pInputText formControlName="lastName" />
             @if (f['lastName'].hasError('required') && (f['lastName'].touched ||
@@ -220,33 +225,61 @@
           </div>
         </div>
 
-        <!-- Verification Checkbox -->
-        <div class="flex flex-column gap-2">
-          <div class="flex gap-2 align-items-center">
-            <p-checkbox
-              formControlName="verified"
-              inputId="verified"
-              [binary]="true"
-            ></p-checkbox>
-            <label for="terms">Email Verified</label>
+        <div class="flex gap-2">
+          <!-- ID Number -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="idNumber">ID Number</label>
+            <p-inputMask
+              mask="99-9999999-a-99"
+              placeholder="00-0000000-A-00"
+              id="idNumber"
+              formControlName="idNumber"
+              styleClass="w-full"
+            ></p-inputMask>
+            @if(f['idNumber'].hasError('required') && (f['idNumber'].touched ||
+            isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+
+          <!-- Medical License Number -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="medicalLicenseNumber">Medical License Number</label>
+            <input
+              type="text"
+              pInputText
+              formControlName="medicalLicenseNumber"
+            />
           </div>
         </div>
 
-        <!-- Approval Status -->
-        <div class="flex flex-column gap-2 mb-5">
-          <label for="approvalStatus">Approval Status</label>
-          <p-dropdown
-            [options]="approvalStatuses"
-            formControlName="approvalStatus"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Select an Approval Status"
-            [appendTo]="'body'"
-          ></p-dropdown>
-          @if (f['approvalStatus'].hasError('required') &&
-          (f['approvalStatus'].touched || isFormSubmitted)){
-          <small class="text-red-500">This field is required</small>
-          }
+        <div class="flex align-items-center gap-2">
+          <!-- Date of Birth -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="dob">Date of Birth</label>
+            <p-calendar
+              id="dob"
+              formControlName="dob"
+              [showIcon]="true"
+              [readonlyInput]="false"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              styleClass="w-full"
+              [appendTo]="'body'"
+              dateFormat="dd-mm-yy"
+              [placeholder]="'DD-MM-YYYY'"
+            ></p-calendar>
+          </div>
+
+          <!-- PHone Number -->
+          <div class="flex flex-column gap-2 w-6">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="text" pInputText formControlName="phoneNumber" />
+            @if(f['phoneNumber'].hasError('required') &&
+            (f['phoneNumber'].touched || isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
         </div>
       </form>
     </div>
@@ -267,6 +300,81 @@
         class="p-button-success"
         (click)="updatePractitioner()"
         [loading]="updatingPractitioner"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Approval Form Dialog -->
+<p-dialog
+  [(visible)]="approvalDialogVisible"
+  [modal]="true"
+  [appendTo]="'body'"
+  styleClass="w-4"
+>
+  <ng-template pTemplate="header">
+    <h3>Approve/Reject Practitioner</h3>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="flex">
+      <form [formGroup]="approvalForm" class="flex flex-column gap-3 w-full">
+        <div class="flex flex-column gap-2">
+          <!-- Approval Status -->
+          <div class="flex flex-column gap-2 w-full">
+            <label for="approvalStatus">Approval Status</label>
+            <p-dropdown
+              [options]="approvalStatuses"
+              formControlName="approvalStatus"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select an Approval Status"
+              [appendTo]="'body'"
+              styleClass="w-full"
+              (onChange)="onApprovalStatusChange()"
+            ></p-dropdown>
+            @if (a['approvalStatus'].hasError('required') &&
+            (a['approvalStatus'].touched || isFormSubmitted)){
+            <small class="text-red-500">This field is required</small>
+            }
+          </div>
+
+          <!-- Rejection Reason -->
+          <div class="flex flex-column gap-2 w-full">
+            @if(rejectionReasonVisible){
+            <div class="flex flex-column gap-2 w-full">
+              <label for="rejectionReason">Rejection Reason</label>
+              <textarea
+                pInputTextarea
+                formControlName="rejectionReason"
+                rows="10"
+              ></textarea>
+              @if (a['rejectionReason'].hasError('required') &&
+              (a['rejectionReason'].touched || isFormSubmitted)){
+              <small class="text-red-500">This field is required</small>
+              }
+            </div>
+            }
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-between">
+      <button
+        pButton
+        pRipple
+        label="Cancel"
+        class="p-button-secondary"
+        (click)="closeApprovalDialog()"
+      ></button>
+      <button
+        pButton
+        pRipple
+        label="Save"
+        class="p-button-success"
+        (click)="approvePractitioner()"
+        [loading]="approvingPractitioner"
       ></button>
     </div>
   </ng-template>

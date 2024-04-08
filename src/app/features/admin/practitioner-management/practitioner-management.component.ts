@@ -109,11 +109,12 @@ export class PractitionerManagementComponent {
       lastName: ['', [Validators.required]],
       dob: [new Date(), [Validators.required]],
       idNumber: [''],
+      medicalLicenseNumber: [''],
       phoneNumber: [''],
       verified: [false],
       approvalStatus: ['pending'],
     });
-    this.f['verified'].disable();
+    this.f['email'].disable();
 
     this.approvalForm = this.fb.group({
       approvalStatus: ['pending', [Validators.required]],
@@ -165,22 +166,13 @@ export class PractitionerManagementComponent {
 
   getPractitioners() {
     this.practitionerService.getPractitioners().subscribe(
-      (practitioners: IPractitioner[]) => {
-        this.practitioners = practitioners;
-        console.log(this.practitioners);
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Info',
-          detail: 'Practitioners loaded.',
-        });
-      },
-      (error: any) => {
+      (practitioners: IPractitioner[]) => (this.practitioners = practitioners),
+      (error: any) =>
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail: 'An error occurred while retrieving practitioners.',
-        });
-      }
+        })
     );
   }
 
@@ -201,8 +193,10 @@ export class PractitionerManagementComponent {
       email: practitioner.email,
       firstName: practitioner.firstName,
       lastName: practitioner.lastName,
-      verified: practitioner.account?.verified,
-      approvalStatus: practitioner.account?.approvalStatus,
+      idNumber: practitioner.idNumber,
+      medicalLicenseNumber: practitioner.medicalLicenseNumber,
+      dob: new Date(practitioner.dob!),
+      phoneNumber: practitioner.phoneNumber,
     });
 
     this.selectedPractitioner = practitioner;
@@ -252,69 +246,52 @@ export class PractitionerManagementComponent {
     }
 
     if (this.isUpdate) {
-      const updatedPractitioner: IPractitioner = Object.assign(
-        {},
+      const updatedPractitioner: IPractitioner = merge(
         this.selectedPractitioner,
         {
-          email: this.practitionerForm.value.email,
-          firstName: this.practitionerForm.value.firstName,
-          lastName: this.practitionerForm.value.lastName,
-          account: {
-            verified: this.practitionerForm.value.verified,
-            approvalStatus: this.practitionerForm.value.approvalStatus,
-          },
-        }
+          email: this.f['email'].value,
+          firstName: this.f['firstName'].value,
+          lastName: this.f['lastName'].value,
+          idNumber: this.f['idNumber'].value,
+          medicalLicenseNumber: this.f['medicalLicenseNumber'].value,
+          dob: new Date(this.f['dob'].value),
+          phoneNumber: this.f['phoneNumber'].value,
+        } as IPractitioner
       );
       console.log('Updated Practitioner:', updatedPractitioner);
 
       this.practitionerService
         .updatePractitioner(updatedPractitioner)
         .subscribe(
-          (response) => {
+          (response) =>
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
               detail: 'Practitioner updated successfully.',
-            });
-            this.updatingPractitioner = false;
-            this.isFormSubmitted = false;
-
-            this.getPractitioners();
-          },
-          (error: any) => {
+            }),
+          (error: any) =>
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
               detail: 'An error occurred while updating the practitioner.',
-            });
-            this.updatingPractitioner = false;
-            this.isFormSubmitted = false;
-          }
+            })
         );
     } else {
       this.practitionerService
         .createPractitioner(this.practitionerForm.value)
         .subscribe(
-          (response) => {
+          (response) =>
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
               detail: 'Practitioner created successfully.',
-            });
-            this.updatingPractitioner = false;
-            this.isFormSubmitted = false;
-
-            this.getPractitioners();
-          },
-          (error: any) => {
+            }),
+          (error: any) =>
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
               detail: 'An error occurred while creating the practitioner.',
-            });
-            this.updatingPractitioner = false;
-            this.isFormSubmitted = false;
-          }
+            })
         );
     }
     this.practitionerDialogVisible = false;
@@ -324,26 +301,21 @@ export class PractitionerManagementComponent {
     if (practitioner) {
       this.confirmationService.confirm({
         message: `Are you sure you want to delete ${practitioner.firstName} ${practitioner.lastName} (${practitioner.email})?`,
-        accept: () => {
+        accept: () =>
           this.practitionerService.deletePractitioner(practitioner).subscribe(
-            (response) => {
+            (response) =>
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
                 detail: 'Practitioner deleted successfully.',
-              });
-
-              this.getPractitioners();
-            },
-            (error: any) => {
+              }),
+            (error: any) =>
               this.messageService.add({
                 severity: 'error',
                 summary: 'Error',
                 detail: 'An error occurred while deleting the practitioner.',
-              });
-            }
-          );
-        },
+              })
+          ),
         reject: () => {},
       });
     }
@@ -368,29 +340,18 @@ export class PractitionerManagementComponent {
     }
 
     this.practitionerService.approvePractitioner(updatedPractitioner).subscribe(
-      (response) => {
+      (response) =>
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Practitioner approved successfully.',
-        });
-        this.approvingPractitioner = false;
-        this.approvalDialogVisible = false;
-
-        this.approvalForm.reset();
-        this.getPractitioners();
-      },
-      (error: any) => {
+        }),
+      (error: any) =>
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail: 'An error occurred while approving the practitioner.',
-        });
-        this.approvingPractitioner = false;
-        this.approvalDialogVisible = false;
-
-        this.approvalForm.reset();
-      }
+        })
     );
   }
 

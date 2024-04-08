@@ -1,16 +1,16 @@
-import { CommonModule } from "@angular/common";
-import { AuthenticationService } from "app/core/authentication/authentication.service";
-import { IPatient } from "app/core/models/patient.interface";
-import { PatientService } from "app/core/services/patient.service";
-import { routerTransitionSlideUp } from "app/core/utilities/animations";
-import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
-import { ButtonModule } from "primeng/button";
-import { ConfirmDialogModule } from "primeng/confirmdialog";
-import { DialogModule } from "primeng/dialog";
-import { MenubarModule } from "primeng/menubar";
-import { MessagesModule } from "primeng/messages";
-import { StepsModule } from "primeng/steps";
-import { ToastModule } from "primeng/toast";
+import { CommonModule } from '@angular/common';
+import { AuthenticationService } from 'app/core/authentication/authentication.service';
+import { IPatient } from 'app/core/models/patient.interface';
+import { PatientService } from 'app/core/services/patient.service';
+import { routerTransitionSlideUp } from 'app/core/utilities/animations';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { MenubarModule } from 'primeng/menubar';
+import { MessagesModule } from 'primeng/messages';
+import { StepsModule } from 'primeng/steps';
+import { ToastModule } from 'primeng/toast';
 
 import {
   AfterViewInit,
